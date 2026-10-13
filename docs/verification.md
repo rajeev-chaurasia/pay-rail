@@ -32,3 +32,34 @@ After Java formatting and service refactoring, on 2026-10-13:
 The race measures the production idempotency transaction with a test-only
 synthetic effect. It does not measure complete HTTP payment throughput. The
 method, raw files and limitations are described in `docs/evidence.md`.
+
+## Playground verification
+
+On 2026-10-13, `mvn -B verify -Dpayrail.evidenceDir=evidence/concurrency`
+passed thirteen tests with zero failures/errors/skips. The new inspection test
+covers capture and refund journals, provider outcome, event records, omitted
+sensitive metadata and authenticated cross-tenant 404 responses.
+
+Manual browser checks against the full local Compose stack:
+
+- Created a 2500-minor-unit automatic payment; eight retries returned the
+  original response bytes. A changed amount under the same key returned 409.
+- Confirmation returned 202 and reached succeeded through Kafka/provider work.
+  A 500-minor-unit refund showed two balanced journals and a zero net difference.
+- A new manual payment authorized then captured its 2500-minor-unit amount.
+- Both API versions showed the same payment version with state/status transforms.
+- Migration controls refused an absent token, then successfully ran a backfill,
+  full reconciliation and readiness gate with the synthetic local token.
+- The final interface loaded at desktop and compact widths; compact layout
+  geometry showed matching document and viewport widths, with no horizontal
+  overflow. A full accessibility audit is outside this check.
+- Pausing only the local app caused a refund request to time out after 15
+  seconds. The page retained its key and blocked new mutations. After resuming
+  the app, eight replays agreed on one recovered refund response. Inspection
+  showed 100 minor units refunded and one reversing journal. This verifies
+  recovery from an uncertain browser outcome; it does not prove when the
+  original request committed relative to its timeout.
+
+`npm run check` passed pinned formatting and JavaScript syntax checks. Repository
+style, shell syntax, Compose validation and regenerated evidence checks passed.
+These are local functional checks, not a throughput or production qualification.

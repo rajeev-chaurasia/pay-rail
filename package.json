@@ -1,0 +1,12 @@
+{
+  "name": "payrail-playground",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "check": "prettier --check src/main/resources/static && node --check src/main/resources/static/playground/app.js",
+    "format": "prettier --write src/main/resources/static"
+  },
+  "devDependencies": {
+    "prettier": "3.6.2"
+  }
+}

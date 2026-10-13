@@ -5,3 +5,4 @@ artifacts
 .agent
 evidence
 __pycache__
+node_modules

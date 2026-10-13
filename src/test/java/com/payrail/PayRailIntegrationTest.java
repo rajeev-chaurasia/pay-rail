@@ -1,10 +1,13 @@
 package com.payrail;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.payrail.api.ApiException;
 import com.payrail.api.PaymentController.CreateRequest;
+import com.payrail.auth.ApiKeyHasher;
 import com.payrail.auth.TenantContext;
 import com.payrail.domain.PaymentIntent;
 import com.payrail.migration.PaymentV2Service;
@@ -20,17 +23,20 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
+@AutoConfigureMockMvc
 @SpringBootTest(
     properties = {
       "payrail.rate-limit.enabled=false",
@@ -59,6 +65,8 @@ class PayRailIntegrationTest {
   @Autowired PaymentV2Service migration;
   @Autowired OutboxRepository outbox;
   @Autowired SimulatedProvider provider;
+  @Autowired MockMvc http;
+  @Autowired ApiKeyHasher apiKeyHasher;
 
   @BeforeEach
   void clean() {
@@ -288,6 +296,47 @@ class PayRailIntegrationTest {
   }
 
   @Test
+  void inspectionReturnsSanitizedBalancedHistoryAndHidesOtherTenants() throws Exception {
+    PaymentIntent payment = create(700, "usd", "automatic");
+    payments.confirm(payment.id());
+    String stableKey = "tenant_demo:" + payment.id();
+    assertThatThrownBy(() -> provider.authorize(stableKey))
+        .isInstanceOf(SimulatedProvider.ProviderAmbiguousException.class);
+    String providerReference = provider.authorize(stableKey);
+    payments.completeProvider(
+        new ProviderCompletion(
+            "inspection-test", "evt-inspection", "tenant_demo", payment.id(), providerReference));
+    payments.refund(payment.id(), 200);
+
+    http.perform(
+            get("/v1/payment_intents/{id}/inspect", payment.id())
+                .header("Authorization", "Bearer pr_test_demo"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.paymentIntentId").value(payment.id()))
+        .andExpect(jsonPath("$.journals.length()").value(2))
+        .andExpect(jsonPath("$.journals[0].posted").value(true))
+        .andExpect(jsonPath("$.journals[0].debitTotal").value(700))
+        .andExpect(jsonPath("$.journals[0].creditTotal").value(700))
+        .andExpect(jsonPath("$.journals[0].balanced").value(true))
+        .andExpect(jsonPath("$.journals[0].entries.length()").value(2))
+        .andExpect(jsonPath("$.journals[1].debitTotal").value(200))
+        .andExpect(jsonPath("$.journals[1].creditTotal").value(200))
+        .andExpect(jsonPath("$.journals[1].balanced").value(true))
+        .andExpect(jsonPath("$.journals[1].entries.length()").value(2))
+        .andExpect(jsonPath("$.events.length()").value(4))
+        .andExpect(jsonPath("$.events[0].type").value("payment_intent.created"))
+        .andExpect(jsonPath("$.events[0].sequence").value(1))
+        .andExpect(jsonPath("$.providerOperations.length()").value(1))
+        .andExpect(jsonPath("$.providerOperations[0].reference").value(providerReference))
+        .andExpect(jsonPath("$.providerOperations[0].outcome").value("accepted"))
+        .andExpect(jsonPath("$..payload").doesNotExist())
+        .andExpect(jsonPath("$..stableKey").doesNotExist());
+
+    assertInspectionLedgerBalanced(payment.id());
+    assertOtherTenantCannotInspect(payment.id(), providerReference);
+  }
+
+  @Test
   void rawReplayKeepsExactVersionedBytesAfterStateChanges() throws Exception {
     var request = new CreateRequest(123, "usd", "manual", null);
     var first =
@@ -346,5 +395,35 @@ class PayRailIntegrationTest {
 
   private PaymentIntent executePayment(IdempotencyService.RawCommand raw) {
     return idempotency.execute(new IdempotencyService.TypedCommand<>(raw, PaymentIntent.class));
+  }
+
+  private void assertInspectionLedgerBalanced(String paymentId) {
+    List<Long> balances =
+        jdbc.queryForList(
+            "select sum(e.debit)-sum(e.credit) from ledger_transactions t join ledger_entries e on e.ledger_transaction_id=t.id where t.tenant_id='tenant_demo' and t.payment_intent_id=? group by t.id",
+            Long.class,
+            paymentId);
+    assertThat(balances).hasSize(2).containsOnly(0L);
+  }
+
+  private void assertOtherTenantCannotInspect(String paymentId, String providerReference)
+      throws Exception {
+    jdbc.update(
+        "insert into tenants(id,name) values ('tenant_other','Other') on conflict do nothing");
+    jdbc.update(
+        "insert into api_keys(tenant_id,key_hash,label) values ('tenant_other',?,'test')",
+        apiKeyHasher.hash("pr_test_other"));
+    http.perform(
+            get("/v1/payment_intents/{id}/inspect", paymentId)
+                .header("Authorization", "Bearer pr_test_other"))
+        .andExpect(status().isNotFound())
+        .andExpect(
+            content()
+                .string(org.hamcrest.Matchers.not(org.hamcrest.Matchers.containsString(paymentId))))
+        .andExpect(
+            content()
+                .string(
+                    org.hamcrest.Matchers.not(
+                        org.hamcrest.Matchers.containsString(providerReference))));
   }
 }

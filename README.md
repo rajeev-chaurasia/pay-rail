@@ -19,6 +19,13 @@ Prerequisites are Java 17, Maven 3.9+, Docker 28+, and Compose v2.
 curl http://localhost:18080/actuator/health
 ```
 
+Open the [live playground](http://localhost:18080/) to create payments, replay
+requests, compare API contracts, and inspect persisted ledger and delivery
+events. It ships in the same application; no frontend server is required.
+See [the playground walkthrough](docs/playground.md) for a short demonstration.
+
+![Live PayRail playground with payment lifecycle and request replay](docs/assets/playground.png)
+
 The local fixture API key is `pr_test_demo`. It is hashed with the local-only default pepper in Flyway. Production profile startup rejects the demo pepper and admin token; set `API_KEY_PEPPER` and `MIGRATION_ADMIN_TOKEN` to secrets before using `--spring.profiles.active=prod`.
 
 ```bash

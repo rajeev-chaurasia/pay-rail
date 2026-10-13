@@ -10,6 +10,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with: {distribution: temurin, java-version: '17', cache: maven}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22', cache: npm}
+      - name: Playground source checks
+        run: npm ci --ignore-scripts && npm run check
       - name: Repository style and secret-file guard
         run: python3 scripts/check_style.py --self-test
       - name: Format, test and package
