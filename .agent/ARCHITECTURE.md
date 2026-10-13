@@ -26,3 +26,10 @@ gate, with divergence falling back to authoritative source data.
 Maintain the detailed transaction and rollout rationale in
 `docs/implementation-plan.md`; record new cross-cutting decisions with their
 reason, tradeoffs, compatibility and validation in `docs/adr/`.
+
+The playground is buildless HTML/CSS/JavaScript served by the same Spring Boot
+origin. Credentials remain in page memory. A tenant-authenticated read-only
+inspection controller/service/repository returns sanitized persisted journal,
+event and provider observations. Admin migration requests use a separately
+entered credential; browser actions never bypass existing authorization or
+idempotency. See `docs/playground.md` for recovery and snapshot limitations.

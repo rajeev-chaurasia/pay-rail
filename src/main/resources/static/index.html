@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Explore programmable payments, safe retries, and balanced ledger effects with the live PayRail playground."
+    />
+    <title>PayRail | Payment playground</title>
+    <link rel="stylesheet" href="/playground/app.css" />
+    <script type="module" src="/playground/app.js"></script>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="/" aria-label="PayRail home"
+        ><span class="brand-mark">P<span>↗</span></span
+        >payrail<span class="brand-dot">.</span></a
+      >
+      <div class="workspace-label">DEVELOPER WORKSPACE</div>
+      <nav aria-label="Workspace">
+        <button class="nav active" aria-current="page" data-view="payments">
+          <span>◈</span> Playground <small>01</small></button
+        ><button class="nav" data-view="migration">
+          <span>⇄</span> Migration lab <small>02</small></button
+        ><a class="nav" href="/swagger-ui.html" target="_blank" rel="noopener"
+          ><span>⌘</span> API reference <small>↗</small></a
+        >
+      </nav>
+      <div class="sidebar-note">
+        <span class="live-dot"></span> Local service stack
+        <p>PostgreSQL · Kafka · Redis</p>
+      </div>
+      <div class="sidebar-bottom">
+        <div class="avatar">RC</div>
+        <div>Rajeev Chaurasia<small>Programmable payments</small></div>
+      </div>
+    </aside>
+    <main>
+      <header class="topbar">
+        <div>
+          <span class="crumb">Workspace</span><span class="slash">/</span
+          ><span id="breadcrumb">Playground</span>
+        </div>
+        <div class="topbar-right">
+          <span id="health" class="connection">Checking connection</span
+          ><span class="environment">SIMULATION</span>
+        </div>
+      </header>
+      <section class="page" id="payments-view">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow">PAYMENTS, WITH PROOF</div>
+            <h1>Make a payment.<br /><span>Watch the guarantees.</span></h1>
+            <p class="intro">
+              Move through the lifecycle, replay a request, and inspect what
+              actually lands in the ledger.
+            </p>
+          </div>
+          <div class="heading-label">
+            <span class="live-dot"></span> Live backend<br /><small
+              >No real funds move here.</small
+            >
+          </div>
+        </div>
+        <details class="connection-panel">
+          <summary>Connection settings <span>Local demo tenant</span></summary>
+          <div class="connection-fields">
+            <label
+              >API key<input
+                id="api-key"
+                type="password"
+                value="pr_test_demo"
+                autocomplete="off"
+                spellcheck="false" /></label
+            ><label
+              >API contract<select id="api-version">
+                <option value="2026-01-01">2026-01-01 · status</option>
+                <option value="2025-01-01">2025-01-01 · state</option>
+              </select></label
+            >
+            <p>
+              Credentials stay in this page's memory. Use synthetic data only.
+            </p>
+          </div>
+        </details>
+        <div
+          id="notice"
+          class="notice"
+          role="status"
+          aria-live="polite"
+          hidden
+        ></div>
+        <div class="workspace-grid">
+          <section class="card payment-builder">
+            <div class="card-header">
+              <div>
+                <span class="section-number">01</span>
+                <h2>Create an intent</h2>
+              </div>
+              <span class="method">POST</span>
+            </div>
+            <form id="create-form">
+              <label for="amount"
+                >Amount <span>integer minor units</span>
+                <div class="amount-input">
+                  <span id="currency-mark">$</span
+                  ><input
+                    id="amount"
+                    type="number"
+                    min="1"
+                    max="999999999"
+                    value="2500"
+                    required
+                  /><span id="amount-display">25.00 USD</span>
+                </div></label
+              >
+              <div class="form-row">
+                <label
+                  >Currency<select id="currency">
+                    <option value="usd">USD · US dollar</option>
+                    <option value="eur">EUR · Euro</option>
+                    <option value="gbp">GBP · British pound</option>
+                  </select></label
+                ><label
+                  >Capture method<select id="capture">
+                    <option value="automatic">Automatic</option>
+                    <option value="manual">Manual</option>
+                  </select></label
+                >
+              </div>
+              <label for="create-key"
+                >Idempotency key
+                <div class="key-input">
+                  <input
+                    id="create-key"
+                    required
+                    maxlength="200"
+                    spellcheck="false"
+                  /><button
+                    id="new-key"
+                    type="button"
+                    title="Generate a new key"
+                    aria-label="Generate a new idempotency key"
+                  >
+                    ↻
+                  </button>
+                </div></label
+              >
+              <div class="helper">
+                Use a new key for a new intent. An identical retry returns the
+                saved response.
+              </div>
+              <button class="primary full" type="submit">
+                Create payment intent <span>↗</span>
+              </button>
+            </form>
+            <div class="builder-foot">
+              <span>⌁</span> PostgreSQL is the source of truth.
+            </div>
+          </section>
+          <section class="card intent-card">
+            <div class="card-header">
+              <div>
+                <span class="section-number">02</span>
+                <h2>Payment lifecycle</h2>
+              </div>
+              <button id="refresh" class="text-button">Refresh ↻</button>
+            </div>
+            <div id="empty-intent" class="empty">
+              <div class="empty-icon">⇢</div>
+              <h3>Every payment starts with intent.</h3>
+              <p>
+                Create one to trace its state, money movement,<br />and delivery
+                events.
+              </p>
+            </div>
+            <div id="intent-content" hidden>
+              <div class="intent-top">
+                <div>
+                  <span class="muted-label">PAYMENT INTENT</span
+                  ><button
+                    id="copy-id"
+                    class="intent-id"
+                    title="Copy payment ID"
+                  ></button>
+                </div>
+                <span id="payment-status" class="status"></span>
+              </div>
+              <div class="intent-money">
+                <strong id="payment-amount"></strong
+                ><span id="payment-currency"></span
+                ><small id="payment-mode"></small>
+              </div>
+              <div class="lifecycle" id="lifecycle"></div>
+              <div class="money-summary">
+                <div><span>Received</span><strong id="received"></strong></div>
+                <div>
+                  <span>Capturable</span><strong id="capturable"></strong>
+                </div>
+                <div><span>Refunded</span><strong id="refunded"></strong></div>
+              </div>
+              <div class="action-bar">
+                <button id="confirm" class="primary">Confirm payment ↗</button
+                ><button id="capture-payment" class="primary">
+                  Capture full amount</button
+                ><button id="cancel" class="secondary">Cancel</button>
+                <div id="refund-group">
+                  <label class="sr-only" for="refund-amount"
+                    >Refund amount in minor units</label
+                  ><input
+                    id="refund-amount"
+                    type="number"
+                    min="1"
+                    placeholder="Minor units"
+                  /><button id="refund" class="secondary">Refund</button>
+                </div>
+              </div>
+              <p class="helper" id="state-help"></p>
+            </div>
+            <div class="recent-payments">
+              <label for="recent">Explore a recent payment</label
+              ><select id="recent">
+                <option value="">Select a payment</option>
+              </select>
+            </div>
+          </section>
+        </div>
+        <section class="card retry-card">
+          <div class="retry-heading">
+            <div>
+              <span class="section-number">03</span>
+              <h2>Try to create a duplicate.</h2>
+              <p>
+                Replay a mutation with its original key and body. These retries
+                exercise a saved request, not an initial contention benchmark.
+              </p>
+            </div>
+            <span class="outline-badge">IDEMPOTENCY LAB</span>
+          </div>
+          <div class="retry-actions">
+            <button id="retry" class="secondary" disabled>
+              Replay once <span>↻</span></button
+            ><button id="race" class="secondary" disabled>
+              Send 8 concurrent retries <span>⇉</span></button
+            ><button id="conflict" class="secondary" disabled>
+              Change body, keep key <span>≠</span></button
+            ><span id="retry-result" class="retry-result"
+              >Create an intent to begin.</span
+            >
+          </div>
+          <div class="request-strip">
+            <span>LAST MUTATION</span
+            ><code id="last-operation">No mutation yet</code
+            ><code id="last-key"></code>
+          </div>
+        </section>
+        <div class="inspection-grid">
+          <section class="card ledger-card">
+            <div class="card-header">
+              <div>
+                <span class="section-number">04</span>
+                <h2>Double-entry ledger</h2>
+              </div>
+              <span id="ledger-balance" class="outline-badge"
+                >AWAITING POSTING</span
+              >
+            </div>
+            <div id="ledger-empty" class="small-empty">
+              Captured funds create balanced entries. Refunds add a reversing
+              journal.
+            </div>
+            <div class="table-wrap">
+              <table id="ledger-table" hidden>
+                <caption class="sr-only">
+                  Persisted ledger entries for the selected payment
+                </caption>
+                <thead>
+                  <tr>
+                    <th>Account / journal</th>
+                    <th>Debit</th>
+                    <th>Credit</th>
+                  </tr>
+                </thead>
+                <tbody id="ledger-rows"></tbody>
+                <tfoot>
+                  <tr>
+                    <td>Net difference</td>
+                    <td colspan="2" id="ledger-net"></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </section>
+          <section class="card events-card">
+            <div class="card-header">
+              <div>
+                <span class="section-number">05</span>
+                <h2>Delivery timeline</h2>
+              </div>
+              <span class="muted-label">OUTBOX → KAFKA</span>
+            </div>
+            <div id="events" class="event-list">
+              <div class="small-empty">
+                Persisted events will appear here after your first request.
+              </div>
+            </div>
+            <p class="delivery-note">
+              Published means Kafka acknowledged the event. Delivery is at least
+              once; effects are deduplicated.
+            </p>
+          </section>
+        </div>
+        <section class="card contract-card">
+          <div class="card-header">
+            <div>
+              <span class="section-number">06</span>
+              <h2>One payment. Two contracts.</h2>
+            </div>
+            <button id="compare" class="secondary" disabled>
+              Compare API versions ↗
+            </button>
+          </div>
+          <p class="contract-intro">
+            The same canonical payment transforms to an immutable client
+            contract. Historical mutations replay their stored response.
+          </p>
+          <div class="contract-grid">
+            <div>
+              <div class="code-label">2025-01-01 <span>state</span></div>
+              <pre id="old-contract">Select a payment, then compare.</pre>
+            </div>
+            <div>
+              <div class="code-label">2026-01-01 <span>status</span></div>
+              <pre id="new-contract">Select a payment, then compare.</pre>
+            </div>
+          </div>
+        </section>
+        <section class="card request-card">
+          <div class="card-header">
+            <div>
+              <span class="terminal-icon">&gt;_</span>
+              <h2>Request inspector</h2>
+            </div>
+            <span id="request-status" class="muted-label">READY</span>
+          </div>
+          <div class="request-grid">
+            <div>
+              <div class="code-label">
+                REQUEST <span id="request-path"></span>
+              </div>
+              <pre id="request-body">Run an action to inspect its request.</pre>
+            </div>
+            <div>
+              <div class="code-label">
+                RESPONSE <span id="response-time"></span>
+              </div>
+              <pre id="response-body">
+Responses come directly from your service.</pre
+              >
+            </div>
+          </div>
+        </section>
+        <footer>
+          PayRail · Programmable payments
+          <span
+            >Local correctness demo. Performance targets require separate
+            qualification.</span
+          >
+        </footer>
+      </section>
+      <section class="page" id="migration-view" hidden>
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow">CHANGE THE SCHEMA. KEEP THE CONTRACT.</div>
+            <h1>Migration lab<span>.</span></h1>
+            <p class="intro">
+              Inspect additive V2 storage, advance a checkpointed backfill, and
+              validate the gate before a read cutover.
+            </p>
+          </div>
+          <span class="outline-badge">ADMIN CONTROLS</span>
+        </div>
+        <section class="card migration-card">
+          <div class="card-header">
+            <h2>Explicit administrative access</h2>
+            <span class="method">V2</span>
+          </div>
+          <p>
+            These operations affect all tenants in this local database. Use the
+            configured migration token; it is never saved in browser storage.
+          </p>
+          <label
+            >Migration admin token<input
+              id="admin-token"
+              type="password"
+              autocomplete="off"
+              placeholder="Enter your configured admin token"
+          /></label>
+          <div class="migration-actions">
+            <button id="migration-status" class="secondary">
+              Inspect status</button
+            ><button id="backfill" class="secondary">
+              Backfill 500 objects</button
+            ><button id="reconcile" class="secondary">
+              Run full reconciliation</button
+            ><button id="gate" class="primary">Check cutover gate ↗</button>
+          </div>
+          <div id="migration-notice" class="notice" role="status" hidden></div>
+          <pre id="migration-output">
+No administrative request has been made.</pre
+          >
+          <p class="helper">
+            A clean gate authorizes configured read cohorts. It does not change
+            deployment percentages. Keep dual writes enabled through the
+            rollback window.
+          </p>
+        </section>
+        <section class="migration-steps">
+          <div>
+            <span>01</span>
+            <h3>Expand</h3>
+            <p>Add compatible V2 storage.</p>
+          </div>
+          <div>
+            <span>02</span>
+            <h3>Dual write</h3>
+            <p>Commit both representations atomically.</p>
+          </div>
+          <div>
+            <span>03</span>
+            <h3>Backfill</h3>
+            <p>Resume from a saved checkpoint.</p>
+          </div>
+          <div>
+            <span>04</span>
+            <h3>Reconcile</h3>
+            <p>Compare full response semantics.</p>
+          </div>
+          <div>
+            <span>05</span>
+            <h3>Gate</h3>
+            <p>Refuse a divergent read target.</p>
+          </div>
+        </section>
+        <footer>
+          Local migration demonstration<span
+            >No 100M-object result is claimed.</span
+          >
+        </footer>
+      </section>
+    </main>
+  </body>
+</html>

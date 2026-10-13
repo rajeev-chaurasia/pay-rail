@@ -8,6 +8,7 @@ Read [AGENTS.md](AGENTS.md), [.agent/TASKS.md](.agent/TASKS.md),
 ## Setup and checks
 
 Use Java 17, Maven 3.9+, Python 3.10+ for repository checks, Docker and Compose v2.
+Use Node.js 22 for the pinned playground formatter and syntax checks.
 `./scripts/dev-up.sh` builds the JAR and starts the isolated local stack.
 Configuration names and synthetic defaults are documented in `.env.example`.
 Compose reads its port variables; application environment variables must be
@@ -17,14 +18,16 @@ Before review, run the same gates as CI:
 
 ```sh
 python3 scripts/check_style.py
+npm ci --ignore-scripts && npm run check
 mvn --batch-mode verify
 docker compose -p payrail config --quiet
 ```
 
 Maven checks Java formatting, runs tests against an ephemeral real PostgreSQL
 container and packages the service. Docker must be available for tests.
-Use `mvn spotless:apply` to format Java after editing. Evidence reproduction
-and validation commands are documented in [docs/evidence.md](docs/evidence.md).
+Use `mvn spotless:apply` to format Java after editing and `npm run format` for
+the HTML, CSS and browser JavaScript. Evidence reproduction and validation
+commands are documented in [docs/evidence.md](docs/evidence.md).
 Inspect changed shell scripts with `bash -n`; record any additional manual
 runtime checks in the task and verification document.
 

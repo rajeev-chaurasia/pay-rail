@@ -38,3 +38,22 @@ passed. See `docs/evidence.md` for the exact scope and trust boundary.
 
 Review: implementation and contributor adaptation were reviewed during the task.
 Independent maintainer review and remote CI remain outstanding.
+
+## PAY-003: live payment playground
+
+Status: locally verified; maintainer review and scale qualification remain pending.
+
+Acceptance: a responsive same-origin interface for payment lifecycle actions,
+concurrent idempotency retries and conflicts, API-version comparison, and
+authenticated persisted ledger/outbox inspection. Migration controls require an
+explicit admin credential. All screens show real responses and label simulation.
+Keyboard access, visible error states, browser verification and relevant backend
+tests are required. No invented throughput metrics or browser-stored credentials.
+
+Verification: thirteen PostgreSQL integration tests passed, including tenant
+isolation and sanitized inspection. Browser checks covered create, eight replays,
+fingerprint conflict, automatic confirmation, refund/reversing journal, manual
+authorization/capture, version comparison and explicit migration authentication,
+backfill/reconciliation/gate. Compact and desktop layouts were checked.
+Pinned frontend formatting/syntax, repository style and regenerated concurrency
+evidence validation passed. See `docs/playground.md` and `docs/verification.md`.
