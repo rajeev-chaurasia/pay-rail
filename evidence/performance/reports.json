@@ -1,0 +1,711 @@
+[
+  {
+    "accepted_mutating_http_responses_including_replays": 151,
+    "acknowledged_created_intents": 151,
+    "committed_creates_without_acknowledgement": 0,
+    "completed_workflows": 151,
+    "created_intents": 151,
+    "created_intents_per_offered_second": 10.066666666666666,
+    "drain_seconds": 0.0,
+    "dropped_iterations": 0,
+    "duration_seconds": 15,
+    "failed_checks": 0,
+    "financial_invariant_failures": [],
+    "http_statuses": {
+      "201": 151
+    },
+    "invariant_failures": [],
+    "journals": 0,
+    "latency_ms": {
+      "max": 222.4025,
+      "p50": 11.416291,
+      "p95": 27.130875,
+      "p99": 85.527771
+    },
+    "nominal_rate": 10,
+    "offered_iterations": 150,
+    "operations": {
+      "create": {
+        "max_ms": 222.4025,
+        "p50_ms": 11.416291,
+        "p95_ms": 27.130875,
+        "p99_ms": 85.527771,
+        "requests": 151
+      }
+    },
+    "outbox_events": 151,
+    "pending_events_at_snapshot": 0,
+    "profile": "smoke",
+    "published_events": 151,
+    "qualification_failures": [],
+    "qualified": true,
+    "refunds": 0,
+    "requests": 151,
+    "resource_observations": 15,
+    "run_id": "20261013T181401-smoke-855524",
+    "started_workflows": 151
+  },
+  {
+    "accepted_mutating_http_responses_including_replays": 150,
+    "acknowledged_created_intents": 150,
+    "committed_creates_without_acknowledgement": 0,
+    "completed_workflows": 150,
+    "created_intents": 150,
+    "created_intents_per_offered_second": 10.0,
+    "drain_seconds": 0.0,
+    "dropped_iterations": 0,
+    "duration_seconds": 15,
+    "failed_checks": 0,
+    "financial_invariant_failures": [],
+    "http_statuses": {
+      "201": 150
+    },
+    "invariant_failures": [],
+    "journals": 0,
+    "latency_ms": {
+      "max": 130.514291,
+      "p50": 11.587937499999999,
+      "p95": 32.790518899999995,
+      "p99": 98.81586682999945
+    },
+    "nominal_rate": 10,
+    "offered_iterations": 150,
+    "operations": {
+      "create": {
+        "max_ms": 130.514291,
+        "p50_ms": 11.587937499999999,
+        "p95_ms": 32.790518899999995,
+        "p99_ms": 98.81586682999945,
+        "requests": 150
+      }
+    },
+    "outbox_events": 150,
+    "pending_events_at_snapshot": 0,
+    "profile": "smoke",
+    "published_events": 150,
+    "qualification_failures": [],
+    "qualified": true,
+    "refunds": 0,
+    "requests": 150,
+    "resource_observations": 6,
+    "run_id": "20261013T181945-smoke-9b5a72",
+    "started_workflows": 150
+  },
+  {
+    "accepted_mutating_http_responses_including_replays": 5906,
+    "acknowledged_created_intents": 5906,
+    "committed_creates_without_acknowledgement": 0,
+    "completed_workflows": 5906,
+    "created_intents": 5906,
+    "created_intents_per_offered_second": 98.43333333333334,
+    "drain_seconds": 57.502934,
+    "dropped_iterations": 91,
+    "duration_seconds": 60,
+    "failed_checks": 4,
+    "financial_invariant_failures": [],
+    "http_statuses": {
+      "201": 5906,
+      "503": 4
+    },
+    "invariant_failures": [],
+    "journals": 0,
+    "latency_ms": {
+      "max": 1486.778792,
+      "p50": 8.376208,
+      "p95": 329.18728955000023,
+      "p99": 817.7088444999996
+    },
+    "nominal_rate": 100,
+    "offered_iterations": 6000,
+    "operations": {
+      "create": {
+        "max_ms": 1486.778792,
+        "p50_ms": 8.376208,
+        "p95_ms": 329.18728955000023,
+        "p99_ms": 817.7088444999996,
+        "requests": 5910
+      }
+    },
+    "outbox_events": 5906,
+    "pending_events_at_snapshot": 0,
+    "profile": "sustained-a",
+    "published_events": 5906,
+    "qualification_failures": [
+      "unexpected HTTP outcomes",
+      "failed semantic/status checks",
+      "offered iterations dropped",
+      "incomplete workflows",
+      "k6 threshold or execution failure"
+    ],
+    "qualified": false,
+    "refunds": 0,
+    "requests": 5910,
+    "resource_observations": 42,
+    "run_id": "20261013T182002-sustained-a-df169a",
+    "started_workflows": 5910
+  },
+  {
+    "accepted_mutating_http_responses_including_replays": 5990,
+    "acknowledged_created_intents": 5990,
+    "committed_creates_without_acknowledgement": 0,
+    "completed_workflows": 5990,
+    "created_intents": 5990,
+    "created_intents_per_offered_second": 99.83333333333333,
+    "drain_seconds": 2.12198,
+    "dropped_iterations": 10,
+    "duration_seconds": 60,
+    "failed_checks": 0,
+    "financial_invariant_failures": [],
+    "http_statuses": {
+      "201": 5990
+    },
+    "invariant_failures": [],
+    "journals": 0,
+    "latency_ms": {
+      "max": 663.663417,
+      "p50": 2.6318960000000002,
+      "p95": 49.14428530000001,
+      "p99": 229.47581726
+    },
+    "nominal_rate": 100,
+    "offered_iterations": 6000,
+    "operations": {
+      "create": {
+        "max_ms": 663.663417,
+        "p50_ms": 2.6318960000000002,
+        "p95_ms": 49.14428530000001,
+        "p99_ms": 229.47581726,
+        "requests": 5990
+      }
+    },
+    "outbox_events": 5990,
+    "pending_events_at_snapshot": 0,
+    "profile": "sustained-b",
+    "published_events": 5990,
+    "qualification_failures": [
+      "offered iterations dropped",
+      "k6 threshold or execution failure"
+    ],
+    "qualified": false,
+    "refunds": 0,
+    "requests": 5990,
+    "resource_observations": 42,
+    "run_id": "20261013T182202-sustained-b-c45d42",
+    "started_workflows": 5990
+  },
+  {
+    "accepted_mutating_http_responses_including_replays": 2652,
+    "acknowledged_created_intents": 548,
+    "committed_creates_without_acknowledgement": 0,
+    "completed_workflows": 521,
+    "created_intents": 548,
+    "created_intents_per_offered_second": 9.133333333333333,
+    "drain_seconds": 0.0,
+    "dropped_iterations": 45,
+    "duration_seconds": 60,
+    "failed_checks": 42,
+    "financial_invariant_failures": [],
+    "http_statuses": {
+      "200": 2381,
+      "201": 1089,
+      "202": 391,
+      "409": 796,
+      "503": 34
+    },
+    "invariant_failures": [],
+    "journals": 777,
+    "latency_ms": {
+      "max": 5901.111711,
+      "p50": 4.108542,
+      "p95": 195.29591699999997,
+      "p99": 3193.039814200001
+    },
+    "nominal_rate": 10,
+    "offered_iterations": 600,
+    "operations": {
+      "cancel_authorized": {
+        "max_ms": 5456.150961,
+        "p50_ms": 4.140750000000001,
+        "p95_ms": 92.05316669999971,
+        "p99_ms": 4717.478623189995,
+        "requests": 132
+      },
+      "cancel_created": {
+        "max_ms": 5599.570128,
+        "p50_ms": 5.514646,
+        "p95_ms": 828.961084,
+        "p99_ms": 5166.475525450003,
+        "requests": 136
+      },
+      "capture": {
+        "max_ms": 404.672209,
+        "p50_ms": 6.7638125,
+        "p95_ms": 69.32507339999998,
+        "p99_ms": 150.4321008899998,
+        "requests": 130
+      },
+      "capture_canceled": {
+        "max_ms": 834.408751,
+        "p50_ms": 3.122417,
+        "p95_ms": 41.947687,
+        "p99_ms": 272.5078251999968,
+        "requests": 131
+      },
+      "confirm": {
+        "max_ms": 5750.368086,
+        "p50_ms": 5.086625,
+        "p95_ms": 156.16537499999984,
+        "p99_ms": 4854.191185040006,
+        "requests": 397
+      },
+      "confirm_canceled": {
+        "max_ms": 4836.325836,
+        "p50_ms": 3.7116664999999998,
+        "p95_ms": 165.7421415499992,
+        "p99_ms": 3568.1039478099547,
+        "requests": 134
+      },
+      "create": {
+        "max_ms": 5901.111711,
+        "p50_ms": 6.663416,
+        "p95_ms": 1181.5148456999987,
+        "p99_ms": 5236.945278500003,
+        "requests": 555
+      },
+      "create_replay": {
+        "max_ms": 5638.919586,
+        "p50_ms": 3.5349165,
+        "p95_ms": 531.1556607499999,
+        "p99_ms": 5068.077840999982,
+        "requests": 548
+      },
+      "current_read": {
+        "max_ms": 910.992167,
+        "p50_ms": 2.409959,
+        "p95_ms": 23.6982837,
+        "p99_ms": 465.4514576399913,
+        "requests": 259
+      },
+      "final_read": {
+        "max_ms": 5595.953169,
+        "p50_ms": 2.534167,
+        "p95_ms": 17.288525299999996,
+        "p99_ms": 260.50203263999856,
+        "requests": 259
+      },
+      "fingerprint_conflict": {
+        "max_ms": 5629.494253,
+        "p50_ms": 3.346291,
+        "p95_ms": 673.679042,
+        "p99_ms": 5284.109769200003,
+        "requests": 541
+      },
+      "full_refund": {
+        "max_ms": 3456.437585,
+        "p50_ms": 6.625042,
+        "p95_ms": 50.77766719999998,
+        "p99_ms": 636.7810063599925,
+        "requests": 259
+      },
+      "legacy_read": {
+        "max_ms": 136.137583,
+        "p50_ms": 2.586583,
+        "p95_ms": 29.49547859999999,
+        "p99_ms": 99.75037077999947,
+        "requests": 259
+      },
+      "partial_refund": {
+        "max_ms": 1867.889653,
+        "p50_ms": 6.677083,
+        "p95_ms": 84.5999042,
+        "p99_ms": 343.7948774999979,
+        "requests": 259
+      },
+      "provider_poll": {
+        "max_ms": 4769.096043,
+        "p50_ms": 2.929791,
+        "p95_ms": 34.98179159999992,
+        "p99_ms": 196.4004028800007,
+        "requests": 433
+      },
+      "refund_replay": {
+        "max_ms": 1607.481861,
+        "p50_ms": 2.788083,
+        "p95_ms": 29.77285029999999,
+        "p99_ms": 259.1829099999994,
+        "requests": 259
+      }
+    },
+    "outbox_events": 1981,
+    "pending_events_at_snapshot": 0,
+    "profile": "mixed",
+    "published_events": 1981,
+    "qualification_failures": [
+      "unexpected HTTP outcomes",
+      "failed semantic/status checks",
+      "offered iterations dropped",
+      "incomplete workflows",
+      "latency budget exceeded",
+      "k6 threshold or execution failure"
+    ],
+    "qualified": false,
+    "refunds": 518,
+    "requests": 4691,
+    "resource_observations": 42,
+    "run_id": "20261013T182307-mixed-ecffaa",
+    "started_workflows": 555
+  },
+  {
+    "accepted_mutating_http_responses_including_replays": 16524,
+    "acknowledged_created_intents": 16524,
+    "committed_creates_without_acknowledgement": 385,
+    "completed_workflows": 16524,
+    "created_intents": 16909,
+    "created_intents_per_offered_second": 272.7258064516129,
+    "drain_seconds": 300.630167,
+    "dropped_iterations": 2284,
+    "duration_seconds": 62,
+    "failed_checks": 19,
+    "financial_invariant_failures": [],
+    "http_statuses": {
+      "201": 16524,
+      "500": 19
+    },
+    "invariant_failures": [
+      "event not drained"
+    ],
+    "journals": 0,
+    "latency_ms": {
+      "max": 3336.977794,
+      "p50": 5.152958,
+      "p95": 422.3253455999999,
+      "p99": 1796.456811639999
+    },
+    "nominal_rate": 200,
+    "offered_iterations": 28900,
+    "operations": {
+      "create": {
+        "max_ms": 3336.977794,
+        "p50_ms": 5.152958,
+        "p95_ms": 422.3253455999999,
+        "p99_ms": 1796.456811639999,
+        "requests": 16543
+      }
+    },
+    "outbox_events": 16909,
+    "pending_events_at_snapshot": 7547,
+    "profile": "stress",
+    "published_events": 9362,
+    "qualification_failures": [
+      "committed creates lack an acknowledged success response",
+      "drain deadline exceeded",
+      "unexpected HTTP outcomes",
+      "failed semantic/status checks",
+      "offered iterations dropped",
+      "incomplete workflows",
+      "offered schedule not delivered",
+      "k6 threshold or execution failure",
+      "post-run invariant failure"
+    ],
+    "qualified": false,
+    "refunds": 0,
+    "requests": 16543,
+    "resource_observations": 36,
+    "run_id": "20261013T182409-stress-095c4b",
+    "started_workflows": 16928
+  },
+  {
+    "accepted_mutating_http_responses_including_replays": 1500,
+    "acknowledged_created_intents": 1500,
+    "committed_creates_without_acknowledgement": 0,
+    "completed_workflows": 1500,
+    "created_intents": 1500,
+    "created_intents_per_offered_second": 25.0,
+    "drain_seconds": 0.0,
+    "dropped_iterations": 0,
+    "duration_seconds": 60,
+    "failed_checks": 0,
+    "financial_invariant_failures": [],
+    "http_statuses": {
+      "201": 1500
+    },
+    "invariant_failures": [],
+    "journals": 0,
+    "latency_ms": {
+      "max": 236.445042,
+      "p50": 4.59025,
+      "p95": 29.871660699999996,
+      "p99": 112.55867666999995
+    },
+    "nominal_rate": 25,
+    "offered_iterations": 1500,
+    "operations": {
+      "create": {
+        "max_ms": 236.445042,
+        "p50_ms": 4.59025,
+        "p95_ms": 29.871660699999996,
+        "p99_ms": 112.55867666999995,
+        "requests": 1500
+      }
+    },
+    "outbox_events": 1500,
+    "pending_events_at_snapshot": 0,
+    "profile": "baseline-a",
+    "published_events": 1500,
+    "qualification_failures": [],
+    "qualified": true,
+    "refunds": 0,
+    "requests": 1500,
+    "resource_observations": 42,
+    "run_id": "20261013T233212-baseline-a-f156de",
+    "started_workflows": 1500
+  },
+  {
+    "accepted_mutating_http_responses_including_replays": 1501,
+    "acknowledged_created_intents": 1501,
+    "committed_creates_without_acknowledgement": 0,
+    "completed_workflows": 1501,
+    "created_intents": 1501,
+    "created_intents_per_offered_second": 25.016666666666666,
+    "drain_seconds": 0.0,
+    "dropped_iterations": 0,
+    "duration_seconds": 60,
+    "failed_checks": 0,
+    "financial_invariant_failures": [],
+    "http_statuses": {
+      "201": 1501
+    },
+    "invariant_failures": [],
+    "journals": 0,
+    "latency_ms": {
+      "max": 336.112792,
+      "p50": 4.092958,
+      "p95": 24.659417,
+      "p99": 161.138708
+    },
+    "nominal_rate": 25,
+    "offered_iterations": 1500,
+    "operations": {
+      "create": {
+        "max_ms": 336.112792,
+        "p50_ms": 4.092958,
+        "p95_ms": 24.659417,
+        "p99_ms": 161.138708,
+        "requests": 1501
+      }
+    },
+    "outbox_events": 1501,
+    "pending_events_at_snapshot": 0,
+    "profile": "baseline-b",
+    "published_events": 1501,
+    "qualification_failures": [],
+    "qualified": true,
+    "refunds": 0,
+    "requests": 1501,
+    "resource_observations": 42,
+    "run_id": "20261013T233315-baseline-b-718ca9",
+    "started_workflows": 1501
+  },
+  {
+    "accepted_mutating_http_responses_including_replays": 120,
+    "acknowledged_created_intents": 120,
+    "committed_creates_without_acknowledgement": 0,
+    "completed_workflows": 120,
+    "created_intents": 120,
+    "created_intents_per_offered_second": 2.0,
+    "drain_seconds": 0.0,
+    "dropped_iterations": 0,
+    "duration_seconds": 60,
+    "failed_checks": 0,
+    "financial_invariant_failures": [],
+    "http_statuses": {
+      "201": 120
+    },
+    "invariant_failures": [],
+    "journals": 0,
+    "latency_ms": {
+      "max": 31.979541,
+      "p50": 5.078396,
+      "p95": 17.5594045,
+      "p99": 29.90704619000001
+    },
+    "nominal_rate": 2,
+    "offered_iterations": 120,
+    "operations": {
+      "create": {
+        "max_ms": 31.979541,
+        "p50_ms": 5.078396,
+        "p95_ms": 17.5594045,
+        "p99_ms": 29.90704619000001,
+        "requests": 120
+      }
+    },
+    "outbox_events": 120,
+    "pending_events_at_snapshot": 0,
+    "profile": "mixed-baseline",
+    "published_events": 120,
+    "qualification_failures": [
+      "declared mixed workload did not exercise every planned lifecycle"
+    ],
+    "qualified": false,
+    "refunds": 0,
+    "requests": 120,
+    "resource_observations": 42,
+    "run_id": "20261013T233417-mixed-baseline-92d38f",
+    "started_workflows": 120
+  },
+  {
+    "accepted_mutating_http_responses_including_replays": 598,
+    "acknowledged_created_intents": 121,
+    "committed_creates_without_acknowledgement": 0,
+    "completed_workflows": 121,
+    "created_intents": 121,
+    "created_intents_per_offered_second": 2.0166666666666666,
+    "drain_seconds": 0.0,
+    "dropped_iterations": 0,
+    "duration_seconds": 60,
+    "failed_checks": 0,
+    "financial_invariant_failures": [],
+    "http_statuses": {
+      "200": 571,
+      "201": 242,
+      "202": 89,
+      "409": 184
+    },
+    "invariant_failures": [],
+    "journals": 174,
+    "latency_ms": {
+      "max": 322.54525,
+      "p50": 4.525125,
+      "p95": 21.545063,
+      "p99": 56.385074900000696
+    },
+    "nominal_rate": 2,
+    "offered_iterations": 120,
+    "operations": {
+      "cancel_authorized": {
+        "max_ms": 24.026333,
+        "p50_ms": 4.128458,
+        "p95_ms": 17.5880625,
+        "p99_ms": 22.905808099999998,
+        "requests": 31
+      },
+      "cancel_created": {
+        "max_ms": 230.257709,
+        "p50_ms": 5.1717295,
+        "p95_ms": 17.195807849999994,
+        "p99_ms": 165.14820192000025,
+        "requests": 32
+      },
+      "capture": {
+        "max_ms": 62.844791,
+        "p50_ms": 6.145728999999999,
+        "p95_ms": 34.63129969999998,
+        "p99_ms": 55.63827911000003,
+        "requests": 30
+      },
+      "capture_canceled": {
+        "max_ms": 24.171792,
+        "p50_ms": 4.092708,
+        "p95_ms": 10.2435835,
+        "p99_ms": 20.22771689999999,
+        "requests": 31
+      },
+      "confirm": {
+        "max_ms": 29.929166,
+        "p50_ms": 4.69525,
+        "p95_ms": 18.57295879999998,
+        "p99_ms": 25.246906880000022,
+        "requests": 89
+      },
+      "confirm_canceled": {
+        "max_ms": 46.154417,
+        "p50_ms": 3.545875,
+        "p95_ms": 17.21117745,
+        "p99_ms": 37.38039648000004,
+        "requests": 32
+      },
+      "create": {
+        "max_ms": 322.54525,
+        "p50_ms": 7.7495,
+        "p95_ms": 50.6245,
+        "p99_ms": 256.02186659999944,
+        "requests": 121
+      },
+      "create_replay": {
+        "max_ms": 80.545375,
+        "p50_ms": 3.605083,
+        "p95_ms": 17.183125,
+        "p99_ms": 25.599291400000002,
+        "requests": 121
+      },
+      "current_read": {
+        "max_ms": 19.884458,
+        "p50_ms": 2.5255625,
+        "p95_ms": 10.390220549999999,
+        "p99_ms": 15.084868189999996,
+        "requests": 58
+      },
+      "final_read": {
+        "max_ms": 29.049125,
+        "p50_ms": 3.09925,
+        "p95_ms": 13.010937599999998,
+        "p99_ms": 20.953438939999995,
+        "requests": 58
+      },
+      "fingerprint_conflict": {
+        "max_ms": 36.145167,
+        "p50_ms": 3.775792,
+        "p95_ms": 15.469333,
+        "p99_ms": 31.2892586,
+        "requests": 121
+      },
+      "full_refund": {
+        "max_ms": 33.017459,
+        "p50_ms": 6.3547705,
+        "p95_ms": 25.973641949999998,
+        "p99_ms": 32.14452737,
+        "requests": 58
+      },
+      "legacy_read": {
+        "max_ms": 44.366583,
+        "p50_ms": 3.3254585,
+        "p95_ms": 17.129409899999985,
+        "p99_ms": 37.49886674999999,
+        "requests": 58
+      },
+      "partial_refund": {
+        "max_ms": 157.01675,
+        "p50_ms": 6.317083500000001,
+        "p95_ms": 43.47538749999998,
+        "p99_ms": 130.91286413,
+        "requests": 58
+      },
+      "provider_poll": {
+        "max_ms": 35.582291,
+        "p50_ms": 4.454708,
+        "p95_ms": 17.8947526,
+        "p99_ms": 23.191670249999987,
+        "requests": 130
+      },
+      "refund_replay": {
+        "max_ms": 36.5345,
+        "p50_ms": 3.5421665,
+        "p95_ms": 26.33420185,
+        "p99_ms": 31.50862019,
+        "requests": 58
+      }
+    },
+    "outbox_events": 447,
+    "pending_events_at_snapshot": 0,
+    "profile": "mixed-baseline",
+    "published_events": 447,
+    "qualification_failures": [],
+    "qualified": true,
+    "refunds": 116,
+    "requests": 1086,
+    "resource_observations": 42,
+    "run_id": "20261013T233952-mixed-baseline-d6a221",
+    "started_workflows": 121
+  }
+]

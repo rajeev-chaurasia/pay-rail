@@ -1,0 +1,111 @@
+{
+  "schema": "payrail-performance-v1",
+  "run_id": "20261013T233315-baseline-b-718ca9",
+  "tenant": "tenant_perf_20261013T233315_baseline_b_718ca9",
+  "profile": "baseline-b",
+  "rate": 25,
+  "duration_seconds": 60,
+  "expected_iterations": 1500,
+  "limits": {
+    "p95_ms": 1000,
+    "p99_ms": 2000,
+    "unexpected": 0,
+    "dropped": 0
+  },
+  "quota_requests_per_minute": 1000000,
+  "jvm_heap": "128m..512m",
+  "db_pool_size": 20,
+  "shadow_read_percent": 100,
+  "v2_read_percent": 100,
+  "migration_overlap": false,
+  "environment": {
+    "host": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "docker_cpus": 10,
+    "docker_memory_bytes": 8218034176,
+    "containers": [
+      {
+        "name": "payrail-postgres-1",
+        "image_id": "sha256:1d04b9ba1d4996401f2552b51beda8187f175c0645c091e4781134fc9c9a3eef",
+        "memory_limit_bytes": 0,
+        "nano_cpus": 0
+      },
+      {
+        "name": "payrail-kafka-1",
+        "image_id": "sha256:fbc7d7c428e3755cf36518d4976596002477e4c052d1f80b5b9eafd06d0fff2f",
+        "memory_limit_bytes": 0,
+        "nano_cpus": 0
+      },
+      {
+        "name": "payrail-app-1",
+        "image_id": "sha256:557ace231b2509df6cf84338f2b33486981ffe484a547f68df120fe3883858fa",
+        "memory_limit_bytes": 0,
+        "nano_cpus": 0
+      },
+      {
+        "name": "payrail-perf-app-2ec98e16",
+        "image_id": "sha256:557ace231b2509df6cf84338f2b33486981ffe484a547f68df120fe3883858fa",
+        "memory_limit_bytes": 0,
+        "nano_cpus": 0
+      },
+      {
+        "name": "payrail-perf-redis-2ec98e16",
+        "image_id": "sha256:c1e88455c85225310bbea54816e9c3f4b5295815e6dbf80c34d40afc6df28275",
+        "memory_limit_bytes": 0,
+        "nano_cpus": 0
+      }
+    ],
+    "k6": "k6 v1.3.0+dirty (commit/5870e99ae8-dirty, go1.25.1, linux/arm64)",
+    "k6_image": [
+      "grafana/k6@sha256:3ddc8b1a33a2c3d8edc6e99b6a762ae36cba08788463458f5e6a7703e14eb77d"
+    ],
+    "source_sha256": {
+      "pom.xml": "56f5e20a945487d0fe05f1afb71836c48a990d85ee573a34c0d07507efa52adb",
+      "scripts/load.js": "10008b07c1363b1c835d6e23aa29eff0482f75ee3a565dbafbad531969b1ce69",
+      "scripts/performance/run.py": "610adc751d43d8ae0064f150b5eaf134c01d62429ddf5962b27777a77a90b7a5",
+      "scripts/performance/snapshot.sql": "bf0489635baa4bf14159b56b0257340edcf236a46363cd4729096fc77e8ddf45",
+      "src/main/java/com/payrail/PayRailApplication.java": "ac1082d6c1c74d8992b3bf2ca01ed0d58451ad8006e6d4c5600ee35a31e39881",
+      "src/main/java/com/payrail/api/ApiErrorHandler.java": "5d40cf60650c87f001be82fafddef8e3d7609d8fc28ff2220d57edc9a575e742",
+      "src/main/java/com/payrail/api/ApiException.java": "0ac3c66fa51c970756e05f8346a574107147d3fd37e57b7dadbe073d0ed1f52b",
+      "src/main/java/com/payrail/api/MigrationController.java": "91ab9947cf9267df6a281b1d99a9537198ac5a6c12be161bd290331a1052243d",
+      "src/main/java/com/payrail/api/PaymentController.java": "3fc61d5010bd22d276b08801ae997cc092d90768843b77a1f59ca057538d3bf7",
+      "src/main/java/com/payrail/api/PaymentInspectionController.java": "c67e4e1db4bd167be43524d03338f58ceeb19d2210e2eb6b2f4ce2719e9fcea3",
+      "src/main/java/com/payrail/api/WireResponseRegistry.java": "244fe2c3f1d9cf553ea4275f01548a21f9d8bd167299c2a454dff6a2110c2eed",
+      "src/main/java/com/payrail/auth/ApiKeyFilter.java": "2d2763f939d79e60c9b3762b40b637229d5e139009b37ba8550b6c595c51f39d",
+      "src/main/java/com/payrail/auth/ApiKeyHasher.java": "2bf9e0635cd0bb43807122e8a9d875cda7e7ed1ddbb4cf5b42798eca36824e5a",
+      "src/main/java/com/payrail/auth/RateLimiter.java": "1a3cb279567cc5a96aa7608d521846d15edf4dac69e20a3750fc0cf3a0747049",
+      "src/main/java/com/payrail/auth/TenantContext.java": "05222795d9fd715213181197f0af131a5036721642f51ee06304714161867369",
+      "src/main/java/com/payrail/config/AppConfig.java": "5d921b7700299c83b04b245d1f053acf72167ceda9566dacdc3b343b6558fe70",
+      "src/main/java/com/payrail/config/KafkaConfig.java": "22079efce99de7ad0f4fb9e35e339ce45783073a6b1be76d49d23ebce17d3eae",
+      "src/main/java/com/payrail/config/PayRailProperties.java": "afced81cc76b250281756f59a4dc6d9e357623e009e89358a3ed4022f297c015",
+      "src/main/java/com/payrail/config/ProductionSecretGuard.java": "59f88ce8936322c7a0d6aead2722b83cbe79fd08f66744225bdd6b6e8bd271b5",
+      "src/main/java/com/payrail/domain/PaymentIntent.java": "fe734fdee4db787855b3fe516ad39cbb3a7759cb18143c6dcf1911eed54d1ea7",
+      "src/main/java/com/payrail/domain/PaymentStatus.java": "fa235fb0be40dc4368d62f672a05aa21ecf539d01827c8630a36561be9846f3a",
+      "src/main/java/com/payrail/domain/Refund.java": "bb1b665fb30edb2d23fc1d4a9559f02198cae1d62d61f2e54cbc080264a3207d",
+      "src/main/java/com/payrail/inspection/PaymentInspection.java": "02bf22c3b83118b56cdb23ee9412478c8830833ddb8ce0d9b70b5a0238cc8484",
+      "src/main/java/com/payrail/inspection/PaymentInspectionRepository.java": "94dc7d89839726d64fa418c527147099f51aa7433b571b073d455ca64379f9df",
+      "src/main/java/com/payrail/inspection/PaymentInspectionService.java": "4da6338930c92aa8b14877e86a7ffa00de12fed98990010470cf0cbb8b67473c",
+      "src/main/java/com/payrail/migration/PaymentV2Service.java": "9982bd2a22842bf491ea720fe7a4bff0826c3685145ade7f40e3edd475be467a",
+      "src/main/java/com/payrail/outbox/ConsumerInbox.java": "cee3e9de1e05f5db98e036dee56678a1986de1458bf313169a5f0748b8aac3ca",
+      "src/main/java/com/payrail/outbox/OutboxDispatcher.java": "b911580bedab5077627ed9a3462047baedd0f54679a1a88772e12421127b56ea",
+      "src/main/java/com/payrail/outbox/OutboxRepository.java": "46cfe20ae1cf78a6a5398bd7494ea6b00fd2325d92c9b0236be1cd37b4beaec9",
+      "src/main/java/com/payrail/outbox/ProviderWorker.java": "8bc3fc2fe93b076b154b19aee0d79b38d99284867d914f6a4722663a65bb5cc2",
+      "src/main/java/com/payrail/persistence/PaymentRepository.java": "995659820eadf8c222d87b60d165ec121448f02dc958a8072e6151752c301bf8",
+      "src/main/java/com/payrail/service/CreatePaymentCommand.java": "606f0c14aa57f9366155dfaddb3228eabe4a486fd9bdda703c598734c43ae785",
+      "src/main/java/com/payrail/service/IdempotencyService.java": "193c6ccdea13de37c938e2d9fece4e092f577ddef10ac3285ab764dd9e62f197",
+      "src/main/java/com/payrail/service/LedgerService.java": "c39362f3896427ea850a5784e5a87acb6502acca9fe2a5477749385ffbfc15ef",
+      "src/main/java/com/payrail/service/OutboxService.java": "ae180c680e51a8f5a770e60c8afbc5d3d829ef4ff208743cd4f5dbb5f71ae97a",
+      "src/main/java/com/payrail/service/PaymentService.java": "2da45acf1efd02ee0760c390e5d2f8784a5c310e7b783184829aaf777ba66678",
+      "src/main/java/com/payrail/service/ProviderCompletion.java": "a81681d8c78a2d77714b079ab2204cc305d118ab6653d92c17792bfcbc0f46dd",
+      "src/main/java/com/payrail/service/SimulatedProvider.java": "b30ea6d38d4392c123ac0bb9dab79c1c2d3e659a1f1489e899992899031805af",
+      "src/main/resources/db/migration/V1__initial_schema.sql": "a20273d6174f06bb382e0735fa6df61a152acd20438f139eca65f11b0a409d31",
+      "src/main/resources/db/migration/V2__payment_v2_online_migration.sql": "fa18b0eaba97777bacca84a33fd9f801873c2c145e2cbf4b9d4cf79e4d1999d3"
+    },
+    "git_revision": "aaba894f68bff5584d8bc0c5ba96bdd75c23911e",
+    "working_tree_dirty": true,
+    "topology": "Two app instances share existing PostgreSQL/Kafka. One existing outbox dispatcher; benchmark app has dedicated Redis. Load generator shares Docker host."
+  },
+  "started_at": "2026-10-13T23:33:15.250437+00:00",
+  "exit_code": 0,
+  "load_finished_at": "2026-10-13T23:34:17.562508+00:00"
+}

@@ -1,0 +1,46 @@
+{
+  "accepted_mutating_http_responses_including_replays": 1501,
+  "acknowledged_created_intents": 1501,
+  "committed_creates_without_acknowledgement": 0,
+  "completed_workflows": 1501,
+  "created_intents": 1501,
+  "created_intents_per_offered_second": 25.016666666666666,
+  "drain_seconds": 0.0,
+  "dropped_iterations": 0,
+  "duration_seconds": 60,
+  "failed_checks": 0,
+  "financial_invariant_failures": [],
+  "http_statuses": {
+    "201": 1501
+  },
+  "invariant_failures": [],
+  "journals": 0,
+  "latency_ms": {
+    "max": 336.112792,
+    "p50": 4.092958,
+    "p95": 24.659417,
+    "p99": 161.138708
+  },
+  "nominal_rate": 25,
+  "offered_iterations": 1500,
+  "operations": {
+    "create": {
+      "max_ms": 336.112792,
+      "p50_ms": 4.092958,
+      "p95_ms": 24.659417,
+      "p99_ms": 161.138708,
+      "requests": 1501
+    }
+  },
+  "outbox_events": 1501,
+  "pending_events_at_snapshot": 0,
+  "profile": "baseline-b",
+  "published_events": 1501,
+  "qualification_failures": [],
+  "qualified": true,
+  "refunds": 0,
+  "requests": 1501,
+  "resource_observations": 42,
+  "run_id": "20261013T233315-baseline-b-718ca9",
+  "started_workflows": 1501
+}

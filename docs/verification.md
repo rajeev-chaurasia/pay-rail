@@ -63,3 +63,32 @@ Manual browser checks against the full local Compose stack:
 `npm run check` passed pinned formatting and JavaScript syntax checks. Repository
 style, shell syntax, Compose validation and regenerated evidence checks passed.
 These are local functional checks, not a throughput or production qualification.
+
+## Final flow and performance audit
+
+On 2026-10-13, the expanded Java suite passed 20 tests with zero failures,
+errors or skips: 18 PostgreSQL and 2 real Redis HTTP tests. The native currency
+module test and nine adversarial performance-validator tests also passed.
+See `docs/testing.md` for the exact covered paths and remaining boundaries.
+
+`python3 scripts/flow-smoke.py` passed 34 real HTTP requests, including cancel
+before confirmation, cancel after authorization, exact refund replay, full
+refund, terminal rejection, pagination and automatic JPY completion.
+
+`python3 scripts/kafka-recovery.py` kept a committed intent processing during
+a 25-second broker outage. Recovery completed about 8.1 seconds after broker
+restart, with one provider operation and one balanced journal. The broker was
+restored automatically, and no unrelated service was stopped.
+
+The retained local performance studies include smoke, two higher-rate sustained
+runs, mixed lifecycles, stepped stress, two lower-rate passing baselines, an
+incorrectly mapped mixed alias classified as unqualified, and its corrected
+repeat. The two 25 create arrivals/s baselines and corrected two-workflow/s
+mixed repeat met declared budgets. Higher-rate observations did not. Failed
+runs remain published; `docs/performance.md` explains drops, response ambiguity,
+latency failures and the stress drain deadline. All financial invariant checks
+passed; stress delivery did not drain within its five-minute budget.
+
+`npm run check`, repository style, SQL-backed concurrency evidence, performance
+artifact recomputation, README number validation, Python harness checks, shell
+syntax and Compose validation passed. Qualification-scale targets remain unmeasured.

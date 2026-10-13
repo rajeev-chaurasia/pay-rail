@@ -9,7 +9,7 @@ run_id="$(date -u +%Y%m%dT%H%M%SZ)-faults"
 mkdir -p "artifacts/$run_id"
 injected=0
 for ((i=0;i<faults;i++)); do
-  idem="fault-$seed-$((i/2))"
+  idem="fault-$run_id-$seed-$((i/2))"
   curl --max-time 0.001 --silent -X POST "$url/v1/payment_intents" -H "Authorization: Bearer $key" -H "Idempotency-Key: $idem" -H 'Content-Type: application/json' -d '{"amount":101,"currency":"usd","captureMethod":"manual"}' >/dev/null 2>&1 || true
   injected=$((injected+1))
   curl --fail --silent --show-error -X POST "$url/v1/payment_intents" -H "Authorization: Bearer $key" -H "Idempotency-Key: $idem" -H 'Content-Type: application/json' -d '{"amount":101,"currency":"usd","captureMethod":"manual"}' >/dev/null

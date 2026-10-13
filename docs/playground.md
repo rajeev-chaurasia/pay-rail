@@ -24,7 +24,9 @@ frontend runtime dependency, separate server or cross-origin credential proxy.
 6. Generate a new key and select manual capture. Confirm authorizes the
    amount; Capture posts it. Alternatively cancel before capture.
 
-The recent-payment selector loads the latest 20 tenant payments. Every action
+The saved-payment selector loads the first 20 items from the tenant-scoped
+keyset list and preserves a newly selected payment outside that page. Use the
+API list cursor to browse additional pages. Every action
 shows its method, path, key, selected contract, measured browser request time
 and real response. The displayed time is a local observation, not throughput.
 
@@ -53,8 +55,9 @@ is uncertain; use the API to recover it afterward.
 ownership. It returns journal entries and totals, event IDs/types/delivery
 metadata, and simulated provider outcomes. Raw event payloads, stable provider
 keys, lease tokens and errors are omitted. Other-tenant IDs return 404.
-Inspection queries can observe successive committed database snapshots; the
-screen is an observational view, not an atomic accounting statement.
+Each inspection uses a repeatable-read transaction. Payment and inspection are
+separate HTTP requests, so the combined screen remains an observational view,
+not an atomic accounting statement across both responses.
 
 The interface labels payments as simulated. It does not show fabricated
 performance metrics, reset production data or move real funds. Keyboard focus,

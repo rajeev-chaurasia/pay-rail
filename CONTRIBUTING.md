@@ -31,6 +31,19 @@ commands are documented in [docs/evidence.md](docs/evidence.md).
 Inspect changed shell scripts with `bash -n`; record any additional manual
 runtime checks in the task and verification document.
 
+For performance harness changes, run the adversarial validator tests and
+recompute the retained results before updating published numbers:
+
+```sh
+python3 -m unittest discover -s scripts/performance -p 'test_*.py'
+python3 scripts/performance/validate.py --allow-unqualified
+python3 scripts/performance/render.py --check
+```
+
+Failed capacity studies remain visible. The allowance does not bypass a
+monetary invariant failure. Use `docs/testing.md` for the coverage matrix and
+`docs/performance.md` for workload, reproduction and evidence boundaries.
+
 ## Reviews and delivery
 
 Use a task or issue with acceptance criteria. Keep each pull request focused.

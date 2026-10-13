@@ -1,3 +1,4 @@
+import { formatMoney as money } from "./money.mjs";
 const $ = (id) => document.getElementById(id);
 const state = {
   payment: null,
@@ -8,11 +9,6 @@ const state = {
   pollGeneration: 0,
   credential: "pr_test_demo",
 };
-const money = (value, currency = "usd") =>
-  new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currency.toUpperCase(),
-  }).format(value / 100);
 const key = () => `demo_${crypto.randomUUID()}`;
 const pretty = (value) => JSON.stringify(value, null, 2);
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -311,6 +307,17 @@ async function refreshRecent() {
         ),
     ),
   );
+  if (
+    selected &&
+    ![...$("recent").options].some((option) => option.value === selected)
+  ) {
+    $("recent").add(
+      new Option(
+        `${money(state.payment.amount, state.payment.currency)} · current selection`,
+        selected,
+      ),
+    );
+  }
   $("recent").value = selected;
 }
 

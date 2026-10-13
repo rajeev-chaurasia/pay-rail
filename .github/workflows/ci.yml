@@ -4,13 +4,13 @@ permissions:
   contents: read
 jobs:
   verify:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-java@v6.0.1
         with: {distribution: temurin, java-version: '17', cache: maven}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7.1.0
         with: {node-version: '22', cache: npm}
       - name: Playground source checks
         run: npm ci --ignore-scripts && npm run check
@@ -20,6 +20,13 @@ jobs:
         run: mvn --batch-mode verify
       - name: Validate retained experiment evidence
         run: python3 scripts/validate_concurrency_evidence.py --self-test
+      - name: Validate performance evidence and adversarial checks
+        run: |
+          python3 -m unittest discover -s scripts/performance -p 'test_*.py'
+          python3 scripts/performance/validate.py --allow-unqualified
+          python3 scripts/performance/render.py --check
+      - name: Check Python harness syntax
+        run: python3 -m compileall -q scripts/performance scripts/flow-smoke.py scripts/kafka-recovery.py
       - name: Validate Compose configuration
         run: docker compose -p payrail config --quiet
       - name: Check shell syntax

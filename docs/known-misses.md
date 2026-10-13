@@ -17,6 +17,9 @@
   the shell fault campaign reports attempted deadlines honestly.
 - Retained race observations demonstrate only the documented widths and
   workload. They do not establish 25K requests/second or a million-fault run.
+- The local performance suite found dropped work at 100 create arrivals/s and
+  an undrained outbox at the stress recovery deadline. Passing lower-rate
+  observations do not establish the higher offered rates as supported capacity.
 - The repository guards secret-bearing filenames and prose. This is not a
   substitute for a content-aware credential scanner or full-history audit.
 - Peer approval, remote branch protection, remote CI and release are not
