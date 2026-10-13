@@ -1,0 +1,47 @@
+spring:
+  application.name: payrail
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/payrail}
+    username: ${DATABASE_USER:payrail}
+    password: ${DATABASE_PASSWORD:payrail}
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:20}
+      connection-timeout: 2000
+  flyway:
+    validate-migration-naming: true
+  data.redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    timeout: 500ms
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      acks: all
+      properties:
+        enable.idempotence: true
+        max.in.flight.requests.per.connection: 5
+    consumer:
+      group-id: payrail
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      properties.isolation.level: read_committed
+  jackson:
+    default-property-inclusion: non_null
+server:
+  port: ${PORT:8080}
+  shutdown: graceful
+management.endpoints.web.exposure.include: health,info,prometheus
+payrail:
+  auth.pepper: ${API_KEY_PEPPER:local-development-pepper-change-me}
+  rate-limit:
+    enabled: ${RATE_LIMIT_ENABLED:true}
+    requests-per-minute: ${RATE_LIMIT_RPM:600}
+  outbox:
+    enabled: ${OUTBOX_ENABLED:true}
+    batch-size: 100
+    fixed-delay-ms: 250
+  migration:
+    dual-write: ${MIGRATION_DUAL_WRITE:true}
+    shadow-read-percent: ${MIGRATION_SHADOW_READ_PERCENT:0}
+    v2-read-percent: ${MIGRATION_V2_READ_PERCENT:0}
+    admin-token: ${MIGRATION_ADMIN_TOKEN:local-admin-token}

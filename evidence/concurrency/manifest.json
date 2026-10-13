@@ -1,0 +1,17 @@
+{
+  "schema_version": "payrail-concurrency-evidence-v1",
+  "policy": "postgres-idempotency-row-lock-v1",
+  "generated_at": "2026-10-13T17:07:19.273704Z",
+  "source_paths": [
+    "pom.xml",
+    "src/main/java",
+    "src/main/resources/db/migration"
+  ],
+  "source_tree_sha256": "27a78c98cde6f704ac7af5d2d87c55ef8e70f2e8a7d2925e952eaf09cd892ce8",
+  "database_version": "PostgreSQL 16.6 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 14.2.0) 14.2.0, 64-bit",
+  "concurrency": 8,
+  "guarded_action_attempts": 1,
+  "guarded_committed_effects": 1,
+  "negative_control_committed_effects": 8,
+  "negative_control_detected": true
+}
