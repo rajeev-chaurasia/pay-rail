@@ -23,12 +23,15 @@ def main():
     parser.add_argument("--count", type=int, default=4096)
     parser.add_argument("--defer-capture", action="store_true")
     parser.add_argument("--run", required=True)
+    parser.add_argument("--tenant", default="tenant_faults")
     args = parser.parse_args()
     if not re.fullmatch(r"[a-z0-9-]{1,64}", args.run):
         parser.error("Unique fixture run identity required")
     if not args.project.startswith("payrail-qual-") or not 1 <= args.count <= 4096:
         parser.error("Owned bounded qualification project required")
-    tenant = "tenant_faults"
+    if not re.fullmatch(r"tenant_[a-z0-9_]{1,48}", args.tenant):
+        parser.error("Synthetic tenant identity required")
+    tenant = args.tenant
     if args.action == "provision":
         if not args.key_file.exists():
             args.key_file.write_text("pr_test_fault_" + uuid.uuid4().hex + "\n")

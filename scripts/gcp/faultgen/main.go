@@ -46,8 +46,9 @@ func main() {
 	count := flag.Int("faults", 1000000, "counted HTTP fault actions")
 	workers := flag.Int("workers", 128, "bounded simultaneous actions")
 	seed := flag.Int64("seed", 42, "schedule seed")
+	rate := flag.Int("rate", 1000, "bounded fault actions per second")
 	flag.Parse()
-	if *count < 1 || *count > 1000000 || *workers < 1 || *workers > 512 || *output == "" {
+	if *count < 1 || *count > 1000000 || *workers < 1 || *workers > 512 || *rate < 1 || *rate > 1000 || *output == "" {
 		panic("invalid bounded campaign")
 	}
 	data, err := os.ReadFile(*input)
@@ -139,6 +140,11 @@ func main() {
 		return uint16(response.StatusCode), hex.EncodeToString(digest[:])
 	}
 	started := time.Now()
+	pace := func(ordinal int) {
+		if delay := time.Until(started.Add(time.Duration(ordinal) * time.Second / time.Duration(*rate))); delay > 0 {
+			time.Sleep(delay)
+		}
+	}
 	// First lose every original capture response after commit, then prove exact retries.
 	// Finish this phase before random duplicate actions read the learned golden hashes.
 	for worker := 0; worker < *workers; worker++ {
@@ -174,6 +180,7 @@ func main() {
 		panic("campaign must cover every original capture")
 	}
 	for index := range configuration.Fixtures {
+		pace(index)
 		if configuration.Fixtures[index].CaptureHash != "" {
 			panic("initial fixtures must be authorized with capture deferred")
 		}
@@ -226,6 +233,7 @@ func main() {
 	}
 	random := rand.New(rand.NewSource(*seed))
 	for ordinal := len(configuration.Fixtures); ordinal < *count; ordinal++ {
+		pace(ordinal)
 		value := random.Intn(100)
 		class := uint8(1)
 		if value >= 90 {
@@ -243,6 +251,7 @@ func main() {
 		panic(err)
 	}
 	summary := map[string]any{"seed": *seed, "attempted_actions": *count, "counted_actions": uint64(*count) - failures, "original_capture_response_losses": len(configuration.Fixtures), "fixture_count": len(configuration.Fixtures), "class_counts": counts, "failures": failures, "elapsed_seconds": time.Since(started).Seconds(), "record_bytes": 96, "go_version": runtime.Version(), "logical_cpus": runtime.NumCPU(), "classes": map[string]string{"1": "duplicate capture replay", "2": "fingerprint conflict", "3": "discard committed response body then exact replay"}}
+	summary["offered_fault_rate"] = *rate
 	encoded, err := json.MarshalIndent(summary, "", "  ")
 	if err != nil {
 		panic(err)
