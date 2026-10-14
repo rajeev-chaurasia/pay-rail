@@ -107,8 +107,8 @@ retained. See `docs/production-readiness.md` for exact scopes and open gates.
 
 ## PAY-006: isolated Docker recovery drills
 
-Status: two local Docker drills and the full verification suite passed; remote
-CI and maintainer merge remain delivery gates.
+Status: merged through PR #4; pull-request and merged-main CI passed.
+Production recovery qualification remains separate.
 
 Acceptance: disposable project-owned application, PostgreSQL, Redis and Kafka;
 committed processing intent survives application and database SIGKILL; restored
@@ -123,3 +123,28 @@ Evidence: `evidence/flows/docker-recovery.json` records the repeat drill with
 13 table hashes, three exact response replays and a rejected truncated backup.
 The full Docker suite passed 34 Java, 1 currency and 11 Python cases. CI now
 runs the isolated drill on each newly built runtime.
+
+## PAY-007: online physical backup and point-in-time recovery
+
+Status: locally verified; maintainer merge and production qualification remain
+separate delivery gates.
+
+Acceptance: disposable project-owned services; observed payment writes during
+physical backup; manifest verification; archived WAL restores an independent
+database to a named point before later source mutations; all public-table hashes
+match that point; exact saved HTTP response replay; unique balanced settlement
+and one post-restore reversal; missing WAL must reject incomplete recovery.
+Restored outbox and Kafka consumers remain disabled. Retain sanitized evidence
+and independently validate hashes, statuses and entry balances with tampering
+controls. CI must run the drill against its newly built runtime.
+
+Production retention, off-host archive durability, RPO/RTO, failover, scale and
+external-provider reconciliation remain independent operator gates.
+
+Evidence: three local PITR drills passed. The retained final run reports a
+31.45-second deliberately throttled online backup and 5.26-second restore/API
+verification, matching all 13 table hashes. Missing post-backup WAL makes the
+negative server exit nonzero. Three HTTP response digests match; sanitized entry
+data independently recomputes balanced settlement/reversal and distinct effect
+keys. The full Docker verifier passed 34 Java, 1 currency and 13 Python cases,
+including two new tampering tests. See `docs/postgres-recovery.md` for limits.

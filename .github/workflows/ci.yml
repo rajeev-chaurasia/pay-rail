@@ -16,3 +16,7 @@ jobs:
         run: docker compose -p payrail build app && ./scripts/security-scan.sh
       - name: Verify isolated crash recovery and logical backup restoration
         run: bash scripts/recovery-docker.sh
+      - name: Verify online physical backup and point-in-time recovery
+        run: |
+          bash scripts/pitr-docker.sh
+          docker compose -p payrail --profile test run --rm --no-deps --entrypoint python3 verify scripts/validate_pitr_evidence.py artifacts/pitr.json

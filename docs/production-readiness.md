@@ -149,3 +149,10 @@ backup is rejected as a negative control. See `docs/testing.md` and the retained
 `evidence/flows/docker-recovery.json` for commands and observations. This small
 single-host drill does not qualify PITR, failover, online backups, retention,
 production recovery budgets or the broad million-fault campaign.
+
+A separate online physical-backup/WAL drill now tests named-point recovery to
+before a later source refund. It compares all public tables, replays saved
+responses and rejects a restore without required WAL. Its restored API fences
+Kafka consumers and outbox dispatch. See `docs/postgres-recovery.md` for the
+operator reconciliation boundary. Production backup management, off-host
+durability, retention, RPO/RTO, failover and scale remain open gates.

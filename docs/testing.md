@@ -137,3 +137,9 @@ in `evidence/flows/docker-recovery.json`; default output is ignored under
 This is one synthetic payment and one combined crash schedule. A stopped-writer
 logical restore is separate from online backup, WAL/PITR, failover and recovery
 at production data volumes. Those gates remain open.
+
+The subsequent physical/WAL drill uses `bash scripts/pitr-docker.sh` and a
+separate restored API with delivery fenced. It verifies live payment writes
+during backup, named-point recovery, exact table/response comparison, a missing
+WAL negative control and a balanced post-restore reversal. See
+`docs/postgres-recovery.md` for the commands, evidence and production boundary.
