@@ -1,0 +1,15 @@
+{
+  "attempted_actions": 1000000,
+  "observed_successful_fault_actions": 1000000,
+  "original_capture_response_losses": 4096,
+  "class_counts": {
+    "3": 202866,
+    "2": 99626,
+    "1": 697508
+  },
+  "failures": 0,
+  "elapsed_observed_seconds": 1000.007493586,
+  "raw_sha256": "4fea0acd6bb27a54c0c753e4dade6bc9361211aac370bc89e3cc1c538f2269b8",
+  "protocol_gate_passed": true,
+  "limits": "Counted HTTP duplicate captures, fingerprint conflicts and discarded committed bodies. Financial reconciliation and infrastructure drills are separate required observations. Not one million process crashes or provider timeouts."
+}

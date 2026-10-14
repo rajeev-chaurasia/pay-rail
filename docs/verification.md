@@ -1,5 +1,11 @@
 # Verification evidence
 
+The separately retained [2026-10-14 GCP campaign](gcp-qualification-results.md)
+adds a fully reconciled 100M synthetic history and one million observed HTTP
+fault actions. Its 25K/s probes and strict migration foreground gate failed;
+production and broad fault qualification remain open. Local results below
+retain their original workload and resource limits.
+
 Verified locally on 2026-10-13 with Java 17.0.15, Maven 3.9.11, Docker Desktop engine 28.0.4, PostgreSQL 16.6, Kafka 3.9.0, and Redis 7.4.1.
 
 - `mvn verify`: 11 tests, 0 failures, 0 errors, 0 skipped. Tests use a real PostgreSQL 16.6 Testcontainer.

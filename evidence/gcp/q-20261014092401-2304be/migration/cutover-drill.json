@@ -1,0 +1,39 @@
+{
+  "read_cohort": [
+    {
+      "ordinal": 1,
+      "amount": 101,
+      "state": "requires_confirmation",
+      "versions_agree": true
+    },
+    {
+      "ordinal": 25000000,
+      "amount": 100,
+      "state": "requires_confirmation",
+      "versions_agree": true
+    },
+    {
+      "ordinal": 50000000,
+      "amount": 100,
+      "state": "requires_confirmation",
+      "versions_agree": true
+    },
+    {
+      "ordinal": 75000000,
+      "amount": 100,
+      "state": "requires_confirmation",
+      "versions_agree": true
+    },
+    {
+      "ordinal": 100000000,
+      "amount": 100,
+      "state": "requires_confirmation",
+      "versions_agree": true
+    }
+  ],
+  "shadow_negative_control": true,
+  "source_fallback_amount": 101,
+  "rollback_source_amount": 101,
+  "runtime_image": "sha256:db29637758e06db9746932b7722815035331b42b6b5242261c894a8efd210166",
+  "limits": "Five boundary reads on a separate 100-percent V2 cohort after full reconciliation; original source readers stay live. A synthetic shadow divergence is repaired. No production ingress or tenant rollout was changed."
+}

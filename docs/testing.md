@@ -1,5 +1,11 @@
 # Test coverage and acceptance
 
+The separately retained [2026-10-14 GCP campaign](gcp-qualification-results.md)
+adds a fully reconciled 100M synthetic history and one million observed HTTP
+fault actions. Its 25K/s probes and strict migration foreground gate failed;
+production and broad fault qualification remain open. Local results below
+retain their original workload and resource limits.
+
 The acceptance scope is the implemented simulated API and playground. Passing
 these checks does not establish every possible distributed failure, production
 readiness, or the qualification-scale figures in the project plan.

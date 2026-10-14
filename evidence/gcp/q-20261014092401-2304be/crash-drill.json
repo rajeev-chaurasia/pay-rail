@@ -1,0 +1,553 @@
+{
+  "observed_fault_actions": 20,
+  "actions": [
+    {
+      "service": "kafka",
+      "action": "stop",
+      "started_at": "2026-10-14T13:36:13.549149+00:00",
+      "before_running": true,
+      "after_running": false,
+      "exit_code": 143
+    },
+    {
+      "service": "redis",
+      "action": "stop",
+      "started_at": "2026-10-14T13:36:14.795760+00:00",
+      "before_running": true,
+      "after_running": false,
+      "exit_code": 0
+    },
+    {
+      "service": "app",
+      "action": "kill",
+      "started_at": "2026-10-14T13:36:15.670782+00:00",
+      "before_running": true,
+      "after_running": false,
+      "exit_code": 137
+    },
+    {
+      "service": "postgres",
+      "action": "kill",
+      "started_at": "2026-10-14T13:36:15.998931+00:00",
+      "before_running": true,
+      "after_running": false,
+      "exit_code": 137
+    },
+    {
+      "service": "kafka",
+      "action": "stop",
+      "started_at": "2026-10-14T13:37:10.954231+00:00",
+      "before_running": true,
+      "after_running": false,
+      "exit_code": 143
+    },
+    {
+      "service": "redis",
+      "action": "stop",
+      "started_at": "2026-10-14T13:37:11.969216+00:00",
+      "before_running": true,
+      "after_running": false,
+      "exit_code": 0
+    },
+    {
+      "service": "app",
+      "action": "kill",
+      "started_at": "2026-10-14T13:37:12.823601+00:00",
+      "before_running": true,
+      "after_running": false,
+      "exit_code": 137
+    },
+    {
+      "service": "postgres",
+      "action": "kill",
+      "started_at": "2026-10-14T13:37:13.090887+00:00",
+      "before_running": true,
+      "after_running": false,
+      "exit_code": 137
+    },
+    {
+      "service": "kafka",
+      "action": "stop",
+      "started_at": "2026-10-14T13:38:05.202508+00:00",
+      "before_running": true,
+      "after_running": false,
+      "exit_code": 143
+    },
+    {
+      "service": "redis",
+      "action": "stop",
+      "started_at": "2026-10-14T13:38:06.238019+00:00",
+      "before_running": true,
+      "after_running": false,
+      "exit_code": 0
+    },
+    {
+      "service": "app",
+      "action": "kill",
+      "started_at": "2026-10-14T13:38:07.069854+00:00",
+      "before_running": true,
+      "after_running": false,
+      "exit_code": 137
+    },
+    {
+      "service": "postgres",
+      "action": "kill",
+      "started_at": "2026-10-14T13:38:07.328592+00:00",
+      "before_running": true,
+      "after_running": false,
+      "exit_code": 137
+    },
+    {
+      "service": "kafka",
+      "action": "stop",
+      "started_at": "2026-10-14T13:38:14.698150+00:00",
+      "before_running": true,
+      "after_running": false,
+      "exit_code": 143
+    },
+    {
+      "service": "redis",
+      "action": "stop",
+      "started_at": "2026-10-14T13:38:15.898009+00:00",
+      "before_running": true,
+      "after_running": false,
+      "exit_code": 0
+    },
+    {
+      "service": "app",
+      "action": "kill",
+      "started_at": "2026-10-14T13:38:16.730085+00:00",
+      "before_running": true,
+      "after_running": false,
+      "exit_code": 137
+    },
+    {
+      "service": "postgres",
+      "action": "kill",
+      "started_at": "2026-10-14T13:38:16.985341+00:00",
+      "before_running": true,
+      "after_running": false,
+      "exit_code": 137
+    },
+    {
+      "service": "kafka",
+      "action": "stop",
+      "started_at": "2026-10-14T13:38:24.367880+00:00",
+      "before_running": true,
+      "after_running": false,
+      "exit_code": 143
+    },
+    {
+      "service": "redis",
+      "action": "stop",
+      "started_at": "2026-10-14T13:38:25.545308+00:00",
+      "before_running": true,
+      "after_running": false,
+      "exit_code": 0
+    },
+    {
+      "service": "app",
+      "action": "kill",
+      "started_at": "2026-10-14T13:38:26.338902+00:00",
+      "before_running": true,
+      "after_running": false,
+      "exit_code": 137
+    },
+    {
+      "service": "postgres",
+      "action": "kill",
+      "started_at": "2026-10-14T13:38:26.606375+00:00",
+      "before_running": true,
+      "after_running": false,
+      "exit_code": 137
+    }
+  ],
+  "rounds": [
+    {
+      "round": 0,
+      "recovery_seconds": 57.38282039600017,
+      "inspection": {
+        "paymentIntentId": "pi_mv85l2w3290b8162afdc4cb3",
+        "journals": [
+          {
+            "id": "ltx_f3d3d2b2f0484ea4bea86776a7e4e748",
+            "effectKey": "capture:pi_mv85l2w3290b8162afdc4cb3",
+            "currency": "usd",
+            "posted": true,
+            "createdAt": "2026-10-14T13:37:10.577756Z",
+            "debitTotal": 432,
+            "creditTotal": 432,
+            "balanced": true,
+            "entries": [
+              {
+                "id": 16521,
+                "account": "provider_clearing",
+                "debit": 432,
+                "credit": 0,
+                "createdAt": "2026-10-14T13:37:10.577756Z"
+              },
+              {
+                "id": 16522,
+                "account": "merchant_payable",
+                "debit": 0,
+                "credit": 432,
+                "createdAt": "2026-10-14T13:37:10.577756Z"
+              }
+            ]
+          }
+        ],
+        "events": [
+          {
+            "id": "3f80a2c4-1059-4d50-8948-7b50fd93804a",
+            "type": "payment_intent.created",
+            "sequence": 1,
+            "attempts": 1,
+            "deliveryStatus": "published",
+            "availableAt": "2026-10-14T13:36:13.536664Z",
+            "publishedAt": "2026-10-14T13:36:13.561016Z",
+            "createdAt": "2026-10-14T13:36:13.536664Z"
+          },
+          {
+            "id": "73d3fe55-35fb-4192-8d67-c77f3e6ce285",
+            "type": "provider.authorization.requested",
+            "sequence": 2,
+            "attempts": 2,
+            "deliveryStatus": "published",
+            "availableAt": "2026-10-14T13:36:17.766829Z",
+            "publishedAt": "2026-10-14T13:36:46.336624Z",
+            "createdAt": "2026-10-14T13:36:14.745513Z"
+          },
+          {
+            "id": "378d8a62-b460-4795-951a-0e1f6b29c178",
+            "type": "payment_intent.succeeded",
+            "sequence": 3,
+            "attempts": 1,
+            "deliveryStatus": "published",
+            "availableAt": "2026-10-14T13:37:10.577756Z",
+            "publishedAt": "2026-10-14T13:37:10.633169Z",
+            "createdAt": "2026-10-14T13:37:10.577756Z"
+          }
+        ],
+        "providerOperations": [
+          {
+            "reference": "prov_f844d94159004799944ec0930ecc49ac",
+            "outcome": "accepted",
+            "createdAt": "2026-10-14T13:37:10.574541Z"
+          }
+        ]
+      },
+      "status": "succeeded",
+      "captured_minor": 432,
+      "exact_confirm_replay": true
+    },
+    {
+      "round": 1,
+      "recovery_seconds": 54.237936180999895,
+      "inspection": {
+        "paymentIntentId": "pi_mv85mb6j7e177db27c0b49a9",
+        "journals": [
+          {
+            "id": "ltx_7a48254b5b414c0896c45c1bc02ce9de",
+            "effectKey": "capture:pi_mv85mb6j7e177db27c0b49a9",
+            "currency": "usd",
+            "posted": true,
+            "createdAt": "2026-10-14T13:38:04.124087Z",
+            "debitTotal": 432,
+            "creditTotal": 432,
+            "balanced": true,
+            "entries": [
+              {
+                "id": 16554,
+                "account": "provider_clearing",
+                "debit": 432,
+                "credit": 0,
+                "createdAt": "2026-10-14T13:38:04.124087Z"
+              },
+              {
+                "id": 16555,
+                "account": "merchant_payable",
+                "debit": 0,
+                "credit": 432,
+                "createdAt": "2026-10-14T13:38:04.124087Z"
+              }
+            ]
+          }
+        ],
+        "events": [
+          {
+            "id": "43a1b12f-c725-4cbc-89aa-8db709bef79c",
+            "type": "payment_intent.created",
+            "sequence": 1,
+            "attempts": 1,
+            "deliveryStatus": "published",
+            "availableAt": "2026-10-14T13:37:10.935637Z",
+            "publishedAt": "2026-10-14T13:37:10.975855Z",
+            "createdAt": "2026-10-14T13:37:10.935637Z"
+          },
+          {
+            "id": "7b8514cc-d04f-42a0-8cb6-ed7761ff5b75",
+            "type": "provider.authorization.requested",
+            "sequence": 2,
+            "attempts": 2,
+            "deliveryStatus": "published",
+            "availableAt": "2026-10-14T13:37:11.950146Z",
+            "publishedAt": "2026-10-14T13:37:41.989247Z",
+            "createdAt": "2026-10-14T13:37:11.950146Z"
+          },
+          {
+            "id": "1e0902e6-292f-4f12-a6e2-366196db3df6",
+            "type": "payment_intent.succeeded",
+            "sequence": 3,
+            "attempts": 1,
+            "deliveryStatus": "published",
+            "availableAt": "2026-10-14T13:38:04.124087Z",
+            "publishedAt": "2026-10-14T13:38:04.154328Z",
+            "createdAt": "2026-10-14T13:38:04.124087Z"
+          }
+        ],
+        "providerOperations": [
+          {
+            "reference": "prov_02275434310d47c58caf7d5c979483a2",
+            "outcome": "accepted",
+            "createdAt": "2026-10-14T13:38:04.121638Z"
+          }
+        ]
+      },
+      "status": "succeeded",
+      "captured_minor": 432,
+      "exact_confirm_replay": true
+    },
+    {
+      "round": 2,
+      "recovery_seconds": 9.482837261000896,
+      "inspection": {
+        "paymentIntentId": "pi_mv85nh1p7147f6b33ca44357",
+        "journals": [
+          {
+            "id": "ltx_85508c9c2d934fada4aba71802195ecf",
+            "effectKey": "capture:pi_mv85nh1p7147f6b33ca44357",
+            "currency": "usd",
+            "posted": true,
+            "createdAt": "2026-10-14T13:38:14.302260Z",
+            "debitTotal": 432,
+            "creditTotal": 432,
+            "balanced": true,
+            "entries": [
+              {
+                "id": 16587,
+                "account": "provider_clearing",
+                "debit": 432,
+                "credit": 0,
+                "createdAt": "2026-10-14T13:38:14.302260Z"
+              },
+              {
+                "id": 16588,
+                "account": "merchant_payable",
+                "debit": 0,
+                "credit": 432,
+                "createdAt": "2026-10-14T13:38:14.302260Z"
+              }
+            ]
+          }
+        ],
+        "events": [
+          {
+            "id": "a0ce5aa6-3516-4250-a3d8-8479778f9a2c",
+            "type": "payment_intent.created",
+            "sequence": 1,
+            "attempts": 1,
+            "deliveryStatus": "published",
+            "availableAt": "2026-10-14T13:38:05.195210Z",
+            "publishedAt": "2026-10-14T13:38:05.216018Z",
+            "createdAt": "2026-10-14T13:38:05.195210Z"
+          },
+          {
+            "id": "1662aba5-1197-466b-beea-e5210e3f72fc",
+            "type": "provider.authorization.requested",
+            "sequence": 2,
+            "attempts": 3,
+            "deliveryStatus": "published",
+            "availableAt": "2026-10-14T13:38:14.260732Z",
+            "publishedAt": "2026-10-14T13:38:14.294297Z",
+            "createdAt": "2026-10-14T13:38:06.223895Z"
+          },
+          {
+            "id": "f619dbfa-6476-4c0f-acf5-0052b3d1a5d7",
+            "type": "payment_intent.succeeded",
+            "sequence": 3,
+            "attempts": 1,
+            "deliveryStatus": "published",
+            "availableAt": "2026-10-14T13:38:14.302260Z",
+            "publishedAt": "2026-10-14T13:38:14.341531Z",
+            "createdAt": "2026-10-14T13:38:14.302260Z"
+          }
+        ],
+        "providerOperations": [
+          {
+            "reference": "prov_e0adfbb7ffa54ca990c4fabfa17dd4be",
+            "outcome": "accepted",
+            "createdAt": "2026-10-14T13:38:14.300079Z"
+          }
+        ]
+      },
+      "status": "succeeded",
+      "captured_minor": 432,
+      "exact_confirm_replay": true
+    },
+    {
+      "round": 3,
+      "recovery_seconds": 9.654253212000185,
+      "inspection": {
+        "paymentIntentId": "pi_mv85nodfb81f814d04a043d1",
+        "journals": [
+          {
+            "id": "ltx_0f99986d17ca45fb87efc9c82cb4663c",
+            "effectKey": "capture:pi_mv85nodfb81f814d04a043d1",
+            "currency": "usd",
+            "posted": true,
+            "createdAt": "2026-10-14T13:38:23.966504Z",
+            "debitTotal": 432,
+            "creditTotal": 432,
+            "balanced": true,
+            "entries": [
+              {
+                "id": 16620,
+                "account": "provider_clearing",
+                "debit": 432,
+                "credit": 0,
+                "createdAt": "2026-10-14T13:38:23.966504Z"
+              },
+              {
+                "id": 16621,
+                "account": "merchant_payable",
+                "debit": 0,
+                "credit": 432,
+                "createdAt": "2026-10-14T13:38:23.966504Z"
+              }
+            ]
+          }
+        ],
+        "events": [
+          {
+            "id": "463ac54f-29ea-4b33-980b-f9866ff0c5f9",
+            "type": "payment_intent.created",
+            "sequence": 1,
+            "attempts": 1,
+            "deliveryStatus": "published",
+            "availableAt": "2026-10-14T13:38:14.689482Z",
+            "publishedAt": "2026-10-14T13:38:14.711502Z",
+            "createdAt": "2026-10-14T13:38:14.689482Z"
+          },
+          {
+            "id": "3837979d-a15b-49aa-91ed-3697cfdbddb6",
+            "type": "provider.authorization.requested",
+            "sequence": 2,
+            "attempts": 3,
+            "deliveryStatus": "published",
+            "availableAt": "2026-10-14T13:38:23.909714Z",
+            "publishedAt": "2026-10-14T13:38:23.957941Z",
+            "createdAt": "2026-10-14T13:38:15.881213Z"
+          },
+          {
+            "id": "ab9db9ec-3359-42fa-b519-09f223ae2858",
+            "type": "payment_intent.succeeded",
+            "sequence": 3,
+            "attempts": 1,
+            "deliveryStatus": "published",
+            "availableAt": "2026-10-14T13:38:23.966504Z",
+            "publishedAt": "2026-10-14T13:38:24.002482Z",
+            "createdAt": "2026-10-14T13:38:23.966504Z"
+          }
+        ],
+        "providerOperations": [
+          {
+            "reference": "prov_103012b64149400381603609776caedb",
+            "outcome": "accepted",
+            "createdAt": "2026-10-14T13:38:23.964343Z"
+          }
+        ]
+      },
+      "status": "succeeded",
+      "captured_minor": 432,
+      "exact_confirm_replay": true
+    },
+    {
+      "round": 4,
+      "recovery_seconds": 52.899012982001295,
+      "inspection": {
+        "paymentIntentId": "pi_mv85nvtzd637d43744e042f0",
+        "journals": [
+          {
+            "id": "ltx_fba3e558aa6e492f90da0cf105f4556c",
+            "effectKey": "capture:pi_mv85nvtzd637d43744e042f0",
+            "currency": "usd",
+            "posted": true,
+            "createdAt": "2026-10-14T13:39:17.018394Z",
+            "debitTotal": 432,
+            "creditTotal": 432,
+            "balanced": true,
+            "entries": [
+              {
+                "id": 16653,
+                "account": "provider_clearing",
+                "debit": 432,
+                "credit": 0,
+                "createdAt": "2026-10-14T13:39:17.018394Z"
+              },
+              {
+                "id": 16654,
+                "account": "merchant_payable",
+                "debit": 0,
+                "credit": 432,
+                "createdAt": "2026-10-14T13:39:17.018394Z"
+              }
+            ]
+          }
+        ],
+        "events": [
+          {
+            "id": "9a6e32ef-464b-4de9-b83c-78aef80527b6",
+            "type": "payment_intent.created",
+            "sequence": 1,
+            "attempts": 1,
+            "deliveryStatus": "published",
+            "availableAt": "2026-10-14T13:38:24.356513Z",
+            "publishedAt": "2026-10-14T13:38:24.379402Z",
+            "createdAt": "2026-10-14T13:38:24.356513Z"
+          },
+          {
+            "id": "49937207-1a46-4a5e-a8c1-c09a555320b3",
+            "type": "provider.authorization.requested",
+            "sequence": 2,
+            "attempts": 3,
+            "deliveryStatus": "published",
+            "availableAt": "2026-10-14T13:38:33.553343Z",
+            "publishedAt": "2026-10-14T13:38:33.587519Z",
+            "createdAt": "2026-10-14T13:38:25.530792Z"
+          },
+          {
+            "id": "77da4fd2-a00f-4bb0-a02d-a8d2609e8f1a",
+            "type": "payment_intent.succeeded",
+            "sequence": 3,
+            "attempts": 1,
+            "deliveryStatus": "published",
+            "availableAt": "2026-10-14T13:39:17.018394Z",
+            "publishedAt": "2026-10-14T13:39:17.052721Z",
+            "createdAt": "2026-10-14T13:39:17.018394Z"
+          }
+        ],
+        "providerOperations": [
+          {
+            "reference": "prov_5e5eceb6655c441fb5f2ccd5985e6025",
+            "outcome": "accepted",
+            "createdAt": "2026-10-14T13:39:17.016387Z"
+          }
+        ]
+      },
+      "status": "succeeded",
+      "captured_minor": 432,
+      "exact_confirm_replay": true
+    }
+  ],
+  "limits": "Five deterministic combined infrastructure schedules on synthetic provider operations. Not a million crashes; database durability/ledger checks require separate snapshot reconciliation."
+}

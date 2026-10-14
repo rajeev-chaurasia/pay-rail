@@ -1,0 +1,19 @@
+{
+  "cloud_java_cases": 34,
+  "cloud_java_failures": 0,
+  "local_java_cases": 34,
+  "local_currency_cases": 1,
+  "local_python_cases": 20,
+  "local_failures": 0,
+  "commands": [
+    "docker compose -p payrail --profile test run --rm --no-deps verify",
+    "python3 scripts/gcp/validate_campaign.py evidence/gcp/q-20261014092401-2304be --raw-directory artifacts/gcp-qualification-run2/release-assets"
+  ],
+  "outcomes": [
+    "Pinned formatting, Maven package/verify and real PostgreSQL/Redis tests passed.",
+    "Concurrency negative control, prior qualification/PITR/performance validators, cloud raw evidence, shell syntax and Compose variants passed.",
+    "Both pinned Go generators passed go vet.",
+    "Existing mediagent-backend Ready, ConfigurationsReady and RoutesReady were True after cloud cleanup."
+  ],
+  "limits": "Cloud observations used the recorded original image plus an explicitly applied index. Local V4 analyze eligibility was verified in PostgreSQL; automatic cloud maintenance and production capacity remain unqualified."
+}

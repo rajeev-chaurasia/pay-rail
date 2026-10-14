@@ -1,5 +1,11 @@
 # Concurrency evidence
 
+The separately retained [2026-10-14 GCP campaign](gcp-qualification-results.md)
+adds a fully reconciled 100M synthetic history and one million observed HTTP
+fault actions. Its 25K/s probes and strict migration foreground gate failed;
+production and broad fault qualification remain open. Local results below
+retain their original workload and resource limits.
+
 Reproduce with `./scripts/run_concurrency_evidence.sh`, then run
 `python3 scripts/validate_concurrency_evidence.py --self-test`.
 The test uses an ephemeral PostgreSQL Testcontainer; it never drops or weakens

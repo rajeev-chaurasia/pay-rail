@@ -1,5 +1,11 @@
 # Known limits
 
+The separately retained [2026-10-14 GCP campaign](gcp-qualification-results.md)
+adds a fully reconciled 100M synthetic history and one million observed HTTP
+fault actions. Its 25K/s probes and strict migration foreground gate failed;
+production and broad fault qualification remain open. Local results below
+retain their original workload and resource limits.
+
 - No real provider, card-data processing, settlement network or production
   operational qualification is included.
 - Tenant reads rely on authenticated predicates. PostgreSQL RLS remains a defense-in-depth gate. The demo uses its schema

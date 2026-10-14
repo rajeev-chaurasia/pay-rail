@@ -1,0 +1,22 @@
+services:
+  postgres:
+    shm_size: 28gb
+    command: [postgres, -c, shared_buffers=24GB, -c, effective_cache_size=80GB, -c, max_connections=200, -c, checkpoint_timeout=15min, -c, max_wal_size=8GB, -c, work_mem=32MB, -c, maintenance_work_mem=2GB]
+  kafka:
+    environment:
+      KAFKA_NUM_PARTITIONS: 12
+      KAFKA_HEAP_OPTS: -Xms1g -Xmx2g
+  app:
+    image: payrail-app
+    ports: !reset []
+    environment:
+      DB_POOL_SIZE: 24
+      RATE_LIMIT_RPM: 2000000
+      PAYRAIL_OUTBOX_FIXED_DELAY_MS: 10
+      SPRING_KAFKA_LISTENER_CONCURRENCY: 3
+      JAVA_TOOL_OPTIONS: -Xms1g -Xmx4g
+  gateway:
+    image: nginx:1.28.0-alpine
+    ports: ["10.240.0.10:18080:8080"]
+    volumes: ["./deploy/gcp/nginx.conf:/etc/nginx/nginx.conf:ro"]
+    depends_on: [app]
