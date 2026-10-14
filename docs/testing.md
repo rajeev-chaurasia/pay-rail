@@ -107,3 +107,33 @@ PostgreSQL deadlock before the source-first locking fix; the corrected race and
 full suite pass. The million-call case is documented with its narrower scope
 in `docs/production-readiness.md`. The two qualification-validator tests reject
 corrupted counts, duplicate effects and non-overlapping worker observations.
+
+## Isolated Docker recovery
+
+After building the runtime and verification images, run:
+
+```sh
+bash scripts/recovery-docker.sh
+```
+
+The wrapper creates a unique `payrail-recovery-*` project with fresh synthetic
+PostgreSQL, Redis, Kafka and application services. It removes only that project's
+containers and volumes on exit. It never resets the playground database.
+
+The drill stops its broker, commits an asynchronous confirmation, SIGKILLs its
+application and PostgreSQL, and restarts the database before the application.
+It requires settlement, complete outbox drain, one balanced journal and one
+provider effect, then checks exact confirmation response replay.
+
+With its application stopped, it takes an in-memory custom-format logical dump.
+A truncated copy must fail restoration into a separate scratch database. A full
+restore into a fresh test database must match hashes of every row and column in
+all public tables and replay saved create/confirm HTTP status and response bytes.
+Only sanitized observations and hashes are retained; no SQL dump is published.
+CI runs this drill against its newly built runtime. Local evidence is retained
+in `evidence/flows/docker-recovery.json`; default output is ignored under
+`artifacts/recovery.json`.
+
+This is one synthetic payment and one combined crash schedule. A stopped-writer
+logical restore is separate from online backup, WAL/PITR, failover and recovery
+at production data volumes. Those gates remain open.

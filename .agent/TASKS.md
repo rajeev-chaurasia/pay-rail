@@ -86,7 +86,7 @@ independent report rendering, GitHub description and topics are updated.
 
 ## PAY-005: production safeguards and Docker qualification
 
-Status: locally verified; review and remote CI are delivery gates. Production
+Status: merged through PR #3; pull-request and merged-main CI passed. Production
 release and qualification-scale gates remain open.
 
 Acceptance: complete verification runs in Docker; bounded batched outbox lanes
@@ -104,3 +104,22 @@ calls including 999,999 duplicates; paired 100-arrivals/s and stepped stress
 passes. Bounded 25K probes fail, and a 100M storage preflight prevents seeding.
 Runtime high/critical vulnerability gate passes with remaining OS findings
 retained. See `docs/production-readiness.md` for exact scopes and open gates.
+
+## PAY-006: isolated Docker recovery drills
+
+Status: two local Docker drills and the full verification suite passed; remote
+CI and maintainer merge remain delivery gates.
+
+Acceptance: disposable project-owned application, PostgreSQL, Redis and Kafka;
+committed processing intent survives application and database SIGKILL; restored
+infrastructure drains the outbox with one balanced journal and provider effect;
+stopped-writer logical backup restores every table exactly and replays saved
+HTTP response bytes; a truncated backup is rejected. Preserve playground data.
+Record exact images and limits. PITR, failover and larger crash campaigns remain
+separate qualification gates.
+
+Evidence: `evidence/flows/docker-recovery.json` records the repeat drill with
+48.35-second combined crash recovery, 10.22-second logical restore/startup,
+13 table hashes, three exact response replays and a rejected truncated backup.
+The full Docker suite passed 34 Java, 1 currency and 11 Python cases. CI now
+runs the isolated drill on each newly built runtime.

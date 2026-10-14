@@ -139,3 +139,13 @@ review. Dated raw reports, summaries and checksums are retained under
 `evidence/security/`; CI rejects new high/critical findings. This gate covers the
 application image, not every infrastructure image or deployment configuration.
 See the runtime upgrade decision for compatibility scope and migration debt.
+
+The isolated Docker recovery drill now exercises application and database
+SIGKILL after a committed asynchronous confirmation. Recovery must drain pending
+events with one balanced journal and one simulated provider effect. A logical
+backup taken with its only writer stopped restores all 13 public tables exactly,
+then replays saved create and confirmation responses byte-for-byte. A truncated
+backup is rejected as a negative control. See `docs/testing.md` and the retained
+`evidence/flows/docker-recovery.json` for commands and observations. This small
+single-host drill does not qualify PITR, failover, online backups, retention,
+production recovery budgets or the broad million-fault campaign.
