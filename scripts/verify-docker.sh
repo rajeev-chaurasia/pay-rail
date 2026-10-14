@@ -15,7 +15,9 @@ python3 scripts/validate_pitr_evidence.py
 python3 scripts/performance/validate.py --allow-unqualified
 python3 scripts/performance/render.py --check
 python3 -m compileall -q scripts/performance scripts/flow-smoke.py scripts/kafka-recovery.py scripts/qualification-preflight.py scripts/compatibility-smoke.py scripts/validate_qualification_evidence.py scripts/poison-recovery.py scripts/recovery-smoke.py scripts/pitr-smoke.py scripts/validate_pitr_evidence.py
+python3 -m compileall -q scripts/gcp
 docker compose -p payrail config --quiet
 docker compose -p payrail-recovery-config -f compose.yml -f compose.recovery.yml config --quiet
 docker compose -p payrail-pitr-config --profile pitr -f compose.yml -f compose.recovery.yml -f compose.pitr.yml config --quiet
+docker compose -p payrail-qual-config -f compose.yml -f deploy/gcp/compose.yml config --quiet
 bash -n scripts/*.sh

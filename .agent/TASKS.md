@@ -126,8 +126,8 @@ runs the isolated drill on each newly built runtime.
 
 ## PAY-007: online physical backup and point-in-time recovery
 
-Status: locally verified; maintainer merge and production qualification remain
-separate delivery gates.
+Status: merged through PR #5 with passing merged-main CI. Production
+qualification remains separate.
 
 Acceptance: disposable project-owned services; observed payment writes during
 physical backup; manifest verification; archived WAL restores an independent
@@ -148,3 +148,22 @@ negative server exit nonzero. Three HTTP response digests match; sanitized entry
 data independently recomputes balanced settlement/reversal and distinct effect
 keys. The full Docker verifier passed 34 Java, 1 currency and 13 Python cases,
 including two new tampering tests. See `docs/postgres-recovery.md` for limits.
+
+## PAY-008: temporary GCP scale qualification
+
+Status: preparing and deploying an isolated campaign in `medi-agent-490106`.
+User approved a US$25 initial spend cap and absolute six-hour deletion limit.
+
+Acceptance: separate run-owned VPC, hosts and generator; no changes to existing
+mediagent services/configuration; measured storage/runtime pilot before full seed;
+bounded 100M historical-object migration attempt with live traffic and full
+reconciliation; open-loop load observations with new accepted mutations distinct
+from replays/rejections; counted seeded fault actions and ledger reconciliation;
+export raw sanitized evidence and independently validate it; delete only exact
+manifest-owned resources and verify the pre-existing resource baseline.
+Failed or resource-limited qualification attempts remain unqualified.
+
+Preparation: 1,000 deterministic historical rows verified in disposable
+PostgreSQL; corrected open-loop producer accepted all 30 smoke arrivals with
+zero drops/errors; four new cloud scope/load validator cases passed. See
+`docs/gcp-qualification-plan.md` for cost, topology, runtime and cleanup bounds.
