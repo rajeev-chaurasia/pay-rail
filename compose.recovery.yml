@@ -1,0 +1,6 @@
+# Used only with a unique disposable project by scripts/recovery-docker.sh.
+services:
+  app:
+    image: payrail-app
+  verify:
+    image: payrail-verify

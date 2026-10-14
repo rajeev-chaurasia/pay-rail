@@ -14,3 +14,5 @@ jobs:
         run: docker compose -p payrail --profile test run --rm verify
       - name: Build runtime and reject known high or critical vulnerabilities
         run: docker compose -p payrail build app && ./scripts/security-scan.sh
+      - name: Verify isolated crash recovery and logical backup restoration
+        run: bash scripts/recovery-docker.sh

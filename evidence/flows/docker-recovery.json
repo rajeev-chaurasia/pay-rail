@@ -1,0 +1,303 @@
+{
+  "project": "payrail-recovery-1791952720-62181",
+  "images": {
+    "app": "sha256:f1692311de3db2127f3e7ced9883a3201e70ce98f61196d37397963eb8c6259b",
+    "postgres": "sha256:1d04b9ba1d4996401f2552b51beda8187f175c0645c091e4781134fc9c9a3eef",
+    "kafka": "sha256:fbc7d7c428e3755cf36518d4976596002477e4c052d1f80b5b9eafd06d0fff2f"
+  },
+  "faults": [
+    "app_sigkill",
+    "postgres_sigkill"
+  ],
+  "crash_recovery_seconds": 48.35260202223435,
+  "logical_restore_seconds": 10.22496750485152,
+  "backup_bytes": 36430,
+  "backup_sha256": "3deb1968ce578ee503747d823d0e4f9d4ba1f0df3cafd04746b3c477fb1b08bc",
+  "table_sha256": {
+    "api_keys": "b4d12cdc72929990c73ca85545d659fb368edf6d8f677f31835e057ad82ff607",
+    "flyway_schema_history": "d73bc971076bdc679c91b3015eeca2c42011f59f554c10bbb3b7a8bca62a1a48",
+    "idempotency_records": "2013771859dd2c70493bc8d00586a88987dce6323a4d1118780ebc4acced5584",
+    "ledger_entries": "09a05269377f3e1091385195ff3c1e4c0c0960ab48763f9264d9212376ccf875",
+    "ledger_transactions": "b9d5686dc902871cca8d72f693c5601bd194c7dc1706ca4795e4192b66c8f4f9",
+    "migration_checkpoints": "e6f66a0e2450f213df44db815dc6c9e72eb1cde6b320f8be32e3754711245709",
+    "outbox_events": "328e667118ae828699f61321381be30833a051d18e435f0b435a2c003d0f5d61",
+    "payment_intents": "3512afeba856a8d963265efd1c3c05ef0b6e91abae96baea67d201681e1b2f4d",
+    "payment_intents_v2": "4e7cb1117c681e0e2d32bd6753844d292b82c59c6e803715bd533f7c6cb77cb7",
+    "processed_events": "90358d37274e84af05f5f486f6f864972ef33a70cc27bdd76da985315f1d4b59",
+    "refunds": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "simulated_provider_operations": "fe2db9ace55b3f9ae52f283f577747944b12066f04a4babc3027d2f26405d30c",
+    "tenants": "f7048c0f96eb35009ed1c0bf69cf719c42d4e356ae72444bafe6daf1107e2e74"
+  },
+  "truncated_backup_rejected": true,
+  "journal_count": 1,
+  "provider_operation_count": 1,
+  "exact_replays": 3,
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/actuator/health",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents",
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/confirm",
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/confirm",
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/actuator/health",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents",
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/confirm",
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7me0rd2d416d4d0d02417a/inspect",
+      "status": 200
+    }
+  ],
+  "limits": "One synthetic payment; combined crash schedule; stopped-writer logical backup. No PITR, HA, or scale qualification."
+}

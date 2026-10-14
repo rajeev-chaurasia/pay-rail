@@ -117,3 +117,18 @@ recovery preserved the malformed fixture and allowed a subsequent payment to
 complete. HTTP smoke, Redis failure/recovery and bounded capacity results are
 retained separately. See `docs/production-readiness.md` for resource, provider
 and operational gates that still prevent production approval.
+
+## Isolated recovery follow-up, 2026-10-13
+
+PR #3 merged as `f0f2102`; merged-main CI passed. A separate disposable Docker
+project exercises a committed confirmation followed by application/database
+SIGKILL, pending-event recovery and exact replay. Logical backup restoration
+checks every public table, saved response bytes and a truncated-backup negative
+control. The playground services and persistent database remain untouched.
+See `docs/testing.md` for the repeatable command and explicit scope limits.
+
+Two local drills passed. The retained repeat measured 48.35 seconds from the
+first kill through settlement/outbox drain and 10.22 seconds for fresh logical
+restore/startup/replay checks. All 13 table hashes matched; three response replays
+were byte-exact. The full Docker verifier passed 34 Java, 1 currency and 11
+Python tests, plus style, packaging, Compose and retained-evidence checks.
