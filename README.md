@@ -160,3 +160,8 @@ PostgreSQL/Redis tests and Docker-backed load tooling. See
 [production safeguards and qualification gates](docs/production-readiness.md)
 for separate migration/runtime identities, TLS/secret guards, bounded workers,
 Prometheus backlog observations and the remaining release gates.
+
+Disposable Docker [recovery drills](docs/postgres-recovery.md) verify process
+crashes, logical restoration and online physical backup/WAL recovery to a named
+point. Restored payment delivery stays fenced until reconciliation. Production
+backup durability, retention, failover and recovery budgets remain separate gates.

@@ -132,3 +132,24 @@ first kill through settlement/outbox drain and 10.22 seconds for fresh logical
 restore/startup/replay checks. All 13 table hashes matched; three response replays
 were byte-exact. The full Docker verifier passed 34 Java, 1 currency and 11
 Python tests, plus style, packaging, Compose and retained-evidence checks.
+
+## Online physical backup and PITR, 2026-10-13
+
+PR #4 merged as `7006287` with passing merged-main CI. Three separate disposable
+physical/WAL recovery drills passed. The final retained run observed live payment
+writes during its 31.45-second throttled base backup. Named-point recovery and
+restored API checks took 5.26 seconds; all 13 public-table hashes matched the
+pre-refund target, excluding later source mutations. Missing required WAL made
+the negative restore exit nonzero before reaching its target.
+
+Create, confirm and post-restore refund response digests matched exact replays.
+Sanitized entry observations independently recompute one balanced settlement
+and one new reversal. Restored outbox dispatch and consumers remain disabled.
+The full Docker verifier passed 34 Java, 1 currency and 13 Python tests, including
+two PITR tampering cases, plus packaging/style/Compose/evidence checks. Runtime
+source behavior and playground code were unchanged; the original stack remained
+healthy and disposable backup/archive volumes were removed.
+
+These are small-fixture mechanism checks. Off-host archive durability, retention,
+production RPO/RTO, failover, scale and external-provider reconciliation remain
+unqualified. See `docs/postgres-recovery.md` and the retained raw observations.

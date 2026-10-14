@@ -1,0 +1,46 @@
+# Disposable local mechanism test, not a production backup configuration.
+services:
+  postgres:
+    command:
+      - postgres
+      - -c
+      - wal_level=replica
+      - -c
+      - archive_mode=on
+      - -c
+      - archive_command=test ! -f /archive/%f && cp %p /archive/%f
+    volumes:
+      - pitr-archive:/archive
+      - pitr-backup:/backups
+      - pitr-restored:/restore
+      - pitr-negative:/negative
+  restored:
+    profiles: [pitr]
+    image: postgres:16.6-alpine
+    environment:
+      PGDATA: /restore/data
+    volumes:
+      - pitr-restored:/restore
+      - pitr-archive:/archive:ro
+  negative:
+    profiles: [pitr]
+    image: postgres:16.6-alpine
+    environment:
+      PGDATA: /negative/data
+    volumes:
+      - pitr-negative:/negative
+  restored-app:
+    profiles: [pitr]
+    image: payrail-app
+    environment:
+      DATABASE_URL: jdbc:postgresql://restored:5432/payrail
+      REDIS_HOST: redis
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      OUTBOX_ENABLED: "false"
+      SPRING_KAFKA_LISTENER_AUTO_STARTUP: "false"
+      SPRING_KAFKA_ADMIN_AUTO_CREATE: "false"
+volumes:
+  pitr-archive: {}
+  pitr-backup: {}
+  pitr-restored: {}
+  pitr-negative: {}

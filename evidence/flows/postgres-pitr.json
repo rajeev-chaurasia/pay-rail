@@ -1,0 +1,307 @@
+{
+  "project": "payrail-pitr-1791953839-76982",
+  "images": {
+    "postgres": "sha256:1d04b9ba1d4996401f2552b51beda8187f175c0645c091e4781134fc9c9a3eef",
+    "restored": "sha256:1d04b9ba1d4996401f2552b51beda8187f175c0645c091e4781134fc9c9a3eef",
+    "negative": "sha256:1d04b9ba1d4996401f2552b51beda8187f175c0645c091e4781134fc9c9a3eef",
+    "app": "sha256:f1692311de3db2127f3e7ced9883a3201e70ce98f61196d37397963eb8c6259b",
+    "restored_app": "sha256:f1692311de3db2127f3e7ced9883a3201e70ce98f61196d37397963eb8c6259b"
+  },
+  "target_name": "payrail_before_refund",
+  "target_lsn": "0/4001E90",
+  "backup_seconds": 31.451960764825344,
+  "backup_manifest_sha256": "56b3948bbb0ea3d7cd282b8596ca6a023b300b1b3e34c71c5e8d5a823e855b8b",
+  "live_write_progress": [
+    "estimating backup size",
+    "streaming database files"
+  ],
+  "archive_sha256": {
+    "000000010000000000000001": "a229c6d2249248ce35b147611785a03eead451fd5901119a401eb0df75f4a1e0",
+    "000000010000000000000002": "ce83a1335cb5c081e68adac504cadd58770493a1132b12372546311732f7c4fd",
+    "000000010000000000000003": "c10fa4d9db1d575d198dc0a4238e3f604e1fdd0d62cd30679377c7d190173812",
+    "000000010000000000000003.00000028.backup": "14729db87d9148241296c40c0987e358e6c029e658918055b4a0c15eb3541dde",
+    "000000010000000000000004": "9aaa2d52f6401818544a3b481606abcdb4d828e7f23d9b9da2f00d1345281d4c"
+  },
+  "restore_seconds": 5.264918835833669,
+  "table_sha256_expected": {
+    "api_keys": "d4f19d1f1328b1a52bb7d45902273f02c355323aeb8299b625fbe723a26b4b9e",
+    "flyway_schema_history": "170815c37be171277e1c4baddbe5369011e218ac3b9d9eee3fa07541d5306df0",
+    "idempotency_records": "45c56c01a6d81c004008c3f1a34dc418ef991af2ec10f0b30dba5dfc3b615ff3",
+    "ledger_entries": "0d1b5931654203e943f8acee19bfc403198d8111908d3ce1ac7a2de6592c739f",
+    "ledger_transactions": "f15d331dd339fa9bbe7cd2102a0dc8a17ce1df419a739f57ea9562dc22d9bab0",
+    "migration_checkpoints": "36fe90d2f64ac6cf17c84a579a0ff4e0749e161ad1032f99e4617ad8a820a2ff",
+    "outbox_events": "4f6e7b974b217dcdf7e9c229fb6dc5a95fb5944ec35633a34c11ae895e7cc705",
+    "payment_intents": "29e874288c9f5d5111ca0387f151b84bc3cd07ae2c7c301914819087a8438d7d",
+    "payment_intents_v2": "adb1f83e1d7f1cc15296bbddfe031fca3a02498268baf1ab643125355e476498",
+    "processed_events": "24664bbc7548aa54e58ad969dd7d6eef356965ae9c8e2833ff0d27243cd4b8c1",
+    "refunds": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "simulated_provider_operations": "c683e6cc65db84b39822998555b4de2534a65416061b361551d907bfa34f25e8",
+    "tenants": "29dd149ca64d1a1b706f00c42c6589f2648cd5f13384ca7c77c373cf60dab7eb"
+  },
+  "table_sha256_restored": {
+    "api_keys": "d4f19d1f1328b1a52bb7d45902273f02c355323aeb8299b625fbe723a26b4b9e",
+    "flyway_schema_history": "170815c37be171277e1c4baddbe5369011e218ac3b9d9eee3fa07541d5306df0",
+    "idempotency_records": "45c56c01a6d81c004008c3f1a34dc418ef991af2ec10f0b30dba5dfc3b615ff3",
+    "ledger_entries": "0d1b5931654203e943f8acee19bfc403198d8111908d3ce1ac7a2de6592c739f",
+    "ledger_transactions": "f15d331dd339fa9bbe7cd2102a0dc8a17ce1df419a739f57ea9562dc22d9bab0",
+    "migration_checkpoints": "36fe90d2f64ac6cf17c84a579a0ff4e0749e161ad1032f99e4617ad8a820a2ff",
+    "outbox_events": "4f6e7b974b217dcdf7e9c229fb6dc5a95fb5944ec35633a34c11ae895e7cc705",
+    "payment_intents": "29e874288c9f5d5111ca0387f151b84bc3cd07ae2c7c301914819087a8438d7d",
+    "payment_intents_v2": "adb1f83e1d7f1cc15296bbddfe031fca3a02498268baf1ab643125355e476498",
+    "processed_events": "24664bbc7548aa54e58ad969dd7d6eef356965ae9c8e2833ff0d27243cd4b8c1",
+    "refunds": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "simulated_provider_operations": "c683e6cc65db84b39822998555b4de2534a65416061b361551d907bfa34f25e8",
+    "tenants": "29dd149ca64d1a1b706f00c42c6589f2648cd5f13384ca7c77c373cf60dab7eb"
+  },
+  "source_after_target_table_sha256": {
+    "api_keys": "d4f19d1f1328b1a52bb7d45902273f02c355323aeb8299b625fbe723a26b4b9e",
+    "flyway_schema_history": "170815c37be171277e1c4baddbe5369011e218ac3b9d9eee3fa07541d5306df0",
+    "idempotency_records": "33b1d4689b1f5b23780caec88992fc39fc6028375219a5d509f51c04ebe9ceac",
+    "ledger_entries": "baa2533929ec79a3a38f85cce4d07090ea3de035362aae2905328dc1eab17279",
+    "ledger_transactions": "01041b4a962f536428efb7a31773c5f5a8956449b5519b0bdfe9e93c6c72f7e9",
+    "migration_checkpoints": "36fe90d2f64ac6cf17c84a579a0ff4e0749e161ad1032f99e4617ad8a820a2ff",
+    "outbox_events": "8e3df6dc15974e07f1347ee327060030c2ea8cd25f16366be6cb8a90d45840b6",
+    "payment_intents": "eccad13c5a1b2e223335f526204cb2f2d482501b62edce097f773a9c409308c2",
+    "payment_intents_v2": "d1d9e3be7235bc0dd8a9955b28a276bfffa4b50bc487309f5d501f3d6dab1495",
+    "processed_events": "24664bbc7548aa54e58ad969dd7d6eef356965ae9c8e2833ff0d27243cd4b8c1",
+    "refunds": "dc6de3be1106d5a2137acdcb484fadf5d0dca030cd8d801bddb9c2e718986843",
+    "simulated_provider_operations": "c683e6cc65db84b39822998555b4de2534a65416061b361551d907bfa34f25e8",
+    "tenants": "29dd149ca64d1a1b706f00c42c6589f2648cd5f13384ca7c77c373cf60dab7eb"
+  },
+  "missing_wal_rejected": true,
+  "missing_wal_exit_code": 1,
+  "source_post_target_refund_minor": 100,
+  "restored_pre_refund_minor": 0,
+  "restored_payment_journals_before_write": 1,
+  "restored_payment_journals_after_write": 2,
+  "journals_before_write": [
+    {
+      "id": "ltx_f106f61309d943789bebff58f45d343b",
+      "effectKey": "capture:pi_mv7n20wc6794f774abd64c61",
+      "currency": "usd",
+      "posted": true,
+      "createdAt": "2026-10-14T04:58:03.252085Z",
+      "debitTotal": 432,
+      "creditTotal": 432,
+      "balanced": true,
+      "entries": [
+        {
+          "id": 3,
+          "account": "provider_clearing",
+          "debit": 432,
+          "credit": 0,
+          "createdAt": "2026-10-14T04:58:03.252085Z"
+        },
+        {
+          "id": 4,
+          "account": "merchant_payable",
+          "debit": 0,
+          "credit": 432,
+          "createdAt": "2026-10-14T04:58:03.252085Z"
+        }
+      ]
+    }
+  ],
+  "journals_after_write": [
+    {
+      "id": "ltx_f106f61309d943789bebff58f45d343b",
+      "effectKey": "capture:pi_mv7n20wc6794f774abd64c61",
+      "currency": "usd",
+      "posted": true,
+      "createdAt": "2026-10-14T04:58:03.252085Z",
+      "debitTotal": 432,
+      "creditTotal": 432,
+      "balanced": true,
+      "entries": [
+        {
+          "id": 3,
+          "account": "provider_clearing",
+          "debit": 432,
+          "credit": 0,
+          "createdAt": "2026-10-14T04:58:03.252085Z"
+        },
+        {
+          "id": 4,
+          "account": "merchant_payable",
+          "debit": 0,
+          "credit": 432,
+          "createdAt": "2026-10-14T04:58:03.252085Z"
+        }
+      ]
+    },
+    {
+      "id": "ltx_2fd06e58883f4d06ac0a2339a9328609",
+      "effectKey": "refund:re_3464e823b87f46639c96576f60a31d4f",
+      "currency": "usd",
+      "posted": true,
+      "createdAt": "2026-10-14T04:58:12.705163Z",
+      "debitTotal": 100,
+      "creditTotal": 100,
+      "balanced": true,
+      "entries": [
+        {
+          "id": 34,
+          "account": "merchant_payable",
+          "debit": 100,
+          "credit": 0,
+          "createdAt": "2026-10-14T04:58:12.705163Z"
+        },
+        {
+          "id": 35,
+          "account": "provider_clearing",
+          "debit": 0,
+          "credit": 100,
+          "createdAt": "2026-10-14T04:58:12.705163Z"
+        }
+      ]
+    }
+  ],
+  "exact_replays": 3,
+  "replays": [
+    {
+      "operation": "create",
+      "original_status": 201,
+      "replayed_status": 201,
+      "original_sha256": "3127ca1a3ea8d077d6e27ba0aa5f0f26dc86e40b87c37ab0090a97fc7dfc3431",
+      "replayed_sha256": "3127ca1a3ea8d077d6e27ba0aa5f0f26dc86e40b87c37ab0090a97fc7dfc3431"
+    },
+    {
+      "operation": "confirm",
+      "original_status": 202,
+      "replayed_status": 202,
+      "original_sha256": "9677e3554c3205e55c29192a206a36ddbd61c8935ffc8ee86cf34d48fcc6bdf8",
+      "replayed_sha256": "9677e3554c3205e55c29192a206a36ddbd61c8935ffc8ee86cf34d48fcc6bdf8"
+    },
+    {
+      "operation": "refund",
+      "original_status": 200,
+      "replayed_status": 200,
+      "original_sha256": "b813161656c8d301db3ad4468bc450ea78ee7cbe59ac1c96968271d65bcf26a1",
+      "replayed_sha256": "b813161656c8d301db3ad4468bc450ea78ee7cbe59ac1c96968271d65bcf26a1"
+    }
+  ],
+  "restored_delivery_fenced": true,
+  "requests": [
+    {
+      "restored": false,
+      "method": "GET",
+      "path": "/actuator/health",
+      "status": 200
+    },
+    {
+      "restored": false,
+      "method": "POST",
+      "path": "/v1/payment_intents",
+      "status": 201
+    },
+    {
+      "restored": false,
+      "method": "POST",
+      "path": "/v1/payment_intents",
+      "status": 201
+    },
+    {
+      "restored": false,
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7n210k096a1905a57d44fa/confirm",
+      "status": 202
+    },
+    {
+      "restored": false,
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7n210k096a1905a57d44fa/capture",
+      "status": 200
+    },
+    {
+      "restored": false,
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7n20wc6794f774abd64c61/confirm",
+      "status": 202
+    },
+    {
+      "restored": false,
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7n20wc6794f774abd64c61/inspect",
+      "status": 200
+    },
+    {
+      "restored": false,
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7n210k096a1905a57d44fa/inspect",
+      "status": 200
+    },
+    {
+      "restored": false,
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7n20wc6794f774abd64c61/inspect",
+      "status": 200
+    },
+    {
+      "restored": false,
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7n210k096a1905a57d44fa/inspect",
+      "status": 200
+    },
+    {
+      "restored": false,
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7n20wc6794f774abd64c61/refunds",
+      "status": 200
+    },
+    {
+      "restored": false,
+      "method": "POST",
+      "path": "/v1/payment_intents",
+      "status": 201
+    },
+    {
+      "restored": true,
+      "method": "GET",
+      "path": "/actuator/health",
+      "status": 200
+    },
+    {
+      "restored": true,
+      "method": "POST",
+      "path": "/v1/payment_intents",
+      "status": 201
+    },
+    {
+      "restored": true,
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7n20wc6794f774abd64c61/confirm",
+      "status": 202
+    },
+    {
+      "restored": true,
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7n20wc6794f774abd64c61",
+      "status": 200
+    },
+    {
+      "restored": true,
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7n20wc6794f774abd64c61/inspect",
+      "status": 200
+    },
+    {
+      "restored": true,
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7n20wc6794f774abd64c61/refunds",
+      "status": 200
+    },
+    {
+      "restored": true,
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7n20wc6794f774abd64c61/refunds",
+      "status": 200
+    },
+    {
+      "restored": true,
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7n20wc6794f774abd64c61/inspect",
+      "status": 200
+    }
+  ],
+  "limits": "Two pre-target synthetic payments; one live-write overlap; same-host archive. Restored consumers/outbox fenced. No failover, production retention, RPO/RTO, scale or external-provider reconciliation qualification."
+}
