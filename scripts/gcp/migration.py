@@ -6,8 +6,11 @@ from datetime import datetime, timezone
 import json
 from pathlib import Path
 import subprocess
+import threading
 import time
+import urllib.error
 import urllib.request
+import uuid
 
 
 def main():
@@ -17,6 +20,8 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--seed-only", action="store_true")
     parser.add_argument("--reserve-gib", type=int, default=60)
+    parser.add_argument("--deadline")
+    parser.add_argument("--live-rate", type=int, default=0)
     args = parser.parse_args()
     if (
         not args.project.startswith("payrail-qual-")
@@ -25,6 +30,11 @@ def main():
         parser.error("Only bounded, owned qualification fixtures are supported")
     if not 10 <= args.reserve_gib <= 100:
         parser.error("Disk reserve must be 10..100 GiB")
+    if not 0 <= args.live_rate <= 20:
+        parser.error("Foreground pilot rate must be 0..20 per second")
+    deadline = datetime.fromisoformat(args.deadline) if args.deadline else None
+    if deadline and deadline.tzinfo is None:
+        parser.error("Deadline requires a timezone")
     postgres = args.project + "-postgres-1"
     info = json.loads(subprocess.check_output(["docker", "inspect", postgres]))[0]
     if info["Config"]["Labels"]["com.docker.compose.project"] != args.project:
@@ -82,8 +92,97 @@ def main():
     def persist():
         args.output.write_text(json.dumps(report, indent=2) + "\n")
 
+    def check_deadline():
+        if deadline and datetime.now(timezone.utc) >= deadline:
+            report["stopped_at_deadline"] = True
+            persist()
+            raise ValueError("Stopped before VM deletion deadline to preserve evidence")
+
+    stop = threading.Event()
+    live_summary = {
+        "configured_rate": args.live_rate,
+        "attempted": 0,
+        "accepted": 0,
+        "errors": 0,
+        "missed_arrivals": 0,
+    }
+    report["foreground"] = live_summary
+
+    def foreground():
+        run = "migration-live-" + uuid.uuid4().hex
+        epoch = time.monotonic()
+        ordinal = 0
+        with Path(str(args.output) + ".foreground.jsonl").open("w") as handle:
+            while not stop.is_set():
+                target = epoch + ordinal / args.live_rate
+                if stop.wait(max(0, target - time.monotonic())):
+                    break
+                late = time.monotonic() - target
+                if late > 0.5:
+                    missed = max(1, int(late * args.live_rate))
+                    live_summary["missed_arrivals"] += missed
+                    handle.write(
+                        json.dumps({"ordinal": ordinal, "missed": missed}) + "\n"
+                    )
+                    ordinal += missed
+                    continue
+                began = time.monotonic()
+                status = 0
+                request = urllib.request.Request(
+                    "http://10.240.0.10:18080/v1/payment_intents",
+                    data=b'{"amount":1000,"currency":"usd","captureMethod":"manual"}',
+                    method="POST",
+                    headers={
+                        "Authorization": "Bearer pr_test_demo",
+                        "Content-Type": "application/json",
+                        "PayRail-Version": "2026-01-01",
+                        "Idempotency-Key": run + "-" + str(ordinal),
+                    },
+                )
+                try:
+                    with urllib.request.urlopen(request, timeout=5) as response:
+                        status = response.status
+                        payment = json.loads(response.read())
+                        if (
+                            not payment.get("id")
+                            or payment.get("amount") != 1000
+                            or payment.get("status") != "requires_confirmation"
+                        ):
+                            status = 0
+                except urllib.error.HTTPError as error:
+                    status = error.code
+                except (
+                    urllib.error.URLError,
+                    TimeoutError,
+                    ConnectionError,
+                    ValueError,
+                ):
+                    pass
+                live_summary["attempted"] += 1
+                live_summary["accepted" if status == 201 else "errors"] += 1
+                handle.write(
+                    json.dumps(
+                        {
+                            "ordinal": ordinal,
+                            "status": status,
+                            "duration_ms": (time.monotonic() - began) * 1000,
+                            "arrival_delay_ms": late * 1000,
+                            "observed_at": datetime.now(timezone.utc).isoformat(),
+                        }
+                    )
+                    + "\n"
+                )
+                handle.flush()
+                ordinal += 1
+
+    live_thread = None
+    if args.live_rate:
+        live_thread = threading.Thread(target=foreground, daemon=True)
+        live_thread.start()
+
     began = time.monotonic()
     for low in range(existing + 1, args.objects + 1, 100000):
+        check_deadline()
         high = min(low + 99999, args.objects)
         started = time.monotonic()
         sql(
@@ -129,6 +228,7 @@ def main():
     )
     began = time.monotonic()
     while True:
+        check_deadline()
         started = time.monotonic()
         result = call("/backfill?batchSize=5000", "POST")
         report["backfill_chunks"].append(
@@ -149,6 +249,9 @@ def main():
     report["target_bytes"] = int(
         sql("select pg_total_relation_size('payment_intents_v2');")
     )
+    stop.set()
+    if live_thread:
+        live_thread.join(timeout=10)
     if (
         any(
             report["reconciliation"][name]
