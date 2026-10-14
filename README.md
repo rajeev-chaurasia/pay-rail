@@ -12,6 +12,10 @@ contributor contract. [Evidence](docs/evidence.md) explains the concurrency
 experiment and independent result validation; [known limits](docs/known-misses.md)
 separate local behavior from remaining qualification work.
 
+Delivery is complete for the simulated reference platform. See the
+[project closeout](docs/project-closeout.md) for verified scope, cleanup and
+future qualification boundaries.
+
 ## Measured results
 
 The isolated GCP campaign ran on a **32-vCPU / 120-GiB database/application host**

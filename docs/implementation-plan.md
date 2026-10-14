@@ -2,6 +2,11 @@
 
 Status: architecture and qualification plan, 2026-10-13. The repository was empty at initial inspection; the local reference implementation is now present. This document describes the intended architecture and larger qualification gates. See `docs/verification.md` and `docs/evidence.md` for implemented behavior, measured local evidence and remaining gaps; this plan reports no measured qualification-scale throughput, migrated object count or fault campaign result.
 
+Reference delivery closed on 2026-10-14. This document remains the historical
+architecture and future qualification plan. See [project closeout](project-closeout.md)
+and [measured GCP results](gcp-qualification-results.md) for the final delivered
+scope; the targets below are not promoted to production guarantees.
+
 ## Scope and evidence
 
 Build a Java Spring Boot service backed by PostgreSQL, Kafka, and Redis. Deliver PaymentIntent operations, tenant isolation and admission control, request-fingerprint idempotency, explicit state transitions, an immutable double-entry ledger, a transactional outbox, and API-version-pinned response transforms. Include an online migration control plane and repeatable load/fault tooling.
