@@ -191,7 +191,8 @@ production qualification remain separate.
 ## PAY-009: visible qualification summary
 
 Status: README updated; style, generated benchmark consistency, links and
-measured summary checks passed. GitHub rendering verification and PR review remain.
+measured summary checks passed. GitHub preview rendering verified: results table, evidence links and collapsed
+local benchmark history are visible. PR review remains.
 
 Acceptance: prominent evidence-linked results table with workload/hardware scope,
 failed 25K/s and zero-drop gates visible alongside successes; current 55-case
