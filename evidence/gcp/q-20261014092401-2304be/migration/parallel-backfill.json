@@ -1,0 +1,58 @@
+{
+  "workers": 8,
+  "ranges": [
+    {
+      "first": 18500001,
+      "last": 28687500,
+      "rows": 10187500,
+      "chunk_count": 2039
+    },
+    {
+      "first": 28687501,
+      "last": 38875000,
+      "rows": 10187500,
+      "chunk_count": 2039
+    },
+    {
+      "first": 38875001,
+      "last": 49062500,
+      "rows": 10187500,
+      "chunk_count": 2039
+    },
+    {
+      "first": 49062501,
+      "last": 59250000,
+      "rows": 10187500,
+      "chunk_count": 2039
+    },
+    {
+      "first": 59250001,
+      "last": 69437500,
+      "rows": 10187500,
+      "chunk_count": 2039
+    },
+    {
+      "first": 69437501,
+      "last": 79625000,
+      "rows": 10187500,
+      "chunk_count": 2039
+    },
+    {
+      "first": 79625001,
+      "last": 89812500,
+      "rows": 10187500,
+      "chunk_count": 2039
+    },
+    {
+      "first": 89812501,
+      "last": 100000000,
+      "rows": 10187500,
+      "chunk_count": 2039
+    }
+  ],
+  "target_history_rows": 100000000,
+  "seconds": 1626.4868888690016,
+  "completed_at": "2026-10-14T12:35:14.562898+00:00",
+  "handoff": true,
+  "limits": "Bounded synthetic history ranges; all constraints/version guards remain enabled. Full canonical reconciliation must follow before cutover."
+}

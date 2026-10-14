@@ -11,6 +11,9 @@ mutation retries replay stored response bytes. Migration controls demonstrate
 additive expansion, dual writes, resumable backfill, shadow reads and gated
 read cutover.
 
-The full-scale performance, migration and fault numbers are targets, not
-achieved results. Local evidence never establishes production suitability.
+The 25K/s and broad production fault/migration qualification remain targets.
+An isolated GCP run reconciled 100M homogeneous historical objects and observed
+one million successful HTTP fault actions, with narrower scopes and failed
+capacity/foreground gates. See `docs/gcp-qualification-results.md`. These results
+and local evidence do not establish production suitability.
 See `docs/implementation-plan.md`, `docs/verification.md` and `docs/evidence.md`.

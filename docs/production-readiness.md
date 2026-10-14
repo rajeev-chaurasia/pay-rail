@@ -1,5 +1,11 @@
 # Production readiness and qualification
 
+The separately retained [2026-10-14 GCP campaign](gcp-qualification-results.md)
+adds a fully reconciled 100M synthetic history and one million observed HTTP
+fault actions. Its 25K/s probes and strict migration foreground gate failed;
+production and broad fault qualification remain open. Local results below
+retain their original workload and resource limits.
+
 The Docker stack is a repeatable qualification environment. It remains a
 single-host simulated service, with no real provider or production release.
 Production approval requires the measured gates below and an operator review.
@@ -13,8 +19,8 @@ Production approval requires the measured gates below and an operator review.
   enabled admission control. Database statements, lock acquisition and idle
   transactions have explicit production timeouts. It rejects superusers, elevated roles, schema
   creators and membership in public-table owner roles.
-- Schema changes run under a separate migration identity. The concurrent V3
-  index uses nontransactional execution and session advisory locking, with a
+- Schema changes run under a separate migration identity. The concurrent V3/V4
+  indexes use nontransactional execution and session advisory locking, with a
   five-second lock timeout. Inspect invalid indexes after an interrupted build;
   an authorized operator must remove the invalid artifact and repair migration
   history before retrying. Never hide invalid artifacts with `IF NOT EXISTS`.
@@ -24,7 +30,9 @@ Production approval requires the measured gates below and an operator review.
   provisioning uses an operator identity, not the runtime role.
 - The outbox leases at most 100 independent aggregate heads, submits sends
   before waiting, and uses one acknowledgement deadline per sweep. Predecessor
-  lookup has a pending-only aggregate index. Fenced acknowledgements and inbox
+  lookup has a pending-only aggregate index; V4 supplies the claim-order index
+  and earlier automatic analyze eligibility. Monitor actual statistics freshness.
+  Fenced acknowledgements and inbox
   deduplication remain authoritative after lease takeover or uncertain delivery.
 - Historical migration copies a bounded keyset chunk in one SQL statement.
   Version guards prevent an older chunk from replacing a newer dual write;

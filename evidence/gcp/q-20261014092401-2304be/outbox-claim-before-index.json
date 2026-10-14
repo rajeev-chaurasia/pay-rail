@@ -1,0 +1,120 @@
+[
+  {
+    "Plan": {
+      "Node Type": "Limit",
+      "Parallel Aware": false,
+      "Async Capable": false,
+      "Startup Cost": 166765.45,
+      "Total Cost": 166766.7,
+      "Plan Rows": 100,
+      "Plan Width": 148,
+      "Plans": [
+        {
+          "Node Type": "LockRows",
+          "Parent Relationship": "Outer",
+          "Parallel Aware": false,
+          "Async Capable": false,
+          "Startup Cost": 166765.45,
+          "Total Cost": 168992.6,
+          "Plan Rows": 178172,
+          "Plan Width": 148,
+          "Plans": [
+            {
+              "Node Type": "Sort",
+              "Parent Relationship": "Outer",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Startup Cost": 166765.45,
+              "Total Cost": 167210.88,
+              "Plan Rows": 178172,
+              "Plan Width": 148,
+              "Sort Key": [
+                "e.created_at"
+              ],
+              "Plans": [
+                {
+                  "Node Type": "Hash Join",
+                  "Parent Relationship": "Outer",
+                  "Parallel Aware": false,
+                  "Async Capable": false,
+                  "Join Type": "Anti",
+                  "Startup Cost": 84546.69,
+                  "Total Cost": 159955.85,
+                  "Plan Rows": 178172,
+                  "Plan Width": 148,
+                  "Inner Unique": false,
+                  "Hash Cond": "(e.aggregate_id = prior.aggregate_id)",
+                  "Join Filter": "(prior.aggregate_sequence < e.aggregate_sequence)",
+                  "Plans": [
+                    {
+                      "Node Type": "Bitmap Heap Scan",
+                      "Parent Relationship": "Outer",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Relation Name": "outbox_events",
+                      "Alias": "e",
+                      "Startup Cost": 7351.61,
+                      "Total Cost": 79100.39,
+                      "Plan Rows": 198082,
+                      "Plan Width": 631,
+                      "Recheck Cond": "((available_at <= now()) AND (published_at IS NULL))",
+                      "Filter": "((lease_until IS NULL) OR (lease_until <= now()))",
+                      "Plans": [
+                        {
+                          "Node Type": "Bitmap Index Scan",
+                          "Parent Relationship": "Outer",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Index Name": "outbox_ready_idx",
+                          "Startup Cost": 0.0,
+                          "Total Cost": 7302.09,
+                          "Plan Rows": 198089,
+                          "Plan Width": 0,
+                          "Index Cond": "(available_at <= now())"
+                        }
+                      ]
+                    },
+                    {
+                      "Node Type": "Hash",
+                      "Parent Relationship": "Inner",
+                      "Parallel Aware": false,
+                      "Async Capable": false,
+                      "Startup Cost": 74718.72,
+                      "Total Cost": 74718.72,
+                      "Plan Rows": 198109,
+                      "Plan Width": 42,
+                      "Plans": [
+                        {
+                          "Node Type": "Seq Scan",
+                          "Parent Relationship": "Outer",
+                          "Parallel Aware": false,
+                          "Async Capable": false,
+                          "Relation Name": "outbox_events",
+                          "Alias": "prior",
+                          "Startup Cost": 0.0,
+                          "Total Cost": 74718.72,
+                          "Plan Rows": 198109,
+                          "Plan Width": 42,
+                          "Filter": "(published_at IS NULL)"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "JIT": {
+      "Functions": 19,
+      "Options": {
+        "Inlining": false,
+        "Optimization": false,
+        "Expressions": true,
+        "Deforming": true
+      }
+    }
+  }
+]

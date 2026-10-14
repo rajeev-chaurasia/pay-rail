@@ -1,0 +1,41 @@
+{
+  "accepted": 73573,
+  "dropped": 1427,
+  "duration_seconds": 15,
+  "elapsed_seconds": 15.013333961,
+  "go_version": "go1.25.3",
+  "logical_cpus": 8,
+  "offered": 75000,
+  "offered_rate": 5000,
+  "record_bytes": 24,
+  "run_id": "cloud-load-5000-stage",
+  "unexpected": 0,
+  "workers": 1024,
+  "statuses": {
+    "201": 73573
+  },
+  "p95_ms": 257.3693999999997,
+  "p99_ms": 378.67647999999963,
+  "accepted_by_start_second": {
+    "0": 5000,
+    "1": 5000,
+    "2": 4998,
+    "3": 5002,
+    "4": 5000,
+    "5": 4999,
+    "6": 5001,
+    "7": 4999,
+    "8": 5001,
+    "9": 4847,
+    "10": 4259,
+    "11": 4467,
+    "12": 5000,
+    "13": 5000,
+    "14": 4998,
+    "15": 2
+  },
+  "client_budget_passed": false,
+  "sustained_target_interval": false,
+  "sha256": "6e72ef0929db4443009eb900183bb687a4c344c25d726e3cfa7c5c275355b493",
+  "limits": "Create-only new mutations. Client gate only; database counts, reconciliation and outbox drain are additional required gates."
+}

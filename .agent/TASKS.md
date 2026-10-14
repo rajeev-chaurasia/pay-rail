@@ -151,7 +151,7 @@ including two new tampering tests. See `docs/postgres-recovery.md` for limits.
 
 ## PAY-008: temporary GCP scale qualification
 
-Status: preparing and deploying an isolated campaign in `medi-agent-490106`.
+Status: campaign completed and cloud resources cleaned; delivery review and CI pending.
 User approved a US$25 initial spend cap and absolute six-hour deletion limit.
 
 Acceptance: separate run-owned VPC, hosts and generator; no changes to existing
@@ -167,3 +167,22 @@ Preparation: 1,000 deterministic historical rows verified in disposable
 PostgreSQL; corrected open-loop producer accepted all 30 smoke arrivals with
 zero drops/errors; four new cloud scope/load validator cases passed. See
 `docs/gcp-qualification-plan.md` for cost, topology, runtime and cleanup bounds.
+
+PAY-008 evidence: 100M history objects fully reconciled, gated boundary reads
+and source fallback/rollback passed; one million paced HTTP fault actions passed
+with independent accounting snapshots. The earlier unpaced campaign failed and
+is retained. Five combined infrastructure rounds recovered unique settlements.
+A 2K/s 60-second create-only probe passed its client gate; 25K/s probes failed.
+The 30-minute migration stream missed four arrivals, and the inline stream missed
+114, so zero-downtime qualification remains open. Full-scale mid-chunk crash/resume
+was not performed. Post-overload outbox drain required index/statistics intervention.
+V4 adds a bounded-order pending index and earlier analyze eligibility. All owned
+cloud resources were removed at 14:05:15 UTC; existing service identities matched.
+See `docs/gcp-qualification-results.md` for raw scope, reproduction and limitations.
+
+Final local acceptance: pinned Docker verification passed 34 Java, 1 currency
+and 20 Python cases, formatting/style, all retained validators, package, Go vet,
+shell syntax and Compose variants. Independent validation recomputed both million
+action raw files, including the retained failed attempt. Existing Mediagent
+readiness conditions remained True after cleanup. Maintainer review/merge and
+production qualification remain separate.

@@ -1,0 +1,23 @@
+{
+  "attempted_actions": 1000000,
+  "class_counts": {
+    "1": 697508,
+    "2": 99626,
+    "3": 202866
+  },
+  "classes": {
+    "1": "duplicate capture replay",
+    "2": "fingerprint conflict",
+    "3": "discard committed response body then exact replay"
+  },
+  "counted_actions": 1000000,
+  "elapsed_seconds": 1000.014704044,
+  "failures": 0,
+  "fixture_count": 4096,
+  "go_version": "go1.25.3",
+  "logical_cpus": 8,
+  "offered_fault_rate": 1000,
+  "original_capture_response_losses": 4096,
+  "record_bytes": 96,
+  "seed": 42
+}

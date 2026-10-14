@@ -1,5 +1,11 @@
 # Local performance method and results
 
+The separately retained [2026-10-14 GCP campaign](gcp-qualification-results.md)
+adds a fully reconciled 100M synthetic history and one million observed HTTP
+fault actions. Its 25K/s probes and strict migration foreground gate failed;
+production and broad fault qualification remain open. Local results below
+retain their original workload and resource limits.
+
 The measurements use k6 1.3.0 from a pinned official Docker image. The runner
 starts an additional application and dedicated Redis instance, creates a fresh
 synthetic tenant and disables its API key afterward. It never resets the demo

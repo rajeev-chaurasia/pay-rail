@@ -1,0 +1,94 @@
+{
+  "observed_at": "2026-10-14T13:59:04.526179+00:00",
+  "queries": {
+    "load_mutations": "select jsonb_agg(to_jsonb(s)) from (select regexp_replace(i.idempotency_key,'-[0-9]+$','') run, count(*) committed, count(*) filter(where i.completed and i.response_status=201) completed_201, count(distinct p.id) unique_payments,count(*) filter(where v.source_id is not null and v.amount_minor=p.amount and v.source_version=p.version and v.lifecycle_status=p.status) matching_targets from idempotency_records i left join payment_intents p on p.tenant_id=i.tenant_id and p.id=i.response_body::jsonb->>'id' left join payment_intents_v2 v on v.tenant_id=p.tenant_id and v.source_id=p.id where i.tenant_id='tenant_demo' and (i.idempotency_key like 'cloud-load-%' or i.idempotency_key like 'cloud-live-backfill-%' or i.idempotency_key like 'cloud-healthy-%') group by 1 order by 1) s;",
+    "outbox": "select jsonb_agg(to_jsonb(s)) from (select tenant_id,count(*) events,count(*) filter(where published_at is null) unpublished from outbox_events group by tenant_id order by tenant_id) s;",
+    "fault_settlements": "select jsonb_build_object('payments',(select count(*) from payment_intents where tenant_id='tenant_faults'),'succeeded',(select count(*) from payment_intents where tenant_id='tenant_faults' and status='succeeded' and amount_received=1000),'journals',(select count(*) from ledger_transactions where tenant_id='tenant_faults'),'entries',(select count(*) from ledger_entries e join ledger_transactions j on j.id=e.ledger_transaction_id where j.tenant_id='tenant_faults'),'unbalanced',(select count(*) from (select e.ledger_transaction_id from ledger_entries e join ledger_transactions j on j.id=e.ledger_transaction_id where j.tenant_id='tenant_faults' group by e.ledger_transaction_id having sum(e.debit)<>sum(e.credit) or count(*)<>2) s));"
+  },
+  "results": {
+    "load_mutations": [
+      {
+        "run": "cloud-healthy-2000",
+        "committed": 120000,
+        "completed_201": 120000,
+        "unique_payments": 120000,
+        "matching_targets": 120000
+      },
+      {
+        "run": "cloud-healthy-25000",
+        "committed": 9381,
+        "completed_201": 9381,
+        "unique_payments": 9381,
+        "matching_targets": 9381
+      },
+      {
+        "run": "cloud-healthy-5000",
+        "committed": 66392,
+        "completed_201": 66392,
+        "unique_payments": 66392,
+        "matching_targets": 66392
+      },
+      {
+        "run": "cloud-live-backfill-100",
+        "committed": 179996,
+        "completed_201": 179996,
+        "unique_payments": 179996,
+        "matching_targets": 179996
+      },
+      {
+        "run": "cloud-load-2000-stage",
+        "committed": 60000,
+        "completed_201": 60000,
+        "unique_payments": 60000,
+        "matching_targets": 60000
+      },
+      {
+        "run": "cloud-load-25000-stage",
+        "committed": 30640,
+        "completed_201": 30640,
+        "unique_payments": 30640,
+        "matching_targets": 30640
+      },
+      {
+        "run": "cloud-load-500",
+        "committed": 17351,
+        "completed_201": 17351,
+        "unique_payments": 17351,
+        "matching_targets": 17351
+      },
+      {
+        "run": "cloud-load-500-isolated",
+        "committed": 15000,
+        "completed_201": 15000,
+        "unique_payments": 15000,
+        "matching_targets": 15000
+      },
+      {
+        "run": "cloud-load-5000-stage",
+        "committed": 73573,
+        "completed_201": 73573,
+        "unique_payments": 73573,
+        "matching_targets": 73573
+      }
+    ],
+    "outbox": [
+      {
+        "events": 724737,
+        "tenant_id": "tenant_demo",
+        "unpublished": 0
+      },
+      {
+        "events": 24768,
+        "tenant_id": "tenant_faults",
+        "unpublished": 0
+      }
+    ],
+    "fault_settlements": {
+      "entries": 16512,
+      "journals": 8256,
+      "payments": 8256,
+      "succeeded": 8256,
+      "unbalanced": 0
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "accepted": 120000,
+  "dropped": 0,
+  "duration_seconds": 60,
+  "elapsed_seconds": 60.011962637,
+  "go_version": "go1.25.3",
+  "logical_cpus": 8,
+  "offered": 120000,
+  "offered_rate": 2000,
+  "record_bytes": 24,
+  "run_id": "cloud-healthy-2000",
+  "unexpected": 0,
+  "workers": 512
+}

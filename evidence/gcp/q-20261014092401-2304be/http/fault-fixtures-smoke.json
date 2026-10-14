@@ -1,0 +1,390 @@
+{
+  "project": "payrail-qual-q-20261014092401-2304be",
+  "tenant": "tenant_faults",
+  "fixtures": [
+    {
+      "id": "pi_mv815n802bc9e85c04d44cf7",
+      "create_key": "fault-smoke-create-0",
+      "capture_key": "fault-smoke-capture-0",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815na454bee898a81245c4",
+      "create_key": "fault-smoke-create-1",
+      "capture_key": "fault-smoke-capture-1",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815n5eff94a8039f30452c",
+      "create_key": "fault-smoke-create-2",
+      "capture_key": "fault-smoke-capture-2",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815n8pd794066e932844df",
+      "create_key": "fault-smoke-create-3",
+      "capture_key": "fault-smoke-capture-3",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nba35be71ffb969448d",
+      "create_key": "fault-smoke-create-4",
+      "capture_key": "fault-smoke-capture-4",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815n8fe058413a207c47bd",
+      "create_key": "fault-smoke-create-5",
+      "capture_key": "fault-smoke-capture-5",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815n7xefa1b918805a4df6",
+      "create_key": "fault-smoke-create-6",
+      "capture_key": "fault-smoke-capture-6",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815n7y4ba669d6421f4938",
+      "create_key": "fault-smoke-create-7",
+      "capture_key": "fault-smoke-capture-7",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nasc9ffc16b23014de6",
+      "create_key": "fault-smoke-create-8",
+      "capture_key": "fault-smoke-capture-8",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nbfb9007b45d2684b1d",
+      "create_key": "fault-smoke-create-9",
+      "capture_key": "fault-smoke-capture-9",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815n9x2c72ab507cbc4dc6",
+      "create_key": "fault-smoke-create-10",
+      "capture_key": "fault-smoke-capture-10",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815n8i92c482cd95de4202",
+      "create_key": "fault-smoke-create-11",
+      "capture_key": "fault-smoke-capture-11",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nb73d5cffb4a56d46b2",
+      "create_key": "fault-smoke-create-12",
+      "capture_key": "fault-smoke-capture-12",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nb194cfe1576782455e",
+      "create_key": "fault-smoke-create-13",
+      "capture_key": "fault-smoke-capture-13",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nb5058ffe60a54a4625",
+      "create_key": "fault-smoke-create-14",
+      "capture_key": "fault-smoke-capture-14",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815na866a6ec1d9c374fac",
+      "create_key": "fault-smoke-create-15",
+      "capture_key": "fault-smoke-capture-15",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nam872162d70b484e9e",
+      "create_key": "fault-smoke-create-16",
+      "capture_key": "fault-smoke-capture-16",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nbb85aaa57d69224169",
+      "create_key": "fault-smoke-create-17",
+      "capture_key": "fault-smoke-capture-17",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815n9gaf54e4d10fa344b1",
+      "create_key": "fault-smoke-create-18",
+      "capture_key": "fault-smoke-capture-18",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nat3861bbbe3984469b",
+      "create_key": "fault-smoke-create-19",
+      "capture_key": "fault-smoke-capture-19",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nbxf7203223e96f4dd4",
+      "create_key": "fault-smoke-create-20",
+      "capture_key": "fault-smoke-capture-20",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nb93b57c6bea264493e",
+      "create_key": "fault-smoke-create-21",
+      "capture_key": "fault-smoke-capture-21",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nb28242d5c2390c4ba2",
+      "create_key": "fault-smoke-create-22",
+      "capture_key": "fault-smoke-capture-22",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815naz51f909af981341d6",
+      "create_key": "fault-smoke-create-23",
+      "capture_key": "fault-smoke-capture-23",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nage342e68847634f9c",
+      "create_key": "fault-smoke-create-24",
+      "capture_key": "fault-smoke-capture-24",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815n9z6a993484af684037",
+      "create_key": "fault-smoke-create-25",
+      "capture_key": "fault-smoke-capture-25",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nbg990431d08b6c46ff",
+      "create_key": "fault-smoke-create-26",
+      "capture_key": "fault-smoke-capture-26",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nbi27e2b8ec656f4268",
+      "create_key": "fault-smoke-create-27",
+      "capture_key": "fault-smoke-capture-27",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nb75e15111c9c0348c5",
+      "create_key": "fault-smoke-create-28",
+      "capture_key": "fault-smoke-capture-28",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nasa191b0ca66364477",
+      "create_key": "fault-smoke-create-29",
+      "capture_key": "fault-smoke-capture-29",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nbea992e091da1740f6",
+      "create_key": "fault-smoke-create-30",
+      "capture_key": "fault-smoke-capture-30",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nb792aff091b8214cd4",
+      "create_key": "fault-smoke-create-31",
+      "capture_key": "fault-smoke-capture-31",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815n6e278f15e0112646ec",
+      "create_key": "fault-smoke-create-32",
+      "capture_key": "fault-smoke-capture-32",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815n782c33865deb5648e3",
+      "create_key": "fault-smoke-create-33",
+      "capture_key": "fault-smoke-capture-33",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815n8b2a97afd2add741af",
+      "create_key": "fault-smoke-create-34",
+      "capture_key": "fault-smoke-capture-34",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815n8gf3c356f45b0a4969",
+      "create_key": "fault-smoke-create-35",
+      "capture_key": "fault-smoke-capture-35",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815n8yed61e6568e70424f",
+      "create_key": "fault-smoke-create-36",
+      "capture_key": "fault-smoke-capture-36",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815n9q7cadee1d7b974c44",
+      "create_key": "fault-smoke-create-37",
+      "capture_key": "fault-smoke-capture-37",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815na78b314d0e07244814",
+      "create_key": "fault-smoke-create-38",
+      "capture_key": "fault-smoke-capture-38",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815n9p0ff9252204e34efd",
+      "create_key": "fault-smoke-create-39",
+      "capture_key": "fault-smoke-capture-39",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815n9o415f7c93dc39449d",
+      "create_key": "fault-smoke-create-40",
+      "capture_key": "fault-smoke-capture-40",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815n9u70d0af6affe3465e",
+      "create_key": "fault-smoke-create-41",
+      "capture_key": "fault-smoke-capture-41",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nag2c9b4d37cd7746b7",
+      "create_key": "fault-smoke-create-42",
+      "capture_key": "fault-smoke-capture-42",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815naa3fd5cf21a487415f",
+      "create_key": "fault-smoke-create-43",
+      "capture_key": "fault-smoke-capture-43",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815naz067f03f1e4214316",
+      "create_key": "fault-smoke-create-44",
+      "capture_key": "fault-smoke-capture-44",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nbqbe6d99dbcfee4030",
+      "create_key": "fault-smoke-create-45",
+      "capture_key": "fault-smoke-capture-45",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nbn701defdc54b44fde",
+      "create_key": "fault-smoke-create-46",
+      "capture_key": "fault-smoke-capture-46",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nbm4a7a8dc3e53e4e76",
+      "create_key": "fault-smoke-create-47",
+      "capture_key": "fault-smoke-capture-47",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nbee748a5c52c62480f",
+      "create_key": "fault-smoke-create-48",
+      "capture_key": "fault-smoke-capture-48",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nbf6a0d6fe7822c470f",
+      "create_key": "fault-smoke-create-49",
+      "capture_key": "fault-smoke-capture-49",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nbs96e3f06608244204",
+      "create_key": "fault-smoke-create-50",
+      "capture_key": "fault-smoke-capture-50",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nbj729ed683e6824025",
+      "create_key": "fault-smoke-create-51",
+      "capture_key": "fault-smoke-capture-51",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nbz47c1b8f532424863",
+      "create_key": "fault-smoke-create-52",
+      "capture_key": "fault-smoke-capture-52",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nbyef0edb08656541d2",
+      "create_key": "fault-smoke-create-53",
+      "capture_key": "fault-smoke-capture-53",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nbpb5c9df1a3ff74a8f",
+      "create_key": "fault-smoke-create-54",
+      "capture_key": "fault-smoke-capture-54",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nblc40709dcf9244cff",
+      "create_key": "fault-smoke-create-55",
+      "capture_key": "fault-smoke-capture-55",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nbz052a661b6421410e",
+      "create_key": "fault-smoke-create-56",
+      "capture_key": "fault-smoke-capture-56",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nbz2817f0bd65d24358",
+      "create_key": "fault-smoke-create-57",
+      "capture_key": "fault-smoke-capture-57",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nbyc1d76d46a84b4d0e",
+      "create_key": "fault-smoke-create-58",
+      "capture_key": "fault-smoke-capture-58",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nc2110416bc9dea420a",
+      "create_key": "fault-smoke-create-59",
+      "capture_key": "fault-smoke-capture-59",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815nbv297ac75b2fbd4b2b",
+      "create_key": "fault-smoke-create-60",
+      "capture_key": "fault-smoke-capture-60",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815ne6386413cc90c74714",
+      "create_key": "fault-smoke-create-61",
+      "capture_key": "fault-smoke-capture-61",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815ndk35ce7276fc7546ba",
+      "create_key": "fault-smoke-create-62",
+      "capture_key": "fault-smoke-capture-62",
+      "capture_sha256": ""
+    },
+    {
+      "id": "pi_mv815ne9b8896bad33d14a4d",
+      "create_key": "fault-smoke-create-63",
+      "capture_key": "fault-smoke-capture-63",
+      "capture_sha256": ""
+    }
+  ]
+}

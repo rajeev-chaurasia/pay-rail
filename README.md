@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/rajeev-chaurasia/pay-rail/actions/workflows/ci.yml/badge.svg)](https://github.com/rajeev-chaurasia/pay-rail/actions/workflows/ci.yml)
 
-PayRail is a runnable Java 17 / Spring Boot 3.5 payment-intent service. PostgreSQL is authoritative for payment state, idempotency, the immutable double-entry ledger, migration state, and the transactional outbox. Kafka carries ordered aggregate events and provider commands. Redis enforces an atomic per-tenant request limit.
+PayRail is a runnable Java 17 / Spring Boot 4.1.1 payment-intent service. PostgreSQL is authoritative for payment state, idempotency, the immutable double-entry ledger, migration state, and the transactional outbox. Kafka carries ordered aggregate events and provider commands. Redis enforces an atomic per-tenant request limit.
 
 This is a simulated rail: it accepts integer minor-unit amounts and never handles card data or moves real money.
 
@@ -11,6 +11,18 @@ Contributor setup, required checks and review conventions are in
 contributor contract. [Evidence](docs/evidence.md) explains the concurrency
 experiment and independent result validation; [known limits](docs/known-misses.md)
 separate local behavior from remaining qualification work.
+
+## Measured GCP campaign
+
+An isolated temporary campaign reconciled **100,000,000 synthetic historical
+payment objects** with zero differences and passed **1,000,000 observed HTTP
+fault actions** across duplicate captures, fingerprint conflicts and discarded
+committed responses. Five infrastructure recovery schedules also passed.
+
+A short create-only run accepted **2,000/s for 60 seconds**. The 25K/s probes
+failed, and four dropped arrivals in the 30-minute migration stream prevent a
+zero-downtime claim. These results do not establish production readiness.
+See [workloads, failures, raw evidence and cleanup](docs/gcp-qualification-results.md).
 
 ## Run locally
 

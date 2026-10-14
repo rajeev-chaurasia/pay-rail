@@ -1,0 +1,82 @@
+{
+  "project": "medi-agent-490106",
+  "run": "q-20261014092401-2304be",
+  "prefix": "payrail-qual-q-20261014092401-2304be",
+  "zone": "us-central1-a",
+  "region": "us-central1",
+  "approved_spend_usd": 25,
+  "maximum_runtime_hours": 6,
+  "created_at": "2026-10-14T09:24:02.241305+00:00",
+  "expires_at": "2026-10-14T15:24:02.241337+00:00",
+  "baseline": {
+    "cloud_run": [
+      {
+        "name": "mediagent-backend",
+        "uid": "b5bfad8a-6d78-4ee3-8177-30c40c9cefc1",
+        "revision": "mediagent-backend-00144-g4s"
+      }
+    ],
+    "instances": [],
+    "disks": []
+  },
+  "resources": [
+    {
+      "kind": "networks",
+      "name": "payrail-qual-q-20261014092401-2304be",
+      "id": "186955965166449881"
+    },
+    {
+      "kind": "networks subnets",
+      "name": "payrail-qual-q-20261014092401-2304be",
+      "region": "us-central1",
+      "id": "4986582618526119080"
+    },
+    {
+      "kind": "firewall-rules",
+      "name": "payrail-qual-q-20261014092401-2304be-iap",
+      "id": "6316922547751548094"
+    },
+    {
+      "kind": "firewall-rules",
+      "name": "payrail-qual-q-20261014092401-2304be-load",
+      "id": "6943407999627228342"
+    },
+    {
+      "kind": "instances",
+      "name": "payrail-qual-q-20261014092401-2304be-server",
+      "zone": "us-central1-a",
+      "id": "1103135822990996618"
+    },
+    {
+      "kind": "disks",
+      "name": "payrail-qual-q-20261014092401-2304be-server",
+      "zone": "us-central1-a",
+      "id": "24541922897097866"
+    },
+    {
+      "kind": "instances",
+      "name": "payrail-qual-q-20261014092401-2304be-generator",
+      "zone": "us-central1-a",
+      "id": "7880190622297158812"
+    },
+    {
+      "kind": "disks",
+      "name": "payrail-qual-q-20261014092401-2304be-generator",
+      "zone": "us-central1-a",
+      "id": "2793457100395836572"
+    }
+  ],
+  "state": "cleaned",
+  "baseline_after": {
+    "cloud_run": [
+      {
+        "name": "mediagent-backend",
+        "uid": "b5bfad8a-6d78-4ee3-8177-30c40c9cefc1",
+        "revision": "mediagent-backend-00144-g4s"
+      }
+    ],
+    "instances": [],
+    "disks": []
+  },
+  "cleaned_at": "2026-10-14T14:05:15.078482+00:00"
+}

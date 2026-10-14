@@ -1,0 +1,14 @@
+{
+  "index_sql": "src/main/resources/db/migration/V4__outbox_claim_order_index.sql",
+  "cloud_applied_only_index": true,
+  "cloud_autovacuum_table_options_applied": false,
+  "observed_index_build_lock_timeouts": true,
+  "invalid_index_removed_before_retry": true,
+  "application_maintenance_interval_utc": [
+    "2026-10-14T13:46:27Z",
+    "2026-10-14T13:46:44Z"
+  ],
+  "stale_claim_queries_canceled": 2,
+  "operator_analyze_outbox": true,
+  "scope": "Run-owned synthetic database only. Maintenance is outside original traffic measurements. Local V4 additionally lowers analyze eligibility; automatic maintenance under sustained cloud traffic is not qualified."
+}

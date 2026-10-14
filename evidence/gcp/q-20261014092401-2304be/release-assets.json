@@ -1,0 +1,14 @@
+[
+  {
+    "name": "fault-million-paced.bin.gz",
+    "bytes": 43268704,
+    "sha256": "6db5f507baebcc3f41ce4a2d7eb4a486168a0c90e12e181a027937d408c2d580",
+    "url": "https://github.com/rajeev-chaurasia/pay-rail/releases/download/benchmark-20261014/fault-million-paced.bin.gz"
+  },
+  {
+    "name": "fault-million.bin.gz",
+    "bytes": 42308168,
+    "sha256": "a1ed2b33cad1aee3d24f03715fda2e229687d156623da513d8b1b12025377558",
+    "url": "https://github.com/rajeev-chaurasia/pay-rail/releases/download/benchmark-20261014/fault-million.bin.gz"
+  }
+]

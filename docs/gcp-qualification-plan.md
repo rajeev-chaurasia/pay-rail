@@ -94,3 +94,11 @@ Any larger host, longer runtime or spend-limit increase requires a new decision.
 
 This deployment is a synthetic qualification environment. It does not process
 real funds or certify production readiness merely by running in GCP.
+
+## Recorded outcome
+
+The authorized run was explicitly cleaned at 14:05:15 UTC on 2026-10-14, before
+the absolute six-hour backstop. Both VMs and auto-delete disks, custom firewalls,
+subnet and VPC were removed. Existing Cloud Run revision/identity and baseline
+VM/disk identities matched after cleanup. See [results and exact limits](gcp-qualification-results.md)
+and the retained lifecycle manifest. Raw credentials and SSH keys are not evidence.
