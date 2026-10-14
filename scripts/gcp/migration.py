@@ -77,6 +77,7 @@ def main():
     sql(
         "insert into tenants(id,name) values ('tenant_migration','Synthetic migration fixture') on conflict do nothing;"
     )
+    sql("update migration_checkpoints set cutover_ready=false where migration_name='payment_intents_v2_backfill';")
     existing = int(
         sql("select count(*) from payment_intents where tenant_id='tenant_migration';")
     )
