@@ -61,7 +61,8 @@ evidence validation passed. See `docs/playground.md` and `docs/verification.md`.
 
 ## PAY-004: full flow audit and measured local performance
 
-Status: locally verified; review and remote CI for this audit are pending.
+Status: locally verified and published in PR #2. GitHub push and pull-request
+CI passed on audit commit `ba6fe8e`; maintainer review and merge remain pending.
 Qualification-scale targets remain separate.
 
 Acceptance: expanded HTTP authorization, validation, lifecycle, refund race,

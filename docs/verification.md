@@ -92,3 +92,8 @@ passed; stress delivery did not drain within its five-minute budget.
 `npm run check`, repository style, SQL-backed concurrency evidence, performance
 artifact recomputation, README number validation, Python harness checks, shell
 syntax and Compose validation passed. Qualification-scale targets remain unmeasured.
+
+Remote audit validation: [PR #2](https://github.com/rajeev-chaurasia/pay-rail/pull/2)
+passed both push and pull-request CI on commit `ba6fe8e`, including the twenty
+Java integration tests and retained evidence checks. Review and merge remain
+maintainer gates.
