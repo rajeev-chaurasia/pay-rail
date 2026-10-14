@@ -1,0 +1,53 @@
+{
+  "accepted_mutating_http_responses_including_replays": 5129,
+  "acknowledged_created_intents": 5129,
+  "committed_creates_without_acknowledgement": 500,
+  "completed_workflows": 5129,
+  "created_intents": 5629,
+  "created_intents_per_offered_second": 1125.8,
+  "drain_seconds": 16.730592,
+  "dropped_iterations": 44044,
+  "duration_seconds": 5,
+  "failed_checks": 0,
+  "financial_invariant_failures": [],
+  "http_statuses": {
+    "201": 5129
+  },
+  "invariant_failures": [],
+  "journals": 0,
+  "latency_ms": {
+    "max": 581.990459,
+    "p50": 143.5375,
+    "p95": 327.8869497999999,
+    "p99": 405.3751047600001
+  },
+  "nominal_rate": 25000,
+  "offered_iterations": 125000,
+  "operations": {
+    "create": {
+      "max_ms": 581.990459,
+      "p50_ms": 143.5375,
+      "p95_ms": 327.8869497999999,
+      "p99_ms": 405.3751047600001,
+      "requests": 5129
+    }
+  },
+  "outbox_events": 5629,
+  "pending_events_at_snapshot": 0,
+  "profile": "target-probe",
+  "published_events": 5629,
+  "qualification_failures": [
+    "committed creates lack an acknowledged success response",
+    "no resource observations",
+    "offered iterations dropped",
+    "incomplete workflows",
+    "offered schedule not delivered",
+    "k6 threshold or execution failure"
+  ],
+  "qualified": false,
+  "refunds": 0,
+  "requests": 5129,
+  "resource_observations": 0,
+  "run_id": "20261014T004622-target-probe-43db10",
+  "started_workflows": 5629
+}

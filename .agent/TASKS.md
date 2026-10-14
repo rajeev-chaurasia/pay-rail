@@ -62,7 +62,7 @@ evidence validation passed. See `docs/playground.md` and `docs/verification.md`.
 ## PAY-004: full flow audit and measured local performance
 
 Status: locally verified and published in PR #2. GitHub push and pull-request
-CI passed on audit commit `ba6fe8e`; maintainer review and merge remain pending.
+CI passed on audit commit `ba6fe8e`; merged to main with passing merge CI.
 Qualification-scale targets remain separate.
 
 Acceptance: expanded HTTP authorization, validation, lifecycle, refund race,
@@ -83,3 +83,24 @@ journals and 116 refunds with zero accounting/migration mismatch. Higher rates
 did not meet declared capacity budgets and remain retained as unqualified runs.
 README architecture, coverage matrix, reproducible scripts, raw observations,
 independent report rendering, GitHub description and topics are updated.
+
+## PAY-005: production safeguards and Docker qualification
+
+Status: locally verified; review and remote CI are delivery gates. Production
+release and qualification-scale gates remain open.
+
+Acceptance: complete verification runs in Docker; bounded batched outbox lanes
+retain fencing and ordered heads; pending predecessor lookup has a concurrent
+index; set-based backfill preserves atomic checkpoints and version guards;
+real PostgreSQL runtime-role grants are exercised; production configuration
+fails closed on insecure settings; Prometheus exports actual backlog/freshness;
+repeated sustained, mixed, stress and bounded target-probe evidence is retained
+with unchanged budgets. Document infrastructure and provider qualification gaps.
+
+Evidence: 34 Java, 1 currency and 11 Python validator tests; source-first lock
+race after an observed deadlock negative control; byte-exact cross-runtime
+replay; real poison quarantine and subsequent settlement; one million completion
+calls including 999,999 duplicates; paired 100-arrivals/s and stepped stress
+passes. Bounded 25K probes fail, and a 100M storage preflight prevents seeding.
+Runtime high/critical vulnerability gate passes with remaining OS findings
+retained. See `docs/production-readiness.md` for exact scopes and open gates.

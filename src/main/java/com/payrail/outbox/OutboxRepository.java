@@ -25,7 +25,7 @@ public class OutboxRepository {
   }
 
   public List<Event> claim(int size) {
-    int batchSize = Math.min(size, 1);
+    int batchSize = Math.max(1, Math.min(size, 100));
     return transactions.execute(
         s -> {
           List<Event> base =

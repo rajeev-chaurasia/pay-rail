@@ -33,3 +33,10 @@ inspection controller/service/repository returns sanitized persisted journal,
 event and provider observations. Admin migration requests use a separately
 entered credential; browser actions never bypass existing authorization or
 idempotency. See `docs/playground.md` for recovery and snapshot limitations.
+
+Provider retry exhaustion publishes acknowledged quarantine records before
+recovery can resolve the failed offset. Publication failure leaves recovery
+unresolved. A quarantined payment is not marked failed or settled; operator
+reconciliation decides subsequent replay. The production profile uses separate
+DDL/runtime identities and private management endpoints. See
+`docs/production-readiness.md` and `docs/adr/001-security-runtime-upgrade.md`.

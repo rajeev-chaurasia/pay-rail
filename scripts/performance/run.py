@@ -7,6 +7,7 @@ import gzip
 import hashlib
 import http.client
 import json
+import os
 from pathlib import Path
 import platform
 import subprocess
@@ -17,6 +18,7 @@ import urllib.request
 import uuid
 
 ROOT = Path(__file__).resolve().parents[2]
+HOST_ROOT = Path(os.environ.get("PAYRAIL_HOST_WORKSPACE", ROOT))
 K6_IMAGE = "grafana/k6:1.3.0"
 PROFILES = [
     ("smoke", 10, 15),
@@ -27,6 +29,7 @@ PROFILES = [
     ("baseline-a", 25, 60),
     ("baseline-b", 25, 60),
     ("mixed-baseline", 2, 60),
+    ("target-probe", 25000, 5),
 ]
 
 
@@ -109,6 +112,9 @@ def environment(names):
         ROOT / "scripts/performance/run.py",
         ROOT / "scripts/performance/snapshot.sql",
     ]
+    sources += [ROOT / "Dockerfile", ROOT / "Dockerfile.verify"]
+    sources += sorted((ROOT / "src/main/resources").glob("application*.yml"))
+    sources += sorted((ROOT / "src/main/resources/db/migration").glob("*.conf"))
     sources += sorted((ROOT / "src/main/java").rglob("*.java")) + sorted(
         (ROOT / "src/main/resources/db/migration").glob("*.sql")
     )
@@ -287,9 +293,9 @@ def run_profile(config, profile):
         "--user",
         "0:0",
         "-v",
-        f"{ROOT}/scripts:/scripts:ro",
+        f"{HOST_ROOT}/scripts:/scripts:ro",
         "-v",
-        f"{directory.resolve()}:/results",
+        f"{HOST_ROOT / directory.resolve().relative_to(ROOT)}:/results",
         "-e",
         f"PAYRAIL_URL=http://{config['app']}:8080",
         "-e",
@@ -297,7 +303,7 @@ def run_profile(config, profile):
         "-e",
         f"PAYRAIL_RUN_ID={run_id}",
         "-e",
-        f"PAYRAIL_PROFILE={'mixed' if label in {'mixed', 'mixed-baseline'} else 'stress' if label == 'stress' else 'sustained'}",
+        f"PAYRAIL_PROFILE={'mixed' if label in {'mixed', 'mixed-baseline'} else label if label in {'stress', 'target-probe'} else 'sustained'}",
         "-e",
         f"PAYRAIL_RATE={rate}",
         "-e",
@@ -425,7 +431,9 @@ def main():
     config = {
         "app": app,
         "redis": redis,
-        "url": "http://localhost:18081",
+        "url": f"http://{app}:8080"
+        if os.environ.get("PAYRAIL_CONTAINERIZED") == "true"
+        else "http://localhost:18081",
         "output": args.output,
         "containers": [
             "payrail-postgres-1",

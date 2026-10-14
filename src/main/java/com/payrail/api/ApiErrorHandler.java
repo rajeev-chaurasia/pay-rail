@@ -26,6 +26,12 @@ public class ApiErrorHandler {
     return error(HttpStatus.BAD_REQUEST, "invalid_request", e.getMessage());
   }
 
+  @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
+  ResponseEntity<?> malformedBody() {
+    return error(
+        HttpStatus.BAD_REQUEST, "invalid_request", "Request body must match the JSON contract");
+  }
+
   private ResponseEntity<?> error(HttpStatus status, String code, String message) {
     return ResponseEntity.status(status)
         .body(

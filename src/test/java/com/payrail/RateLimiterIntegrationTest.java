@@ -14,8 +14,8 @@ import java.util.concurrent.Executors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -33,6 +33,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
       "payrail.rate-limit.enabled=true",
       "payrail.rate-limit.requests-per-minute=2",
       "payrail.outbox.enabled=false",
+      "spring.kafka.admin.auto-create=false",
       "spring.kafka.listener.auto-startup=false"
     })
 class RateLimiterIntegrationTest {

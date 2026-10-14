@@ -1,0 +1,45 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+     execution: local
+        script: /scripts/load.js
+        output: json (/results/raw.json.gz)
+
+     scenarios: (100.00%) 1 scenario, 500 max VUs, 35s max duration (incl. graceful stop):
+              * workload: 25000.00 iterations/s for 5s (maxVUs: 50-500, gracefulStop: 30s)
+
+
+running (01.0s), 500/500 VUs, 2479 complete and 0 interrupted iterations
+workload   [  20% ] 500/500 VUs  1.0s/5s  25000.00 iters/s
+
+running (02.0s), 499/500 VUs, 5125 complete and 0 interrupted iterations
+workload   [  40% ] 499/500 VUs  2.0s/5s  25000.00 iters/s
+{
+  "profile": "target-probe",
+  "requests": {
+    "count": 5129,
+    "rate": 2528.5972367576164
+  },
+  "latency": {
+    "p(95)": 327.88694979999997,
+    "p(99)": 405.37510475999994,
+    "avg": 159.76065018892587,
+    "min": 3.976583,
+    "med": 143.5375,
+    "max": 581.990459
+  },
+  "unexpected": {
+    "count": 0,
+    "rate": 0
+  }
+}
+
+running (02.0s), 000/500 VUs, 5129 complete and 500 interrupted iterations
+workload ✗ [  40% ] 382/500 VUs  2.0s/5s  25000.00 iters/s
+
+time="2026-10-14T00:46:23Z" level=warning msg="Insufficient VUs, reached 500 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=workload
+time="2026-10-14T00:46:25Z" level=error msg="thresholds on metrics 'dropped_iterations' were crossed; at least one has abortOnFail enabled, stopping test prematurely"

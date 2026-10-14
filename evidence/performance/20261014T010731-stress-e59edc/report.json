@@ -1,0 +1,46 @@
+{
+  "accepted_mutating_http_responses_including_replays": 28899,
+  "acknowledged_created_intents": 28899,
+  "committed_creates_without_acknowledgement": 0,
+  "completed_workflows": 28899,
+  "created_intents": 28899,
+  "created_intents_per_offered_second": 466.11290322580646,
+  "drain_seconds": 35.479868,
+  "dropped_iterations": 0,
+  "duration_seconds": 62,
+  "failed_checks": 0,
+  "financial_invariant_failures": [],
+  "http_statuses": {
+    "201": 28899
+  },
+  "invariant_failures": [],
+  "journals": 0,
+  "latency_ms": {
+    "max": 273.105458,
+    "p50": 1.05325,
+    "p95": 3.329542,
+    "p99": 14.041957000000004
+  },
+  "nominal_rate": 200,
+  "offered_iterations": 28900,
+  "operations": {
+    "create": {
+      "max_ms": 273.105458,
+      "p50_ms": 1.05325,
+      "p95_ms": 3.329542,
+      "p99_ms": 14.041957000000004,
+      "requests": 28899
+    }
+  },
+  "outbox_events": 28899,
+  "pending_events_at_snapshot": 0,
+  "profile": "stress",
+  "published_events": 28899,
+  "qualification_failures": [],
+  "qualified": true,
+  "refunds": 0,
+  "requests": 28899,
+  "resource_observations": 48,
+  "run_id": "20261014T010731-stress-e59edc",
+  "started_workflows": 28899
+}

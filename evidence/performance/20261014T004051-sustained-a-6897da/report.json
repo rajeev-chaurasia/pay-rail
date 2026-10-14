@@ -1,0 +1,46 @@
+{
+  "accepted_mutating_http_responses_including_replays": 6001,
+  "acknowledged_created_intents": 6001,
+  "committed_creates_without_acknowledgement": 0,
+  "completed_workflows": 6001,
+  "created_intents": 6001,
+  "created_intents_per_offered_second": 100.01666666666667,
+  "drain_seconds": 0.0,
+  "dropped_iterations": 0,
+  "duration_seconds": 60,
+  "failed_checks": 0,
+  "financial_invariant_failures": [],
+  "http_statuses": {
+    "201": 6001
+  },
+  "invariant_failures": [],
+  "journals": 0,
+  "latency_ms": {
+    "max": 96.940625,
+    "p50": 2.192792,
+    "p95": 4.870583,
+    "p99": 11.722791
+  },
+  "nominal_rate": 100,
+  "offered_iterations": 6000,
+  "operations": {
+    "create": {
+      "max_ms": 96.940625,
+      "p50_ms": 2.192792,
+      "p95_ms": 4.870583,
+      "p99_ms": 11.722791,
+      "requests": 6001
+    }
+  },
+  "outbox_events": 6001,
+  "pending_events_at_snapshot": 0,
+  "profile": "sustained-a",
+  "published_events": 6001,
+  "qualification_failures": [],
+  "qualified": true,
+  "refunds": 0,
+  "requests": 6001,
+  "resource_observations": 42,
+  "run_id": "20261014T004051-sustained-a-6897da",
+  "started_workflows": 6001
+}

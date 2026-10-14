@@ -67,3 +67,13 @@ Correctness experiments need raw observations and an independent validator.
 Concurrency experiments must show overlapping attempts, not only repeated
 requests. A deliberately broken control must fail under the same harness.
 Keep controls in test code; production cannot disable correctness guards.
+
+The complete verification path can run without host Java/Node/Python installs:
+
+```sh
+docker compose -p payrail --profile test build verify
+docker compose -p payrail --profile test run --rm verify
+```
+
+The trusted verification container mounts the local Docker socket to start
+its own test containers. The application runtime never receives that socket.

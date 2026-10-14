@@ -5,29 +5,12 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7.0.1
-      - uses: actions/setup-java@v6.0.1
-        with: {distribution: temurin, java-version: '17', cache: maven}
-      - uses: actions/setup-node@v7.1.0
-        with: {node-version: '22', cache: npm}
-      - name: Playground source checks
-        run: npm ci --ignore-scripts && npm run check
-      - name: Repository style and secret-file guard
-        run: python3 scripts/check_style.py --self-test
-      - name: Format, test and package
-        run: mvn --batch-mode verify
-      - name: Validate retained experiment evidence
-        run: python3 scripts/validate_concurrency_evidence.py --self-test
-      - name: Validate performance evidence and adversarial checks
-        run: |
-          python3 -m unittest discover -s scripts/performance -p 'test_*.py'
-          python3 scripts/performance/validate.py --allow-unqualified
-          python3 scripts/performance/render.py --check
-      - name: Check Python harness syntax
-        run: python3 -m compileall -q scripts/performance scripts/flow-smoke.py scripts/kafka-recovery.py
-      - name: Validate Compose configuration
-        run: docker compose -p payrail config --quiet
-      - name: Check shell syntax
-        run: bash -n scripts/*.sh
+      - name: Build pinned verification toolchain
+        run: docker compose -p payrail --profile test build verify
+      - name: Verify sources, real infrastructure tests and retained evidence
+        run: docker compose -p payrail --profile test run --rm verify
+      - name: Build runtime and reject known high or critical vulnerabilities
+        run: docker compose -p payrail build app && ./scripts/security-scan.sh

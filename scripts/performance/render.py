@@ -30,7 +30,9 @@ def section():
         )
         result = "Pass" if report["qualified"] else "Not qualified"
         link = f"evidence/performance/{report['run_id']}/report.json"
-        rows.append(f"| [{label}]({link}) | {work} | {latency} | {result} |")
+        rows.append(
+            f"| [{label} ({report['run_id'].split('-')[-1]})]({link}) | {work} | {latency} | {result} |"
+        )
     baseline = []
     for label in ["baseline-a", "baseline-b"]:
         candidates = [r for r in reports if r["profile"] == label and r["qualified"]]

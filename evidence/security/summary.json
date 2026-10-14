@@ -1,0 +1,57 @@
+{
+  "runtime-after.json.gz": {
+    "image": "sha256:3620630ca5f753548782dd1ef0c3f7835b2f004095dcdb2fbfb7ceb36a97023d",
+    "observed_at": "2026-10-14T01:02:01.135239217Z",
+    "counts": {
+      "UNKNOWN": 0,
+      "LOW": 4,
+      "MEDIUM": 40,
+      "HIGH": 0,
+      "CRITICAL": 0
+    }
+  },
+  "runtime-before.json.gz": {
+    "image": "sha256:0eae018eae44945cbec834111ba90160990298b9a2193612938fe4dd5df6cfcd",
+    "observed_at": "2026-10-14T00:48:50.913157837Z",
+    "counts": {
+      "UNKNOWN": 4,
+      "LOW": 14,
+      "MEDIUM": 78,
+      "HIGH": 38,
+      "CRITICAL": 9
+    }
+  },
+  "runtime-final.json.gz": {
+    "image": "sha256:9cb691635ce01aba3f7e195b9921dddfac14190573b20df0fe609023713630f5",
+    "observed_at": "2026-10-14T03:12:46.274151255Z",
+    "counts": {
+      "UNKNOWN": 0,
+      "LOW": 4,
+      "MEDIUM": 38,
+      "HIGH": 0,
+      "CRITICAL": 0
+    }
+  },
+  "runtime-major.json.gz": {
+    "image": "sha256:68cfb213c091afae27d0c440ce724905b52c697eda1c65ff9350e6d82c0a4e54",
+    "observed_at": "2026-10-14T00:59:31.699360217Z",
+    "counts": {
+      "UNKNOWN": 0,
+      "LOW": 4,
+      "MEDIUM": 42,
+      "HIGH": 5,
+      "CRITICAL": 0
+    }
+  },
+  "runtime-patch.json.gz": {
+    "image": "sha256:8aac7a547bac5ab3a838f45ae9aced97f11121b11246a1cc381893ca588b3ba5",
+    "observed_at": "2026-10-14T00:51:55.661368798Z",
+    "counts": {
+      "UNKNOWN": 4,
+      "LOW": 6,
+      "MEDIUM": 58,
+      "HIGH": 11,
+      "CRITICAL": 6
+    }
+  }
+}

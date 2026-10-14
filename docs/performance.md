@@ -11,7 +11,8 @@ resources. This is a local experiment, not isolated hardware qualification.
 The benchmark application uses a 20-connection database pool, a 128..512 MiB
 JVM heap, a 1,000,000 requests/minute admission ceiling, dual writes, and 100%
 shadow/V2 read cohorts subject to the existing clean cutover gate. The original
-app supplies one serial outbox dispatcher; both instances join the provider
+app supplies one outbox dispatcher; older artifacts used serial publication,
+while the production-hardening revision uses bounded independent-head batches; both instances join the provider
 consumer group. Manifests record image identities, source hashes, dirty-tree
 status, configuration and versions. No result is extrapolated to 25K/s.
 
@@ -124,3 +125,26 @@ Its low completed-request latency does not make it qualified. Financial checks
 found no duplicate or unbalanced money effects; the delivery recovery budget
 failed. The failed higher-rate mixed run and the misconfigured create-only alias
 are retained alongside the corrected run, with reasons in each report.
+
+## Docker qualification follow-up
+
+The Docker verification toolchain and revised worker/migration practices are
+specified in `docs/production-readiness.md`. The new `target-probe` profile offers
+25,000 create arrivals/s for five seconds, with at most 500 generator VUs and
+abort-on-drop/error. This is a bounded capacity probe, not the 30-minute target.
+A generator-limited failure cannot establish the service's maximum throughput.
+A fresh 100-arrivals/s run of the original worker passed, so earlier failures
+must be interpreted as observations on shared resources rather than a stable
+capacity ceiling. Both original and revised source identities remain recorded.
+
+The subsequent Spring Boot 4.1 studies repeated both 100-arrivals/s runs, the
+10-workflow-arrivals/s mixed load and the full stepped stress schedule. They
+passed their declared budgets. The stress snapshot drained in 35.5 seconds;
+the older undrained run remains retained. Two bounded target probes failed the
+offered-work budget and cannot qualify 25K/s. Source overlays whose bytes match
+the recorded fingerprints are retained under `evidence/qualification/sources/`.
+The independent qualification validator checks their inventory and byte hashes.
+
+The Docker benchmark wrapper writes a fresh `artifacts/benchmark-*` directory
+and fails when that study misses its budgets. Use `--allow-unqualified` explicitly
+with the validator only to analyze and retain failed capacity observations.

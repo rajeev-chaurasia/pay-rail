@@ -1,0 +1,79 @@
+{
+  "20261014T002212-sustained-a-dfdc39": {
+    "archive": "evidence/qualification/sources/6be9bf6cdf7eb37e.tar.gz",
+    "archive_sha256": "fac52cca661f8376a32727073a927cb4533b93aa78a74dd7935a6076e376e308",
+    "source_files": 40,
+    "sources_verified_against_recorded_hashes": true,
+    "build_note": "Runtime source overlay with exact recorded hashes. Use its pinned dependency and image configuration and package with -Dmaven.test.skip=true. Source bytes do not attest an authentic run."
+  },
+  "20261014T004051-sustained-a-6897da": {
+    "archive": "evidence/qualification/sources/fc0ce9696a99b43d.tar.gz",
+    "archive_sha256": "c544bc5e1ccca183cfd6b9c98a7658ca492cd4b714c89cc04eca073a27b0d8b4",
+    "source_files": 47,
+    "sources_verified_against_recorded_hashes": true,
+    "build_note": "Runtime source overlay with exact recorded hashes. Use its pinned dependency and image configuration and package with -Dmaven.test.skip=true. Source bytes do not attest an authentic run."
+  },
+  "20261014T004153-sustained-b-e6b816": {
+    "archive": "evidence/qualification/sources/fc0ce9696a99b43d.tar.gz",
+    "archive_sha256": "c544bc5e1ccca183cfd6b9c98a7658ca492cd4b714c89cc04eca073a27b0d8b4",
+    "source_files": 47,
+    "sources_verified_against_recorded_hashes": true,
+    "build_note": "Runtime source overlay with exact recorded hashes. Use its pinned dependency and image configuration and package with -Dmaven.test.skip=true. Source bytes do not attest an authentic run."
+  },
+  "20261014T004256-mixed-019998": {
+    "archive": "evidence/qualification/sources/fc0ce9696a99b43d.tar.gz",
+    "archive_sha256": "c544bc5e1ccca183cfd6b9c98a7658ca492cd4b714c89cc04eca073a27b0d8b4",
+    "source_files": 47,
+    "sources_verified_against_recorded_hashes": true,
+    "build_note": "Runtime source overlay with exact recorded hashes. Use its pinned dependency and image configuration and package with -Dmaven.test.skip=true. Source bytes do not attest an authentic run."
+  },
+  "20261014T004358-stress-92642c": {
+    "archive": "evidence/qualification/sources/fc0ce9696a99b43d.tar.gz",
+    "archive_sha256": "c544bc5e1ccca183cfd6b9c98a7658ca492cd4b714c89cc04eca073a27b0d8b4",
+    "source_files": 47,
+    "sources_verified_against_recorded_hashes": true,
+    "build_note": "Runtime source overlay with exact recorded hashes. Use its pinned dependency and image configuration and package with -Dmaven.test.skip=true. Source bytes do not attest an authentic run."
+  },
+  "20261014T004622-target-probe-43db10": {
+    "archive": "evidence/qualification/sources/fc0ce9696a99b43d.tar.gz",
+    "archive_sha256": "c544bc5e1ccca183cfd6b9c98a7658ca492cd4b714c89cc04eca073a27b0d8b4",
+    "source_files": 47,
+    "sources_verified_against_recorded_hashes": true,
+    "build_note": "Runtime source overlay with exact recorded hashes. Use its pinned dependency and image configuration and package with -Dmaven.test.skip=true. Source bytes do not attest an authentic run."
+  },
+  "20261014T010424-sustained-a-3f3837": {
+    "archive": "evidence/qualification/sources/c4f2cdaa78741b8d.tar.gz",
+    "archive_sha256": "c80c40561620e73643068ea7010e1d8893dbef19832d92bee8abeaee1fb917d6",
+    "source_files": 47,
+    "sources_verified_against_recorded_hashes": true,
+    "build_note": "Runtime source overlay with exact recorded hashes. Use its pinned dependency and image configuration and package with -Dmaven.test.skip=true. Source bytes do not attest an authentic run."
+  },
+  "20261014T010526-sustained-b-799e5b": {
+    "archive": "evidence/qualification/sources/c4f2cdaa78741b8d.tar.gz",
+    "archive_sha256": "c80c40561620e73643068ea7010e1d8893dbef19832d92bee8abeaee1fb917d6",
+    "source_files": 47,
+    "sources_verified_against_recorded_hashes": true,
+    "build_note": "Runtime source overlay with exact recorded hashes. Use its pinned dependency and image configuration and package with -Dmaven.test.skip=true. Source bytes do not attest an authentic run."
+  },
+  "20261014T010629-mixed-0defb7": {
+    "archive": "evidence/qualification/sources/c4f2cdaa78741b8d.tar.gz",
+    "archive_sha256": "c80c40561620e73643068ea7010e1d8893dbef19832d92bee8abeaee1fb917d6",
+    "source_files": 47,
+    "sources_verified_against_recorded_hashes": true,
+    "build_note": "Runtime source overlay with exact recorded hashes. Use its pinned dependency and image configuration and package with -Dmaven.test.skip=true. Source bytes do not attest an authentic run."
+  },
+  "20261014T010731-stress-e59edc": {
+    "archive": "evidence/qualification/sources/c4f2cdaa78741b8d.tar.gz",
+    "archive_sha256": "c80c40561620e73643068ea7010e1d8893dbef19832d92bee8abeaee1fb917d6",
+    "source_files": 47,
+    "sources_verified_against_recorded_hashes": true,
+    "build_note": "Runtime source overlay with exact recorded hashes. Use its pinned dependency and image configuration and package with -Dmaven.test.skip=true. Source bytes do not attest an authentic run."
+  },
+  "20261014T013320-target-probe-b30d31": {
+    "archive": "evidence/qualification/sources/44c8ca683f30b730.tar.gz",
+    "archive_sha256": "f59ab5e2ee2382cad1114981d2658975388e61535188f37dc90affcb6d3b55b3",
+    "source_files": 47,
+    "sources_verified_against_recorded_hashes": true,
+    "build_note": "Runtime source overlay with exact recorded hashes. Use its pinned dependency and image configuration and package with -Dmaven.test.skip=true. Source bytes do not attest an authentic run."
+  }
+}

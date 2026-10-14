@@ -14,7 +14,8 @@ separate local behavior from remaining qualification work.
 
 ## Run locally
 
-Prerequisites are Java 17, Maven 3.9+, Docker 28+, and Compose v2.
+Prerequisites are Docker 28+ and Compose v2. The pinned verification image
+provides Java 17, Maven, Node and Python; host installs are optional.
 
 ```bash
 ./scripts/dev-up.sh
@@ -28,7 +29,7 @@ See [the playground walkthrough](docs/playground.md) for a short demonstration.
 
 ![Live PayRail playground with payment lifecycle and request replay](docs/assets/playground.png)
 
-The local fixture API key is `pr_test_demo`. It is hashed with the local-only default pepper in Flyway. Production profile startup rejects the demo pepper and admin token; set `API_KEY_PEPPER` and `MIGRATION_ADMIN_TOKEN` to secrets before using `--spring.profiles.active=prod`.
+The local fixture API key is `pr_test_demo`. It is hashed with the local-only default pepper in Flyway. Production startup requires non-default minimum-length secrets, verified transports and a restricted database role; it disables startup DDL and public management/docs endpoints. Follow [the production configuration gates](docs/production-readiness.md) before enabling `prod`.
 
 ```bash
 curl -X POST http://localhost:18080/v1/payment_intents \
@@ -55,6 +56,7 @@ flowchart LR
     KAFKA --> WORKER["Provider worker<br/>Inbox deduplication"]
     WORKER --> PROVIDER["Simulated provider<br/>Stable operation key"]
     WORKER --> TX
+    WORKER --> DLT[("Acknowledged quarantine<br/>Bounded retries + operator review")]
     PG --> INSPECT["Tenant-scoped inspection<br/>Journals + delivery observations"]
     INSPECT --> UI
     ADMIN["Explicit admin credential"] --> MIG["Backfill + reconcile<br/>Gate read cutover"]
@@ -67,7 +69,7 @@ flowchart LR
     classDef control fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
     class UI client
     class EDGE,API,TX,INSPECT api
-    class PG,KAFKA,REDIS store
+    class PG,KAFKA,REDIS,DLT store
     class OUT,WORKER,PROVIDER worker
     class ADMIN,MIG control
 ```
@@ -104,19 +106,30 @@ Measured on the shared local Docker host. Latency is per completed HTTP request;
 
 | Study | Observed work | p95 / p99 | Budget result |
 | --- | --- | --- | --- |
-| [sustained-a](evidence/performance/20261013T182002-sustained-a-df169a/report.json) | 5,906 acknowledged creates | 329.2 / 817.7 ms | Not qualified |
-| [sustained-b](evidence/performance/20261013T182202-sustained-b-c45d42/report.json) | 5,990 acknowledged creates | 49.1 / 229.5 ms | Not qualified |
-| [mixed](evidence/performance/20261013T182307-mixed-ecffaa/report.json) | 521 workflows / 4,691 HTTP requests | 195.3 / 3193.0 ms | Not qualified |
-| [stress](evidence/performance/20261013T182409-stress-095c4b/report.json) | 16,524 acknowledged creates | 422.3 / 1796.5 ms | Not qualified |
-| [baseline-a](evidence/performance/20261013T233212-baseline-a-f156de/report.json) | 1,500 acknowledged creates | 29.9 / 112.6 ms | Pass |
-| [baseline-b](evidence/performance/20261013T233315-baseline-b-718ca9/report.json) | 1,501 acknowledged creates | 24.7 / 161.1 ms | Pass |
-| [mixed-baseline](evidence/performance/20261013T233417-mixed-baseline-92d38f/report.json) | 120 workflows / 120 HTTP requests | 17.6 / 29.9 ms | Not qualified |
-| [mixed-baseline](evidence/performance/20261013T233952-mixed-baseline-d6a221/report.json) | 121 workflows / 1,086 HTTP requests | 21.5 / 56.4 ms | Pass |
+| [sustained-a (df169a)](evidence/performance/20261013T182002-sustained-a-df169a/report.json) | 5,906 acknowledged creates | 329.2 / 817.7 ms | Not qualified |
+| [sustained-b (c45d42)](evidence/performance/20261013T182202-sustained-b-c45d42/report.json) | 5,990 acknowledged creates | 49.1 / 229.5 ms | Not qualified |
+| [mixed (ecffaa)](evidence/performance/20261013T182307-mixed-ecffaa/report.json) | 521 workflows / 4,691 HTTP requests | 195.3 / 3193.0 ms | Not qualified |
+| [stress (095c4b)](evidence/performance/20261013T182409-stress-095c4b/report.json) | 16,524 acknowledged creates | 422.3 / 1796.5 ms | Not qualified |
+| [baseline-a (f156de)](evidence/performance/20261013T233212-baseline-a-f156de/report.json) | 1,500 acknowledged creates | 29.9 / 112.6 ms | Pass |
+| [baseline-b (718ca9)](evidence/performance/20261013T233315-baseline-b-718ca9/report.json) | 1,501 acknowledged creates | 24.7 / 161.1 ms | Pass |
+| [mixed-baseline (92d38f)](evidence/performance/20261013T233417-mixed-baseline-92d38f/report.json) | 120 workflows / 120 HTTP requests | 17.6 / 29.9 ms | Not qualified |
+| [mixed-baseline (d6a221)](evidence/performance/20261013T233952-mixed-baseline-d6a221/report.json) | 121 workflows / 1,086 HTTP requests | 21.5 / 56.4 ms | Pass |
+| [sustained-a (dfdc39)](evidence/performance/20261014T002212-sustained-a-dfdc39/report.json) | 6,001 acknowledged creates | 59.3 / 265.7 ms | Pass |
+| [sustained-a (6897da)](evidence/performance/20261014T004051-sustained-a-6897da/report.json) | 6,001 acknowledged creates | 4.9 / 11.7 ms | Pass |
+| [sustained-b (e6b816)](evidence/performance/20261014T004153-sustained-b-e6b816/report.json) | 6,000 acknowledged creates | 5.3 / 17.0 ms | Pass |
+| [mixed (019998)](evidence/performance/20261014T004256-mixed-019998/report.json) | 601 workflows / 5,594 HTTP requests | 5.4 / 12.0 ms | Pass |
+| [stress (92642c)](evidence/performance/20261014T004358-stress-92642c/report.json) | 28,899 acknowledged creates | 6.6 / 37.6 ms | Pass |
+| [target-probe (43db10)](evidence/performance/20261014T004622-target-probe-43db10/report.json) | 5,129 acknowledged creates | 327.9 / 405.4 ms | Not qualified |
+| [sustained-a (3f3837)](evidence/performance/20261014T010424-sustained-a-3f3837/report.json) | 6,001 acknowledged creates | 4.7 / 15.7 ms | Pass |
+| [sustained-b (799e5b)](evidence/performance/20261014T010526-sustained-b-799e5b/report.json) | 6,000 acknowledged creates | 4.5 / 10.3 ms | Pass |
+| [mixed (0defb7)](evidence/performance/20261014T010629-mixed-0defb7/report.json) | 600 workflows / 5,623 HTTP requests | 4.9 / 8.3 ms | Pass |
+| [stress (e59edc)](evidence/performance/20261014T010731-stress-e59edc/report.json) | 28,899 acknowledged creates | 3.3 / 14.0 ms | Pass |
+| [target-probe (b30d31)](evidence/performance/20261014T013320-target-probe-b30d31/report.json) | 1,947 acknowledged creates | 800.7 / 901.4 ms | Not qualified |
 
 Passing create baselines: 25 arrivals/s for 60 seconds and 25 arrivals/s for 60 seconds. The corrected
 2 workflow arrivals/s mixed run completed 121 workflows, 1,086 HTTP requests,
 174 balanced journals and 116 refunds. Failed higher-rate studies remain retained.
-The stress snapshot recorded 7,547 pending events at its bounded drain deadline.
+The stress snapshot recorded 0 pending events at its bounded drain deadline.
 None of these studies establishes the 25K/s target. See
 [the method, failed runs and limits](docs/performance.md).
 <!-- performance-results:end -->
@@ -133,4 +146,17 @@ mvn verify
 
 The fault script counts attempted client deadlines and stable-key duplicate retries; a short deadline does not by itself prove that the server committed. The performance harness uses the official pinned k6 Docker image, a dedicated synthetic tenant/app/Redis instance and the existing local PostgreSQL/Kafka stack. It retains raw samples, summaries, resource observations, bounded drain records and consistent accounting snapshots under `evidence/performance/`. Failed capacity runs remain published and classified as unqualified. The provided local harness does not prove 25,000 requests/s, a 100-million-object migration, or one million fault injections. Those are qualification targets. A claim requires a separately sized environment, declared workload and hardware, sustained open-loop results, raw latency/resource data, a fully drained outbox, and zero invariant or reconciliation failures. See [the implementation plan](docs/implementation-plan.md) for the full gates and fault matrix.
 
-Known limits of this reference service: the fixed-window Redis limiter is intentionally simple; each outbox event is claimed immediately before its serial publish within a bounded sweep; API keys are managed through SQL rather than a management API; and no external payment provider is integrated.
+Known limits of this reference service: the fixed-window Redis limiter is intentionally simple; the outbox publishes bounded batches of independent aggregate heads; API keys are managed through SQL rather than a management API; and no external payment provider is integrated.
+
+## Docker verification and production safeguards
+
+```sh
+docker compose -p payrail --profile test build verify
+docker compose -p payrail --profile test run --rm verify
+```
+
+The verification image includes Java, Maven, Node and Python, with disposable
+PostgreSQL/Redis tests and Docker-backed load tooling. See
+[production safeguards and qualification gates](docs/production-readiness.md)
+for separate migration/runtime identities, TLS/secret guards, bounded workers,
+Prometheus backlog observations and the remaining release gates.
