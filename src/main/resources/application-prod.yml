@@ -1,0 +1,21 @@
+# Schema changes run through a separate deployment identity.
+spring:
+  flyway.enabled: false
+  datasource.hikari.connection-init-sql: "SET statement_timeout='5s'; SET lock_timeout='2s'; SET idle_in_transaction_session_timeout='10s'"
+  transaction.default-timeout: 5s
+  kafka.properties.security.protocol: ${KAFKA_SECURITY_PROTOCOL:SSL}
+  data.redis:
+    ssl.enabled: true
+    password: ${REDIS_PASSWORD:}
+management:
+  server.port: 8081
+  endpoint.health:
+    show-details: never
+    probes.enabled: true
+  endpoints.web.exposure.include: health,prometheus
+server:
+  tomcat:
+    max-connections: 2048
+    accept-count: 100
+    connection-timeout: 5s
+    threads.max: 100

@@ -2,9 +2,6 @@ package com.payrail.migration;
 
 import com.payrail.config.PayRailProperties;
 import com.payrail.domain.PaymentIntent;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -51,21 +48,36 @@ public class PaymentV2Service {
         jdbc.queryForObject(
             "select coalesce(last_key,'') from migration_checkpoints where migration_name='payment_intents_v2_backfill' for update",
             String.class);
-    List<PaymentIntent> rows =
-        jdbc.query(
-            "select * from payment_intents where id>? order by id limit ?", this::map, last, size);
-    for (PaymentIntent p : rows) {
-      String tenant =
-          jdbc.queryForObject(
-              "select tenant_id from payment_intents where id=?", String.class, p.id());
-      upsert(tenant, p);
-    }
-    if (!rows.isEmpty())
+    var batch =
+        jdbc.queryForMap(
+            """
+        with chunk as materialized (
+          select * from payment_intents where id>? order by id limit ?
+        ), copied as (
+          insert into payment_intents_v2(source_id,tenant_id,amount_minor,currency_code,
+            capture_method,lifecycle_status,capturable_minor,captured_minor,refunded_minor,
+            source_version,metadata,source_created_at,source_updated_at)
+          select id,tenant_id,amount,currency,capture_method,status,amount_capturable,
+            amount_received,amount_refunded,version,metadata,created_at,updated_at from chunk
+          on conflict(source_id) do update set amount_minor=excluded.amount_minor,
+            currency_code=excluded.currency_code,capture_method=excluded.capture_method,
+            lifecycle_status=excluded.lifecycle_status,capturable_minor=excluded.capturable_minor,
+            captured_minor=excluded.captured_minor,refunded_minor=excluded.refunded_minor,
+            source_version=excluded.source_version,metadata=excluded.metadata,
+            source_updated_at=excluded.source_updated_at,migrated_at=now()
+          where payment_intents_v2.source_version<=excluded.source_version
+          returning source_id
+        ) select count(*) rows, max(id) last_key from chunk
+        """,
+            last,
+            size);
+    int count = ((Number) batch.get("rows")).intValue();
+    if (count > 0)
       jdbc.update(
           "update migration_checkpoints set last_key=?,rows_processed=rows_processed+?,updated_at=now() where migration_name='payment_intents_v2_backfill'",
-          rows.get(rows.size() - 1).id(),
-          rows.size());
-    return rows.size();
+          batch.get("last_key"),
+          count);
+    return count;
   }
 
   public Map<String, Object> reconcile() {
@@ -141,25 +153,5 @@ public class PaymentV2Service {
     return equivalent && bucket < config.v2ReadPercent() && Boolean.TRUE.equals(ready)
         ? target
         : source;
-  }
-
-  private PaymentIntent map(ResultSet rs, int row) throws SQLException {
-    try {
-      return new PaymentIntent(
-          rs.getString("id"),
-          rs.getLong("amount"),
-          rs.getLong("amount_capturable"),
-          rs.getLong("amount_received"),
-          rs.getLong("amount_refunded"),
-          rs.getString("currency"),
-          rs.getString("capture_method"),
-          com.payrail.domain.PaymentStatus.fromWire(rs.getString("status")),
-          rs.getLong("version"),
-          mapper.readTree(rs.getString("metadata")),
-          rs.getTimestamp("created_at").toInstant(),
-          rs.getTimestamp("updated_at").toInstant());
-    } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-      throw new SQLException(e);
-    }
   }
 }

@@ -133,4 +133,17 @@ mvn verify
 
 The fault script counts attempted client deadlines and stable-key duplicate retries; a short deadline does not by itself prove that the server committed. The performance harness uses the official pinned k6 Docker image, a dedicated synthetic tenant/app/Redis instance and the existing local PostgreSQL/Kafka stack. It retains raw samples, summaries, resource observations, bounded drain records and consistent accounting snapshots under `evidence/performance/`. Failed capacity runs remain published and classified as unqualified. The provided local harness does not prove 25,000 requests/s, a 100-million-object migration, or one million fault injections. Those are qualification targets. A claim requires a separately sized environment, declared workload and hardware, sustained open-loop results, raw latency/resource data, a fully drained outbox, and zero invariant or reconciliation failures. See [the implementation plan](docs/implementation-plan.md) for the full gates and fault matrix.
 
-Known limits of this reference service: the fixed-window Redis limiter is intentionally simple; each outbox event is claimed immediately before its serial publish within a bounded sweep; API keys are managed through SQL rather than a management API; and no external payment provider is integrated.
+Known limits of this reference service: the fixed-window Redis limiter is intentionally simple; the outbox publishes bounded batches of independent aggregate heads; API keys are managed through SQL rather than a management API; and no external payment provider is integrated.
+
+## Docker verification and production safeguards
+
+```sh
+docker compose -p payrail --profile test build verify
+docker compose -p payrail --profile test run --rm verify
+```
+
+The verification image includes Java, Maven, Node and Python, with disposable
+PostgreSQL/Redis tests and Docker-backed load tooling. See
+[production safeguards and qualification gates](docs/production-readiness.md)
+for separate migration/runtime identities, TLS/secret guards, bounded workers,
+Prometheus backlog observations and the remaining release gates.

@@ -47,11 +47,17 @@ export const options = {
     unexpected_responses: [
       {
         threshold: "count==0",
-        abortOnFail: profile === "stress",
-        delayAbortEval: "20s",
+        abortOnFail: profile === "stress" || profile === "target-probe",
+        delayAbortEval: profile === "target-probe" ? "1s" : "20s",
       },
     ],
-    dropped_iterations: ["count==0"],
+    dropped_iterations: [
+      {
+        threshold: "count==0",
+        abortOnFail: profile === "target-probe",
+        delayAbortEval: "1s",
+      },
+    ],
     http_req_duration: ["p(95)<1000", "p(99)<2000"],
   },
 };

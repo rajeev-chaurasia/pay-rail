@@ -35,7 +35,8 @@ readiness, or the qualification-scale figures in the project plan.
 | Currency minor-unit display, including JPY | Native browser-module tests | Pass |
 | Evidence validator detects corrupted financial observations | Nine adversarial validator tests | Pass |
 
-The Java suite contains 18 PostgreSQL integration tests and 2 real Redis tests.
+The Java suite contains 24 PostgreSQL integration tests, 2 real Redis tests,
+2 production-configuration tests and 1 dispatcher test.
 Several tests cover a matrix of request outcomes, so test count is not flow count.
 The Redis test checks the configured TTL; it does not wait a full minute to
 prove refill at the next window. The filename/format guard is not a full-history
@@ -89,3 +90,12 @@ The local studies do not prove 25K mutating requests/s, a 100M-object migration,
 a million recorded faults, a real payment-provider contract, full network
 partition behavior, rolling multi-region deployments, or production role/RLS
 isolation. Those remain separately sized and reviewed qualification work.
+
+## Production-hardening additions
+
+Docker tests exercise concurrent independent-head claiming, pipelined delivery
+failure handling, 10,000 historical rows with checkpoint rollback/resume and live
+dual writes, 10,000 provider completion redeliveries, real restricted-role payment
+operations, production configuration rejection and the Prometheus endpoint.
+These counts refer to specific deterministic cases, not a broad million-fault
+campaign. See `docs/production-readiness.md` for the complete Docker command path.

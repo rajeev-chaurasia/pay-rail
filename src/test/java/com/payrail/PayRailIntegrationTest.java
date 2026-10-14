@@ -41,6 +41,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
 @AutoConfigureMockMvc
+@org.springframework.boot.test.autoconfigure.actuate.observability.AutoConfigureObservability
 @SpringBootTest(
     properties = {
       "payrail.rate-limit.enabled=false",
@@ -474,6 +475,132 @@ class PayRailIntegrationTest {
   }
 
   @Test
+  void prometheusExposesPersistedBacklogAndObservationFreshness() throws Exception {
+    create(100, "usd", "manual");
+    var registry = new io.micrometer.core.instrument.simple.SimpleMeterRegistry();
+    var metrics = new com.payrail.outbox.OutboxMetrics(jdbc, registry);
+    metrics.observe();
+    assertThat(registry.get("payrail.outbox.pending").gauge().value()).isEqualTo(1.0);
+    assertThat(registry.get("payrail.outbox.observation.timestamp.seconds").gauge().value())
+        .isPositive();
+    http.perform(get("/actuator/prometheus")).andExpect(status().isOk());
+  }
+
+  @Test
+  void productionGuardRejectsOwnerAndAcceptsRestrictedRoleOnRealPostgres() {
+    var environment =
+        new org.springframework.mock.env.MockEnvironment()
+            .withProperty("spring.flyway.enabled", "false")
+            .withProperty(
+                "spring.datasource.url", "jdbc:postgresql://db/payrail?sslmode=verify-full")
+            .withProperty("spring.data.redis.ssl.enabled", "true")
+            .withProperty("spring.data.redis.password", "synthetic-test-secret")
+            .withProperty("spring.kafka.properties.security.protocol", "SSL");
+    environment.setActiveProfiles("prod");
+    var config =
+        new com.payrail.config.PayRailProperties(
+            new com.payrail.config.PayRailProperties.Auth(
+                "synthetic-pepper-for-test-only-0123456789"),
+            new com.payrail.config.PayRailProperties.RateLimit(true, 600),
+            new com.payrail.config.PayRailProperties.Outbox(true, 100, 250),
+            new com.payrail.config.PayRailProperties.Migration(
+                true, 0, 0, "synthetic-admin-for-test-only-0123456789"));
+    var guard = new com.payrail.config.ProductionSecretGuard(environment, config, jdbc);
+    assertThatThrownBy(() -> guard.run(null)).hasMessageContaining("non-owner database role");
+    tx.executeWithoutResult(
+        status -> {
+          jdbc.execute(
+              "create role restricted_guard_test nologin nosuperuser nocreatedb nocreaterole nobypassrls");
+          jdbc.execute("set local role restricted_guard_test");
+          guard.run(null);
+          status.setRollbackOnly();
+        });
+  }
+
+  @Test
+  void restrictedRuntimeGrantsSupportLifecycleWithoutDdlOrLedgerDeletes() throws Exception {
+    String script =
+        java.nio.file.Files.readString(java.nio.file.Path.of("deploy/postgres-runtime-role.sql"));
+    String grants =
+        script.replace("\\set ON_ERROR_STOP on", "").replace("begin;", "").replace("commit;", "");
+    tx.executeWithoutResult(
+        status -> {
+          jdbc.execute(grants);
+          jdbc.execute("set local role payrail_runtime");
+          var payment = create(100, "usd", "manual");
+          payments.confirm(payment.id());
+          payments.capture(payment.id(), 100L);
+          payments.refund(payment.id(), 100);
+          assertThat(payments.get(payment.id()).status().wire()).isEqualTo("refunded");
+          assertThat(migration.backfill(500)).isEqualTo(1);
+          assertThat(migration.reconcile()).containsEntry("mismatched", 0L);
+          var event = outbox.claim(100).get(0);
+          assertThat(outbox.published(event.id(), event.leaseToken())).isTrue();
+          assertThat(
+                  jdbc.queryForObject(
+                      "select has_schema_privilege(current_user,'public','CREATE')", Boolean.class))
+              .isFalse();
+          assertThat(
+                  jdbc.queryForObject(
+                      "select has_table_privilege(current_user,'ledger_entries','DELETE')",
+                      Boolean.class))
+              .isFalse();
+          status.setRollbackOnly();
+        });
+  }
+
+  @Test
+  void historicalBatchBackfillRollsBackCheckpointAndResumesWithLiveWrites() {
+    jdbc.update(
+        """
+        insert into payment_intents(id,tenant_id,amount,currency,capture_method,status,version)
+        select 'pi_historical_'||lpad(n::text,8,'0'),'tenant_demo',100+n,'usd','manual',
+          'requires_confirmation',1 from generate_series(1,10000) n
+        """);
+    tx.executeWithoutResult(
+        status -> {
+          assertThat(migration.backfill(500)).isEqualTo(500);
+          status.setRollbackOnly();
+        });
+    assertThat(jdbc.queryForObject("select count(*) from payment_intents_v2", Long.class)).isZero();
+    assertThat(migration.status()).containsEntry("rows_processed", 0L);
+    assertThat(migration.backfill(500)).isEqualTo(500);
+    var live = create(321, "usd", "manual");
+    payments.confirm(live.id());
+    int remaining = 0;
+    int batch;
+    while ((batch = migration.backfill(500)) > 0) remaining += batch;
+    assertThat(remaining).isEqualTo(9501);
+    assertThat(migration.reconcile())
+        .containsEntry("missing", 0L)
+        .containsEntry("extra", 0L)
+        .containsEntry("mismatched", 0L)
+        .containsEntry("source_total", 10001L)
+        .containsEntry("target_total", 10001L);
+    assertThat(migration.gateCutover()).containsEntry("cutover_ready", true);
+    assertThat(payments.get(live.id()).status().wire()).isEqualTo("authorized");
+  }
+
+  @Test
+  void repeatedProviderRedeliveryDoesNotDuplicateMoney() {
+    var payment = create(700, "usd", "automatic");
+    payments.confirm(payment.id());
+    String stable = "tenant_demo:" + payment.id();
+    assertThatThrownBy(() -> provider.authorize(stable))
+        .isInstanceOf(SimulatedProvider.ProviderAmbiguousException.class);
+    String reference = provider.authorize(stable);
+    var completion =
+        new ProviderCompletion(
+            "campaign", "campaign-event", "tenant_demo", payment.id(), reference);
+    for (int attempt = 0; attempt < 10000; attempt++) payments.completeProvider(completion);
+    assertThat(jdbc.queryForObject("select count(*) from ledger_transactions", Long.class))
+        .isEqualTo(1);
+    assertThat(jdbc.queryForObject("select sum(debit)-sum(credit) from ledger_entries", Long.class))
+        .isZero();
+    assertThat(payments.get(payment.id()).amountReceived()).isEqualTo(700);
+  }
+
+  @Test
   void cutoverPreservesCapturableAndFallsBackFromCorruptTarget() {
     PaymentIntent pending = create(321, "usd", "manual");
     PaymentIntent canceled = create(654, "usd", "manual");
@@ -485,6 +612,44 @@ class PayRailIntegrationTest {
     PaymentIntent safe = payments.get(pending.id());
     assertThat(safe.amount()).isEqualTo(321);
     assertThat(safe.amountCapturable()).isZero();
+  }
+
+  @Test
+  void batchClaimsOnlyIndependentAggregateHeadsAndFencesConcurrentWorkers() throws Exception {
+    var first = create(100, "usd", "manual");
+    payments.confirm(first.id());
+    for (int i = 0; i < 30; i++) create(100 + i, "usd", "manual");
+    var pool = java.util.concurrent.Executors.newFixedThreadPool(2);
+    try {
+      var start = new java.util.concurrent.CyclicBarrier(2);
+      var results =
+          pool.invokeAll(
+              java.util.List
+                  .<java.util.concurrent.Callable<java.util.List<OutboxRepository.Event>>>of(
+                      () -> {
+                        start.await();
+                        return outbox.claim(20);
+                      },
+                      () -> {
+                        start.await();
+                        return outbox.claim(20);
+                      }));
+      var claimed = new java.util.ArrayList<OutboxRepository.Event>();
+      for (var result : results) claimed.addAll(result.get());
+      assertThat(claimed).hasSize(31);
+      assertThat(claimed.stream().map(OutboxRepository.Event::id).distinct().count()).isEqualTo(31);
+      assertThat(claimed.stream().filter(e -> e.aggregateId().equals(first.id())))
+          .hasSize(1)
+          .allMatch(e -> e.sequence() == 1);
+      assertThat(outbox.claim(100)).isEmpty();
+      for (var event : claimed)
+        assertThat(outbox.published(event.id(), event.leaseToken())).isTrue();
+      assertThat(outbox.claim(100))
+          .singleElement()
+          .satisfies(e -> assertThat(e.aggregateId()).isEqualTo(first.id()));
+    } finally {
+      pool.shutdownNow();
+    }
   }
 
   @Test

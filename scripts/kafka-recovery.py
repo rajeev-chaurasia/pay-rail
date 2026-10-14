@@ -3,6 +3,7 @@
 
 import argparse
 import json
+import os
 from pathlib import Path
 import subprocess
 import time
@@ -13,7 +14,9 @@ import uuid
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--url", default="http://localhost:18080")
+    parser.add_argument(
+        "--url", default=os.environ.get("PAYRAIL_URL", "http://localhost:18080")
+    )
     parser.add_argument(
         "--output", type=Path, default=Path("evidence/flows/kafka-recovery.json")
     )
