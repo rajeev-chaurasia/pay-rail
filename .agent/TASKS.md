@@ -151,7 +151,8 @@ including two new tampering tests. See `docs/postgres-recovery.md` for limits.
 
 ## PAY-008: temporary GCP scale qualification
 
-Status: campaign completed and cloud resources cleaned; delivery review and CI pending.
+Status: merged through PR #6; campaign completed and cloud resources cleaned.
+Push and pull-request CI passed. Production qualification remains separate.
 User approved a US$25 initial spend cap and absolute six-hour deletion limit.
 
 Acceptance: separate run-owned VPC, hosts and generator; no changes to existing
@@ -186,3 +187,14 @@ shell syntax and Compose variants. Independent validation recomputed both millio
 action raw files, including the retained failed attempt. Existing Mediagent
 readiness conditions remained True after cleanup. Maintainer review/merge and
 production qualification remain separate.
+
+## PAY-009: visible qualification summary
+
+Status: README updated; style, generated benchmark consistency, links and
+measured summary checks passed. GitHub rendering verification and PR review remain.
+
+Acceptance: prominent evidence-linked results table with workload/hardware scope,
+failed 25K/s and zero-drop gates visible alongside successes; current 55-case
+verification count; accurate bounded retry/quarantine and batched outbox behavior;
+local benchmark history retained in a collapsible section; evidence/reproduction
+links resolve. No measurements or production claims are changed.
