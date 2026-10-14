@@ -28,10 +28,13 @@ Production approval requires the measured gates below and an operator review.
   deduplication remain authoritative after lease takeover or uncertain delivery.
 - Historical migration copies a bounded keyset chunk in one SQL statement.
   Version guards prevent an older chunk from replacing a newer dual write;
-  checkpoint updates commit with the chunk.
+  checkpoint updates commit with the chunk. Source rows are locked before target
+  rows, preventing the reproduced foreign-key/unique-key lock inversion. Locks
+  are bounded to the chunk; foreground writes can wait briefly.
 - Prometheus exposes pending outbox count, oldest pending age, observation
   timestamp and observation failures. Sampling has a two-second query timeout.
-  The production management port is 8081 and must remain private.
+  The production management port is 8081 and must remain private. Provider
+  retries are bounded; recovery requires acknowledged quarantine publication.
 
 The guard validates configuration and database privileges. Deployment checks
 must still prove certificate validation, Kafka ACLs, network policy, secret
@@ -65,7 +68,7 @@ Linux. Run Compose from the repository root.
 | --- | --- | --- |
 | 25K/s | Dedicated load generators and deployment; accepted mutations and settlements reported separately; sustained 30 minutes with declared latency/error/drain budgets | A five-second bounded local target probe can reject this hardware profile; it cannot certify sustained capacity |
 | 100M objects | Dedicated dataset with storage/WAL headroom; live traffic throughout; interrupted/resumed backfill; full reconciliation, cutover and rollback | Docker tests exercise 10,000 historical rows and live dual writes, not 100M |
-| 1M faults | Seeded schedule with counted duplicate, response-loss, crash and transport actions; observed boundaries and reconciliation after recovery | 10,000 provider completion redeliveries are one tested fault class, not the complete campaign |
+| 1M faults | Seeded schedule with counted duplicate, response-loss, crash and transport actions; observed boundaries and reconciliation after recovery | 1,000,000 concurrent completion calls include one initial completion and 999,999 duplicates; this is one service-boundary case, not the complete campaign |
 | Provider | Stripe sandbox adapter, pinned contracts, signed webhook validation/deduplication, declines, authentication and refunds | Simulated provider only; sandbox credentials and account setup remain separate |
 | Operations | Backup restoration/PITR, failover, rolling deployments, observability/alerts, retention, key rotation, incident drills and dependency review | Single-host recovery experiments cover selected local failures |
 
@@ -92,3 +95,47 @@ It intentionally exits unsuccessfully when the planning storage gate fails and
 never seeds data. `evidence/qualification/preflight.json` retains observed pilot
 sizes and free space, the declared threefold planning allowance and the result.
 The allowance is a resource-planning assumption, not a measurement at 100M rows.
+
+## Quarantine operations
+
+Local topic administration creates `payrail.payment-events.DLT` with twelve
+partitions and seven-day retention for synthetic records. Production disables
+automatic topic creation. Operators must pre-provision source/quarantine topics
+with adequate partitions, replication, minimum in-sync replicas, ACLs and
+reviewed retention. The quarantine topic needs at least as many partitions as
+the source topic. Observe the publication counter and consumer lag. A failed
+quarantine acknowledgement must not advance recovery.
+
+Review the original event identity, provider operation and authoritative payment
+state before any authorized replay. Preserve original key and event-id header;
+never mark an ambiguous payment settled or failed solely because retries ended.
+Limit quarantine access and keep payloads out of logs and published evidence.
+`scripts/poison-recovery.py` uses a malformed synthetic fixture and a subsequent
+automatic payment to exercise the live transport boundary.
+
+## Recorded qualification follow-up
+
+The Spring Boot 4.1 runtime completed paired 100-create-arrivals/s studies and
+600 mixed workflows with 5,623 HTTP requests. Its stepped stress study completed
+28,899 creates with p99 14.0 ms and drained in 35.5 seconds. Each artifact has its
+own exact source/image fingerprint; these are shared-host observations rather
+than production capacity certification. The later bounded 25K-arrivals/s probe
+failed with 47,001 dropped iterations and 500 committed creates without client
+acknowledgement. Its post-run financial/migration checks passed and backlog
+drained, but the target remains unqualified and generator-limited.
+
+The million-call provider study retained eight overlapping worker observations,
+one journal, two balanced entries, one inbox record and one provider operation.
+It includes one initial completion and 999,999 duplicate completions. It does
+not count HTTP requests, Kafka network redeliveries or worker crashes.
+
+```sh
+docker compose -p payrail --profile test run --rm --entrypoint mvn verify -q test '-Dtest=PayRailIntegrationTest#repeatedProviderRedeliveryDoesNotDuplicateMoney' -Dpayrail.providerRedeliveries=1000000 -Dpayrail.redeliveryEvidence=evidence/qualification/provider-redelivery.json
+```
+
+The final runtime scan has zero reported high/critical findings. Thirty-eight
+medium and four low OS findings remain without reported fixes and require
+review. Dated raw reports, summaries and checksums are retained under
+`evidence/security/`; CI rejects new high/critical findings. This gate covers the
+application image, not every infrastructure image or deployment configuration.
+See the runtime upgrade decision for compatibility scope and migration debt.

@@ -3,6 +3,7 @@ spring:
   flyway.enabled: false
   datasource.hikari.connection-init-sql: "SET statement_timeout='5s'; SET lock_timeout='2s'; SET idle_in_transaction_session_timeout='10s'"
   transaction.default-timeout: 5s
+  kafka.admin.auto-create: false
   kafka.properties.security.protocol: ${KAFKA_SECURITY_PROTOCOL:SSL}
   data.redis:
     ssl.enabled: true
@@ -19,3 +20,7 @@ server:
     accept-count: 100
     connection-timeout: 5s
     threads.max: 100
+
+springdoc:
+  api-docs.enabled: false
+  swagger-ui.enabled: false

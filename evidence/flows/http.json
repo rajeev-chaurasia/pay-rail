@@ -1,244 +1,244 @@
 {
-  "run_id": "flow-abe45f56436645cbad134ec6085ceaa9",
-  "url": "http://localhost:18080",
+  "run_id": "flow-da016eb2abed4f11a93328e302d753f6",
+  "url": "http://app:8080",
   "observations": [
     {
       "method": "GET",
       "path": "/v1/payment_intents",
       "expected": 401,
       "actual": 401,
-      "duration_ms": 233.57929242774844
+      "duration_ms": 139.97962465509772
     },
     {
       "method": "GET",
       "path": "/v1/payment_intents",
       "expected": 401,
       "actual": 401,
-      "duration_ms": 18.70704209432006
+      "duration_ms": 10.404624976217747
     },
     {
       "method": "POST",
       "path": "/v1/payment_intents",
       "expected": 400,
       "actual": 400,
-      "duration_ms": 666.2867502309382
+      "duration_ms": 328.44233326613903
     },
     {
       "method": "POST",
       "path": "/v1/payment_intents",
       "expected": 400,
       "actual": 400,
-      "duration_ms": 34.034166019409895
+      "duration_ms": 40.22204224020243
     },
     {
       "method": "POST",
       "path": "/v1/payment_intents",
       "expected": 201,
       "actual": 201,
-      "duration_ms": 89.6948748268187
+      "duration_ms": 182.82816698774695
     },
     {
       "method": "POST",
       "path": "/v1/payment_intents",
       "expected": 201,
       "actual": 201,
-      "duration_ms": 11.345916893333197
+      "duration_ms": 165.19587486982346
     },
     {
       "method": "POST",
       "path": "/v1/payment_intents",
       "expected": 409,
       "actual": 409,
-      "duration_ms": 18.641499802470207
+      "duration_ms": 35.55979207158089
     },
     {
       "method": "POST",
-      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/confirm",
+      "path": "/v1/payment_intents/pi_mv7jakch6557b1425f644c7e/confirm",
       "expected": 202,
       "actual": 202,
-      "duration_ms": 19.076125230640173
+      "duration_ms": 90.28554195538163
     },
     {
       "method": "POST",
-      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/capture",
+      "path": "/v1/payment_intents/pi_mv7jakch6557b1425f644c7e/capture",
       "expected": 400,
       "actual": 400,
-      "duration_ms": 18.226916901767254
+      "duration_ms": 32.080458011478186
     },
     {
       "method": "POST",
-      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/capture",
+      "path": "/v1/payment_intents/pi_mv7jakch6557b1425f644c7e/capture",
       "expected": 200,
       "actual": 200,
-      "duration_ms": 44.276457745581865
+      "duration_ms": 165.8795839175582
     },
     {
       "method": "POST",
-      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/capture",
+      "path": "/v1/payment_intents/pi_mv7jakch6557b1425f644c7e/capture",
       "expected": 409,
       "actual": 409,
-      "duration_ms": 19.42329201847315
+      "duration_ms": 47.91870806366205
     },
     {
       "method": "POST",
-      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/cancel",
+      "path": "/v1/payment_intents/pi_mv7jakch6557b1425f644c7e/cancel",
       "expected": 409,
       "actual": 409,
-      "duration_ms": 9.690375067293644
+      "duration_ms": 29.052416794002056
     },
     {
       "method": "GET",
-      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df",
+      "path": "/v1/payment_intents/pi_mv7jakch6557b1425f644c7e",
       "expected": 200,
       "actual": 200,
-      "duration_ms": 6.864500232040882
+      "duration_ms": 66.6228337213397
     },
     {
       "method": "GET",
-      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df",
+      "path": "/v1/payment_intents/pi_mv7jakch6557b1425f644c7e",
       "expected": 200,
       "actual": 200,
-      "duration_ms": 11.609042063355446
+      "duration_ms": 23.11645820736885
     },
     {
       "method": "POST",
-      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/refunds",
+      "path": "/v1/payment_intents/pi_mv7jakch6557b1425f644c7e/refunds",
       "expected": 200,
       "actual": 200,
-      "duration_ms": 45.611375011503696
+      "duration_ms": 260.859000030905
     },
     {
       "method": "POST",
-      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/refunds",
+      "path": "/v1/payment_intents/pi_mv7jakch6557b1425f644c7e/refunds",
       "expected": 200,
       "actual": 200,
-      "duration_ms": 14.012250117957592
+      "duration_ms": 33.11616601422429
     },
     {
       "method": "POST",
-      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/refunds",
+      "path": "/v1/payment_intents/pi_mv7jakch6557b1425f644c7e/refunds",
       "expected": 400,
       "actual": 400,
-      "duration_ms": 25.562957860529423
+      "duration_ms": 26.98695892468095
     },
     {
       "method": "POST",
-      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/refunds",
+      "path": "/v1/payment_intents/pi_mv7jakch6557b1425f644c7e/refunds",
       "expected": 200,
       "actual": 200,
-      "duration_ms": 32.60174999013543
+      "duration_ms": 49.916500225663185
     },
     {
       "method": "GET",
-      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df",
+      "path": "/v1/payment_intents/pi_mv7jakch6557b1425f644c7e",
       "expected": 200,
       "actual": 200,
-      "duration_ms": 10.047957766801119
+      "duration_ms": 8.308624848723412
     },
     {
       "method": "POST",
-      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/refunds",
+      "path": "/v1/payment_intents/pi_mv7jakch6557b1425f644c7e/refunds",
       "expected": 409,
       "actual": 409,
-      "duration_ms": 11.290874797850847
+      "duration_ms": 18.908999860286713
     },
     {
       "method": "GET",
-      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/inspect",
+      "path": "/v1/payment_intents/pi_mv7jakch6557b1425f644c7e/inspect",
       "expected": 200,
       "actual": 200,
-      "duration_ms": 48.02724998444319
+      "duration_ms": 62.914709094911814
     },
     {
       "method": "POST",
       "path": "/v1/payment_intents",
       "expected": 201,
       "actual": 201,
-      "duration_ms": 13.964749872684479
+      "duration_ms": 27.264917269349098
     },
     {
       "method": "POST",
-      "path": "/v1/payment_intents/pi_mv7bh4xafdab683d89d942bb/cancel",
+      "path": "/v1/payment_intents/pi_mv7jalbz6a1403b34f314cdc/cancel",
       "expected": 200,
       "actual": 200,
-      "duration_ms": 6.32820837199688
+      "duration_ms": 30.16583388671279
     },
     {
       "method": "POST",
-      "path": "/v1/payment_intents/pi_mv7bh4xafdab683d89d942bb/confirm",
+      "path": "/v1/payment_intents/pi_mv7jalbz6a1403b34f314cdc/confirm",
       "expected": 409,
       "actual": 409,
-      "duration_ms": 4.9657076597213745
+      "duration_ms": 13.475041836500168
     },
     {
       "method": "POST",
       "path": "/v1/payment_intents",
       "expected": 201,
       "actual": 201,
-      "duration_ms": 6.159625016152859
+      "duration_ms": 30.880582984536886
     },
     {
       "method": "POST",
-      "path": "/v1/payment_intents/pi_mv7bh4xue6c1097ac4034095/confirm",
+      "path": "/v1/payment_intents/pi_mv7jaldvabfca446de3c47b3/confirm",
       "expected": 202,
       "actual": 202,
-      "duration_ms": 10.463333688676357
+      "duration_ms": 24.28054204210639
     },
     {
       "method": "POST",
-      "path": "/v1/payment_intents/pi_mv7bh4xue6c1097ac4034095/cancel",
+      "path": "/v1/payment_intents/pi_mv7jaldvabfca446de3c47b3/cancel",
       "expected": 200,
       "actual": 200,
-      "duration_ms": 6.140582729130983
+      "duration_ms": 43.86483412235975
     },
     {
       "method": "POST",
       "path": "/v1/payment_intents",
       "expected": 201,
       "actual": 201,
-      "duration_ms": 7.084874901920557
+      "duration_ms": 35.9913338907063
     },
     {
       "method": "POST",
-      "path": "/v1/payment_intents/pi_mv7bh4yi5d08414318a54205/confirm",
+      "path": "/v1/payment_intents/pi_mv7jalgv2cd6e753fde64357/confirm",
       "expected": 202,
       "actual": 202,
-      "duration_ms": 6.5277498215436935
+      "duration_ms": 20.42458299547434
     },
     {
       "method": "GET",
-      "path": "/v1/payment_intents/pi_mv7bh4yi5d08414318a54205",
+      "path": "/v1/payment_intents/pi_mv7jalgv2cd6e753fde64357",
       "expected": 200,
       "actual": 200,
-      "duration_ms": 9.370833169668913
+      "duration_ms": 12.983124703168869
     },
     {
       "method": "GET",
-      "path": "/v1/payment_intents/pi_mv7bh4yi5d08414318a54205",
+      "path": "/v1/payment_intents/pi_mv7jalgv2cd6e753fde64357",
       "expected": 200,
       "actual": 200,
-      "duration_ms": 13.670292217284441
+      "duration_ms": 17.831250093877316
     },
     {
       "method": "GET",
-      "path": "/v1/payment_intents/pi_mv7bh4yi5d08414318a54205/inspect",
+      "path": "/v1/payment_intents/pi_mv7jalgv2cd6e753fde64357/inspect",
       "expected": 200,
       "actual": 200,
-      "duration_ms": 7.24775018170476
+      "duration_ms": 21.64066582918167
     },
     {
       "method": "GET",
       "path": "/v1/payment_intents?limit=2",
       "expected": 200,
       "actual": 200,
-      "duration_ms": 16.225999686867
+      "duration_ms": 16.709208954125643
     },
     {
       "method": "GET",
       "path": "/v1/payment_intents?limit=2&after=pi_mv6xr1ykeeed5d5d33d947a1",
       "expected": 200,
       "actual": 200,
-      "duration_ms": 5.405500065535307
+      "duration_ms": 34.07554188743234
     }
   ],
   "checks": "HTTP contracts, saved bytes, terminal state, balances, provider completion and pagination passed"

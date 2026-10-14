@@ -1,0 +1,7 @@
+{
+  "scope": "Expected negative control against the pre-fix historical insert and foreground update lock order",
+  "observed_error": "ERROR: deadlock detected",
+  "expected_test_failure": true,
+  "pre_fix_service_sha256": "9356774b2af2ca66f8f0f8dc818891dd886ffe6a2db2ceabab20fd71c890da81",
+  "fix": "Acquire bounded source rows FOR KEY SHARE before target upsert; checkpoint commits with the chunk"
+}

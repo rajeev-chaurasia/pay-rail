@@ -25,8 +25,8 @@ import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Executors;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -41,11 +41,12 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
 @AutoConfigureMockMvc
-@org.springframework.boot.test.autoconfigure.actuate.observability.AutoConfigureObservability
+@org.springframework.boot.micrometer.metrics.test.autoconfigure.AutoConfigureMetrics
 @SpringBootTest(
     properties = {
       "payrail.rate-limit.enabled=false",
       "payrail.outbox.enabled=false",
+      "spring.kafka.admin.auto-create=false",
       "spring.kafka.listener.auto-startup=false",
       "payrail.provider.fail-after-accept-every=1",
       "payrail.migration.shadow-read-percent=100",
@@ -475,6 +476,36 @@ class PayRailIntegrationTest {
   }
 
   @Test
+  void monetaryHttpInputsRejectFractionalMinorUnits() throws Exception {
+    for (String version : List.of("2025-01-01", "2026-01-01")) {
+      http.perform(
+              post("/v1/payment_intents")
+                  .header("Authorization", "Bearer pr_test_demo")
+                  .header("Idempotency-Key", "fractional-create-" + version)
+                  .header("PayRail-Version", version)
+                  .contentType("application/json")
+                  .content("{\"amount\":101.5,\"currency\":\"usd\",\"captureMethod\":\"manual\"}"))
+          .andExpect(status().isBadRequest())
+          .andExpect(jsonPath("$.error.code").value("invalid_request"));
+    }
+    TenantContext.set("tenant_demo");
+    var payment = create(100, "usd", "manual");
+    payments.confirm(payment.id());
+    for (String operation : List.of("capture", "refunds")) {
+      http.perform(
+              post("/v1/payment_intents/" + payment.id() + "/" + operation)
+                  .header("Authorization", "Bearer pr_test_demo")
+                  .header("Idempotency-Key", "fractional-" + operation)
+                  .contentType("application/json")
+                  .content("{\"amount\":100.5}"))
+          .andExpect(status().isBadRequest())
+          .andExpect(jsonPath("$.error.code").value("invalid_request"));
+    }
+    assertThat(jdbc.queryForObject("select count(*) from ledger_transactions", Long.class))
+        .isZero();
+  }
+
+  @Test
   void prometheusExposesPersistedBacklogAndObservationFreshness() throws Exception {
     create(100, "usd", "manual");
     var registry = new io.micrometer.core.instrument.simple.SimpleMeterRegistry();
@@ -484,6 +515,7 @@ class PayRailIntegrationTest {
     assertThat(registry.get("payrail.outbox.observation.timestamp.seconds").gauge().value())
         .isPositive();
     http.perform(get("/actuator/prometheus")).andExpect(status().isOk());
+    http.perform(get("/v3/api-docs")).andExpect(status().isOk());
   }
 
   @Test
@@ -506,13 +538,49 @@ class PayRailIntegrationTest {
             new com.payrail.config.PayRailProperties.Migration(
                 true, 0, 0, "synthetic-admin-for-test-only-0123456789"));
     var guard = new com.payrail.config.ProductionSecretGuard(environment, config, jdbc);
-    assertThatThrownBy(() -> guard.run(null)).hasMessageContaining("non-owner database role");
+    assertThatThrownBy(() -> guard.afterSingletonsInstantiated())
+        .hasMessageContaining("non-owner database role");
     tx.executeWithoutResult(
         status -> {
           jdbc.execute(
               "create role restricted_guard_test nologin nosuperuser nocreatedb nocreaterole nobypassrls");
           jdbc.execute("set local role restricted_guard_test");
-          guard.run(null);
+          guard.afterSingletonsInstantiated();
+          status.setRollbackOnly();
+        });
+  }
+
+  @Test
+  void productionGuardRejectsMembershipInElevatedRole() {
+    tx.executeWithoutResult(
+        status -> {
+          jdbc.execute(
+              "create role restricted_member nologin nosuperuser nocreatedb nocreaterole nobypassrls");
+          jdbc.execute("create role elevated_member nologin createrole");
+          jdbc.execute("grant elevated_member to restricted_member");
+          jdbc.execute("set local role restricted_member");
+          var environment =
+              new org.springframework.mock.env.MockEnvironment()
+                  .withProperty("spring.flyway.enabled", "false")
+                  .withProperty(
+                      "spring.datasource.url", "jdbc:postgresql://db/payrail?sslmode=verify-full")
+                  .withProperty("spring.data.redis.ssl.enabled", "true")
+                  .withProperty("spring.data.redis.password", "synthetic-test-secret")
+                  .withProperty("spring.kafka.properties.security.protocol", "SSL");
+          environment.setActiveProfiles("prod");
+          var config =
+              new com.payrail.config.PayRailProperties(
+                  new com.payrail.config.PayRailProperties.Auth(
+                      "synthetic-pepper-for-test-only-0123456789"),
+                  new com.payrail.config.PayRailProperties.RateLimit(true, 600),
+                  new com.payrail.config.PayRailProperties.Outbox(true, 100, 250),
+                  new com.payrail.config.PayRailProperties.Migration(
+                      true, 0, 0, "synthetic-admin-for-test-only-0123456789"));
+          assertThatThrownBy(
+                  () ->
+                      new com.payrail.config.ProductionSecretGuard(environment, config, jdbc)
+                          .afterSingletonsInstantiated())
+              .hasMessageContaining("non-owner database role");
           status.setRollbackOnly();
         });
   }
@@ -550,6 +618,75 @@ class PayRailIntegrationTest {
   }
 
   @Test
+  void historicalInsertAndForegroundUpdateUseConsistentLockOrder() throws Exception {
+    var payment = create(100, "usd", "manual");
+    jdbc.update("delete from payment_intents_v2 where source_id=?", payment.id());
+    var sourceLocked = new java.util.concurrent.CountDownLatch(1);
+    var releaseWriter = new java.util.concurrent.CountDownLatch(1);
+    var backfillPid = new java.util.concurrent.atomic.AtomicInteger();
+    var pool = Executors.newFixedThreadPool(2);
+    try {
+      var writer =
+          pool.submit(
+              () -> {
+                TenantContext.set("tenant_demo");
+                try {
+                  return tx.execute(
+                      status -> {
+                        jdbc.queryForObject(
+                            "select version from payment_intents where id=? for update",
+                            Long.class,
+                            payment.id());
+                        sourceLocked.countDown();
+                        try {
+                          if (!releaseWriter.await(10, java.util.concurrent.TimeUnit.SECONDS))
+                            throw new IllegalStateException("Writer release timed out");
+                        } catch (InterruptedException error) {
+                          Thread.currentThread().interrupt();
+                          throw new IllegalStateException(error);
+                        }
+                        return payments.confirm(payment.id());
+                      });
+                } finally {
+                  TenantContext.clear();
+                }
+              });
+      assertThat(sourceLocked.await(5, java.util.concurrent.TimeUnit.SECONDS)).isTrue();
+      var backfill =
+          pool.submit(
+              () ->
+                  tx.execute(
+                      status -> {
+                        backfillPid.set(
+                            jdbc.queryForObject("select pg_backend_pid()", Integer.class));
+                        return migration.backfill(500);
+                      }));
+      boolean waiting = false;
+      long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(5);
+      while (!waiting && System.nanoTime() < deadline) {
+        waiting =
+            Boolean.TRUE.equals(
+                jdbc.queryForObject(
+                    "select exists(select 1 from pg_stat_activity where pid=? and wait_event_type='Lock')",
+                    Boolean.class,
+                    backfillPid.get()));
+        if (!waiting) Thread.sleep(10);
+      }
+      assertThat(waiting).isTrue();
+      releaseWriter.countDown();
+      assertThat(writer.get(10, java.util.concurrent.TimeUnit.SECONDS).status().wire())
+          .isEqualTo("authorized");
+      assertThat(backfill.get(10, java.util.concurrent.TimeUnit.SECONDS)).isEqualTo(1);
+      assertThat(migration.reconcile())
+          .containsEntry("missing", 0L)
+          .containsEntry("mismatched", 0L);
+    } finally {
+      releaseWriter.countDown();
+      pool.shutdownNow();
+    }
+  }
+
+  @Test
   void historicalBatchBackfillRollsBackCheckpointAndResumesWithLiveWrites() {
     jdbc.update(
         """
@@ -582,7 +719,7 @@ class PayRailIntegrationTest {
   }
 
   @Test
-  void repeatedProviderRedeliveryDoesNotDuplicateMoney() {
+  void repeatedProviderRedeliveryDoesNotDuplicateMoney() throws Exception {
     var payment = create(700, "usd", "automatic");
     payments.confirm(payment.id());
     String stable = "tenant_demo:" + payment.id();
@@ -592,12 +729,74 @@ class PayRailIntegrationTest {
     var completion =
         new ProviderCompletion(
             "campaign", "campaign-event", "tenant_demo", payment.id(), reference);
-    for (int attempt = 0; attempt < 10000; attempt++) payments.completeProvider(completion);
+    int attempts = Integer.getInteger("payrail.providerRedeliveries", 10000);
+    assertThat(attempts).isBetween(1, 1000000);
+    var pool = Executors.newFixedThreadPool(8);
+    var start = new java.util.concurrent.CyclicBarrier(8);
+    List<Callable<java.util.Map<String, Object>>> calls = new java.util.ArrayList<>();
+    for (int worker = 0; worker < 8; worker++) {
+      int index = worker;
+      calls.add(
+          () -> {
+            start.await();
+            long began = System.nanoTime();
+            int completed = 0;
+            for (int attempt = index; attempt < attempts; attempt += 8) {
+              payments.completeProvider(completion);
+              completed++;
+            }
+            return java.util.Map.of(
+                "worker",
+                index,
+                "start_nanos",
+                began,
+                "end_nanos",
+                System.nanoTime(),
+                "completed_calls",
+                completed);
+          });
+    }
+    List<java.util.Map<String, Object>> observations = new java.util.ArrayList<>();
+    try {
+      for (var result : pool.invokeAll(calls)) observations.add(result.get());
+    } finally {
+      pool.shutdownNow();
+    }
+    assertThat(
+            observations.stream()
+                .mapToInt(o -> ((Number) o.get("completed_calls")).intValue())
+                .sum())
+        .isEqualTo(attempts);
     assertThat(jdbc.queryForObject("select count(*) from ledger_transactions", Long.class))
         .isEqualTo(1);
     assertThat(jdbc.queryForObject("select sum(debit)-sum(credit) from ledger_entries", Long.class))
         .isZero();
     assertThat(payments.get(payment.id()).amountReceived()).isEqualTo(700);
+    String output = System.getProperty("payrail.redeliveryEvidence");
+    if (output != null) {
+      var report =
+          java.util.Map.of(
+              "schema",
+              "payrail-provider-redelivery-v1",
+              "scope",
+              "Concurrent service-level redelivery of one provider completion; no Kafka network delivery, HTTP request or broad crash campaign is counted",
+              "configured_redeliveries",
+              attempts,
+              "workers",
+              observations,
+              "snapshot",
+              jdbc.queryForMap(
+                  """
+              select (select count(*) from ledger_transactions) journals,
+                (select count(*) from ledger_entries) entries,
+                (select sum(debit)-sum(credit) from ledger_entries) delta,
+                (select count(*) from processed_events) inbox_records,
+                (select count(*) from simulated_provider_operations) provider_operations
+              """));
+      java.nio.file.Files.writeString(
+          java.nio.file.Path.of(output),
+          mapper.writerWithDefaultPrettyPrinter().writeValueAsString(report) + "\n");
+    }
   }
 
   @Test

@@ -1,0 +1,21 @@
+{
+  "quota": {
+    "status": 429,
+    "body": {
+      "error": {
+        "message": "Tenant request limit exceeded",
+        "code": "rate_limit_exceeded"
+      }
+    }
+  },
+  "redis_outage": {
+    "status": 503,
+    "body": {
+      "error": {
+        "message": "Rate limiter unavailable",
+        "code": "rate_limiter_unavailable"
+      }
+    }
+  },
+  "recovery_status": 200
+}

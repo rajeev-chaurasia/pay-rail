@@ -30,7 +30,7 @@ class ProductionSecretGuardTest {
 
   @Test
   void developmentProfilePreservesLocalDefaults() {
-    new ProductionSecretGuard(environment, properties, jdbc).run(null);
+    new ProductionSecretGuard(environment, properties, jdbc).afterSingletonsInstantiated();
   }
 
   @Test
@@ -38,7 +38,7 @@ class ProductionSecretGuardTest {
     environment.setActiveProfiles("prod");
     when(jdbc.queryForObject(anyString(), eq(Boolean.class))).thenReturn(false);
     var guard = new ProductionSecretGuard(environment, properties, jdbc);
-    guard.run(null);
+    guard.afterSingletonsInstantiated();
     for (var invalid :
         java.util.Map.of(
                 "spring.data.redis.ssl.enabled", "false",
@@ -47,20 +47,30 @@ class ProductionSecretGuardTest {
             .entrySet()) {
       String previous = environment.getProperty(invalid.getKey());
       environment.setProperty(invalid.getKey(), invalid.getValue());
-      assertThatThrownBy(() -> guard.run(null)).isInstanceOf(IllegalStateException.class);
+      assertThatThrownBy(() -> guard.afterSingletonsInstantiated())
+          .isInstanceOf(IllegalStateException.class);
       environment.setProperty(invalid.getKey(), previous);
     }
     environment.setProperty("spring.flyway.enabled", "true");
-    assertThatThrownBy(() -> guard.run(null)).hasMessageContaining("separate schema migration");
+    assertThatThrownBy(() -> guard.afterSingletonsInstantiated())
+        .hasMessageContaining("separate schema migration");
     environment.setProperty("spring.flyway.enabled", "false");
     environment.setProperty(
         "spring.datasource.url", "jdbc:postgresql://db/payrail?ignored=sslmode=verify-full");
-    assertThatThrownBy(() -> guard.run(null)).hasMessageContaining("verified PostgreSQL TLS");
+    assertThatThrownBy(() -> guard.afterSingletonsInstantiated())
+        .hasMessageContaining("verified PostgreSQL TLS");
+    environment.setProperty(
+        "spring.datasource.url",
+        "jdbc:postgresql://db/payrail?sslmode=verify-full&sslmode=disable");
+    assertThatThrownBy(() -> guard.afterSingletonsInstantiated())
+        .hasMessageContaining("verified PostgreSQL TLS");
     environment.setProperty("spring.datasource.url", "jdbc:postgresql://db/payrail");
-    assertThatThrownBy(() -> guard.run(null)).hasMessageContaining("verified PostgreSQL TLS");
+    assertThatThrownBy(() -> guard.afterSingletonsInstantiated())
+        .hasMessageContaining("verified PostgreSQL TLS");
     environment.setProperty(
         "spring.datasource.url", "jdbc:postgresql://db/payrail?sslmode=verify-full");
     when(jdbc.queryForObject(anyString(), eq(Boolean.class))).thenReturn(true);
-    assertThatThrownBy(() -> guard.run(null)).hasMessageContaining("non-owner database role");
+    assertThatThrownBy(() -> guard.afterSingletonsInstantiated())
+        .hasMessageContaining("non-owner database role");
   }
 }

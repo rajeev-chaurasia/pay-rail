@@ -1,0 +1,154 @@
+{
+  "accepted_mutating_http_responses_including_replays": 3001,
+  "acknowledged_created_intents": 601,
+  "committed_creates_without_acknowledgement": 0,
+  "completed_workflows": 601,
+  "created_intents": 601,
+  "created_intents_per_offered_second": 10.016666666666667,
+  "drain_seconds": 0.0,
+  "dropped_iterations": 0,
+  "duration_seconds": 60,
+  "failed_checks": 0,
+  "financial_invariant_failures": [],
+  "http_statuses": {
+    "200": 3038,
+    "201": 1202,
+    "202": 451,
+    "409": 903
+  },
+  "invariant_failures": [],
+  "journals": 897,
+  "latency_ms": {
+    "max": 95.398208,
+    "p50": 1.6290205,
+    "p95": 5.397972799999997,
+    "p99": 11.959165189999961
+  },
+  "nominal_rate": 10,
+  "offered_iterations": 600,
+  "operations": {
+    "cancel_authorized": {
+      "max_ms": 12.965834,
+      "p50_ms": 1.911792,
+      "p95_ms": 3.942128649999999,
+      "p99_ms": 9.37219616000003,
+      "requests": 152
+    },
+    "cancel_created": {
+      "max_ms": 15.588041,
+      "p50_ms": 2.0831039999999996,
+      "p95_ms": 4.396944049999995,
+      "p99_ms": 8.207726249999975,
+      "requests": 150
+    },
+    "capture": {
+      "max_ms": 57.2345,
+      "p50_ms": 2.84975,
+      "p95_ms": 8.42280039999999,
+      "p99_ms": 22.038587000000128,
+      "requests": 149
+    },
+    "capture_canceled": {
+      "max_ms": 9.973625,
+      "p50_ms": 1.34625,
+      "p95_ms": 3.034629199999998,
+      "p99_ms": 7.174832830000001,
+      "requests": 152
+    },
+    "confirm": {
+      "max_ms": 23.748541,
+      "p50_ms": 2.146834,
+      "p95_ms": 4.756187499999999,
+      "p99_ms": 11.2616045,
+      "requests": 451
+    },
+    "confirm_canceled": {
+      "max_ms": 31.098625,
+      "p50_ms": 1.3395625,
+      "p95_ms": 3.0631350499999903,
+      "p99_ms": 6.2146563399999915,
+      "requests": 150
+    },
+    "create": {
+      "max_ms": 95.398208,
+      "p50_ms": 3.544166,
+      "p95_ms": 8.278958,
+      "p99_ms": 19.940291,
+      "requests": 601
+    },
+    "create_replay": {
+      "max_ms": 29.700917,
+      "p50_ms": 1.513,
+      "p95_ms": 4.55825,
+      "p99_ms": 10.712459,
+      "requests": 601
+    },
+    "current_read": {
+      "max_ms": 19.752375,
+      "p50_ms": 0.887042,
+      "p95_ms": 2.014083899999997,
+      "p99_ms": 5.991987499999991,
+      "requests": 299
+    },
+    "final_read": {
+      "max_ms": 16.074083,
+      "p50_ms": 0.84625,
+      "p95_ms": 1.7537505999999994,
+      "p99_ms": 4.1512716799999865,
+      "requests": 299
+    },
+    "fingerprint_conflict": {
+      "max_ms": 25.606667,
+      "p50_ms": 1.460125,
+      "p95_ms": 3.717666,
+      "p99_ms": 8.043833,
+      "requests": 601
+    },
+    "full_refund": {
+      "max_ms": 28.100125,
+      "p50_ms": 2.4775,
+      "p95_ms": 4.28462919999998,
+      "p99_ms": 10.128180319999972,
+      "requests": 299
+    },
+    "legacy_read": {
+      "max_ms": 31.881916,
+      "p50_ms": 0.991708,
+      "p95_ms": 3.0064993999999907,
+      "p99_ms": 9.094897679999907,
+      "requests": 299
+    },
+    "partial_refund": {
+      "max_ms": 43.393208,
+      "p50_ms": 2.726084,
+      "p95_ms": 5.82899579999999,
+      "p99_ms": 16.70032147999994,
+      "requests": 299
+    },
+    "provider_poll": {
+      "max_ms": 25.178334,
+      "p50_ms": 1.194083,
+      "p95_ms": 3.6894499999999955,
+      "p99_ms": 11.840593280000036,
+      "requests": 793
+    },
+    "refund_replay": {
+      "max_ms": 20.598458,
+      "p50_ms": 0.982875,
+      "p95_ms": 2.204862799999999,
+      "p99_ms": 3.9451483199999773,
+      "requests": 299
+    }
+  },
+  "outbox_events": 2251,
+  "pending_events_at_snapshot": 0,
+  "profile": "mixed",
+  "published_events": 2251,
+  "qualification_failures": [],
+  "qualified": true,
+  "refunds": 598,
+  "requests": 5594,
+  "resource_observations": 42,
+  "run_id": "20261014T004256-mixed-019998",
+  "started_workflows": 601
+}

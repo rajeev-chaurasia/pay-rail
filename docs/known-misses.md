@@ -9,8 +9,9 @@
   the running quota; rejected requests are not successful payment throughput.
 - Outbox publication uses bounded batches of independent aggregate heads. Broker acknowledgement
   ambiguity may produce duplicates; consumers need durable deduplication.
-- An indefinite provider retry can stall a Kafka partition. Production needs
-  alerting, retention-aware recovery and a reviewed retry-topic policy.
+- Provider failures use bounded retries and acknowledged quarantine. Production
+  still needs alerting, restricted quarantine access, retention review and an
+  operator reconciliation/replay drill.
 - Local migration checks do not establish behavior at 100 million objects,
   across rolling binary versions or on production replicas.
 - Client deadline injection alone cannot prove that a response was lost after

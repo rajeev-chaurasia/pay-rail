@@ -136,3 +136,15 @@ A generator-limited failure cannot establish the service's maximum throughput.
 A fresh 100-arrivals/s run of the original worker passed, so earlier failures
 must be interpreted as observations on shared resources rather than a stable
 capacity ceiling. Both original and revised source identities remain recorded.
+
+The subsequent Spring Boot 4.1 studies repeated both 100-arrivals/s runs, the
+10-workflow-arrivals/s mixed load and the full stepped stress schedule. They
+passed their declared budgets. The stress snapshot drained in 35.5 seconds;
+the older undrained run remains retained. Two bounded target probes failed the
+offered-work budget and cannot qualify 25K/s. Source overlays whose bytes match
+the recorded fingerprints are retained under `evidence/qualification/sources/`.
+The independent qualification validator checks their inventory and byte hashes.
+
+The Docker benchmark wrapper writes a fresh `artifacts/benchmark-*` directory
+and fails when that study misses its budgets. Use `--allow-unqualified` explicitly
+with the validator only to analyze and retain failed capacity observations.

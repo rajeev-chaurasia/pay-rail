@@ -9,8 +9,10 @@ python3 scripts/check_style.py --self-test
 mvn --batch-mode --no-transfer-progress verify
 python3 scripts/validate_concurrency_evidence.py --self-test
 python3 -m unittest discover -s scripts/performance -p 'test_*.py'
+python3 -m unittest discover -s scripts/tests -p 'test_*.py'
+python3 scripts/validate_qualification_evidence.py
 python3 scripts/performance/validate.py --allow-unqualified
 python3 scripts/performance/render.py --check
-python3 -m compileall -q scripts/performance scripts/flow-smoke.py scripts/kafka-recovery.py scripts/qualification-preflight.py
+python3 -m compileall -q scripts/performance scripts/flow-smoke.py scripts/kafka-recovery.py scripts/qualification-preflight.py scripts/compatibility-smoke.py scripts/validate_qualification_evidence.py scripts/poison-recovery.py
 docker compose -p payrail config --quiet
 bash -n scripts/*.sh

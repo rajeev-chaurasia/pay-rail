@@ -1,0 +1,8 @@
+{
+  "scope": "One malformed synthetic Kafka record reaches acknowledged quarantine; a subsequent automatic payment completes",
+  "quarantine_key": "poison-5109727673474ff19877f2dad2650819",
+  "quarantine_seconds": 7.226026919670403,
+  "following_payment_status": "succeeded",
+  "journal_count": 1,
+  "balanced": true
+}

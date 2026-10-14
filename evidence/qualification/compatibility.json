@@ -1,0 +1,87 @@
+{
+  "run_id": "3fc7c4edd5b24454af924dfe1da943ac",
+  "before_image": "sha256:1a053d916088e8d7c251849b19cc141a324a1b42f8ca5eff25ac60bc651e18f1",
+  "cases": [
+    {
+      "key": "compat-5cccadbcb8fc4406a8c9863ecc03a598",
+      "version": "2025-01-01",
+      "request": {
+        "amount": 101,
+        "currency": "usd",
+        "captureMethod": "manual",
+        "metadata": {
+          "nested": {
+            "z": 2.0,
+            "a": [
+              1,
+              true,
+              null
+            ]
+          },
+          "label": "synthetic caf\u00e9",
+          "compatibility_run": "3fc7c4edd5b24454af924dfe1da943ac"
+        }
+      },
+      "status": 201,
+      "wire_body": "{\"id\":\"pi_mv7emg8s28eaa5d5d34e4921\",\"amount\":101,\"amountCapturable\":0,\"amountReceived\":0,\"amountRefunded\":0,\"currency\":\"usd\",\"captureMethod\":\"manual\",\"version\":1,\"metadata\":{\"nested\":{\"z\":2.0,\"a\":[1,true,null]},\"label\":\"synthetic caf\u00e9\",\"compatibility_run\":\"3fc7c4edd5b24454af924dfe1da943ac\"},\"createdAt\":\"2026-10-14T01:01:27.868872799Z\",\"updatedAt\":\"2026-10-14T01:01:27.868872799Z\",\"state\":\"requires_confirmation\"}"
+    },
+    {
+      "key": "compat-8cb90985cf3c4b9988ccbd005ef66f73",
+      "version": "2025-01-01",
+      "request": {
+        "amount": 101,
+        "currency": "usd",
+        "captureMethod": "manual",
+        "metadata": {
+          "tiny": 1e-05,
+          "zero": 0,
+          "compatibility_run": "3fc7c4edd5b24454af924dfe1da943ac"
+        }
+      },
+      "status": 201,
+      "wire_body": "{\"id\":\"pi_mv7emg9b7890d912767d466c\",\"amount\":101,\"amountCapturable\":0,\"amountReceived\":0,\"amountRefunded\":0,\"currency\":\"usd\",\"captureMethod\":\"manual\",\"version\":1,\"metadata\":{\"tiny\":1.0E-5,\"zero\":0,\"compatibility_run\":\"3fc7c4edd5b24454af924dfe1da943ac\"},\"createdAt\":\"2026-10-14T01:01:27.887609507Z\",\"updatedAt\":\"2026-10-14T01:01:27.887609507Z\",\"state\":\"requires_confirmation\"}"
+    },
+    {
+      "key": "compat-a93a49ef99da4971b8361c87d4390390",
+      "version": "2026-01-01",
+      "request": {
+        "amount": 101,
+        "currency": "usd",
+        "captureMethod": "manual",
+        "metadata": {
+          "nested": {
+            "z": 2.0,
+            "a": [
+              1,
+              true,
+              null
+            ]
+          },
+          "label": "synthetic caf\u00e9",
+          "compatibility_run": "3fc7c4edd5b24454af924dfe1da943ac"
+        }
+      },
+      "status": 201,
+      "wire_body": "{\"id\":\"pi_mv7emg9ibff80299ac2540d1\",\"amount\":101,\"amountCapturable\":0,\"amountReceived\":0,\"amountRefunded\":0,\"currency\":\"usd\",\"captureMethod\":\"manual\",\"status\":\"requires_confirmation\",\"version\":1,\"metadata\":{\"nested\":{\"z\":2.0,\"a\":[1,true,null]},\"label\":\"synthetic caf\u00e9\",\"compatibility_run\":\"3fc7c4edd5b24454af924dfe1da943ac\"},\"createdAt\":\"2026-10-14T01:01:27.894069840Z\",\"updatedAt\":\"2026-10-14T01:01:27.894069840Z\"}"
+    },
+    {
+      "key": "compat-ae3b02993dd5478d8f691466e349adf1",
+      "version": "2026-01-01",
+      "request": {
+        "amount": 101,
+        "currency": "usd",
+        "captureMethod": "manual",
+        "metadata": {
+          "tiny": 1e-05,
+          "zero": 0,
+          "compatibility_run": "3fc7c4edd5b24454af924dfe1da943ac"
+        }
+      },
+      "status": 201,
+      "wire_body": "{\"id\":\"pi_mv7emg9m2df8a0d65c0a4490\",\"amount\":101,\"amountCapturable\":0,\"amountReceived\":0,\"amountRefunded\":0,\"currency\":\"usd\",\"captureMethod\":\"manual\",\"status\":\"requires_confirmation\",\"version\":1,\"metadata\":{\"tiny\":1.0E-5,\"zero\":0,\"compatibility_run\":\"3fc7c4edd5b24454af924dfe1da943ac\"},\"createdAt\":\"2026-10-14T01:01:27.898949882Z\",\"updatedAt\":\"2026-10-14T01:01:27.898949882Z\"}"
+    }
+  ],
+  "after_verified": true,
+  "after_image": "sha256:f1692311de3db2127f3e7ced9883a3201e70ce98f61196d37397963eb8c6259b",
+  "committed_intents": 4
+}

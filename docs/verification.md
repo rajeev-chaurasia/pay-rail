@@ -97,3 +97,23 @@ Remote audit validation: [PR #2](https://github.com/rajeev-chaurasia/pay-rail/pu
 passed both push and pull-request CI on commit `ba6fe8e`, including the twenty
 Java integration tests and retained evidence checks. Review and merge remain
 maintainer gates.
+
+## Docker hardening and qualification, 2026-10-13
+
+The complete verification toolchain is containerized. Thirty-four Java tests,
+one native currency test and eleven Python validator tests pass. Verification
+covers restricted-role payment/migration/outbox operations, startup transport
+and role guards, actual Prometheus/OpenAPI endpoints, batched publication,
+acknowledgement-dependent quarantine, integer money input and source-first
+backfill locking. A controlled old lock order failed with a PostgreSQL deadlock;
+the corrected order allows both concurrent operations to complete.
+
+One million service-level provider completion calls retained one balanced
+journal and one inbox/provider operation. The total includes one initial
+completion and 999,999 duplicates; it is not a million HTTP or network faults.
+Four saved create responses replayed byte-for-byte across the runtime upgrade
+for both contracts, including nested/decimal metadata. Real Docker poison
+recovery preserved the malformed fixture and allowed a subsequent payment to
+complete. HTTP smoke, Redis failure/recovery and bounded capacity results are
+retained separately. See `docs/production-readiness.md` for resource, provider
+and operational gates that still prevent production approval.

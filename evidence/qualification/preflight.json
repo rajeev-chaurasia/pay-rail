@@ -1,0 +1,19 @@
+{
+  "observed_at": "2026-10-14T00:44:10.010501+00:00",
+  "target_objects": 100000000,
+  "pilot": {
+    "source_rows": 53800,
+    "target_rows": 53800,
+    "source_bytes": 30982144,
+    "target_bytes": 28246016
+  },
+  "docker_cpus": 10,
+  "docker_memory_bytes": 8218034176,
+  "available_volume_bytes": 37897363456,
+  "estimated_core_bytes": 110089516728,
+  "planning_headroom_multiplier": 3,
+  "planned_bytes_with_headroom": 330268550184,
+  "storage_gate_passed": false,
+  "seed_started": false,
+  "limits": "Small-pilot storage extrapolation is a planning estimate, not measured large-scale migration. Re-size on dedicated hardware including indexes, WAL, replicas and backups. No throughput inference."
+}

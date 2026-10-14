@@ -1,0 +1,47 @@
+[
+  {
+    "time": "2026-10-14T00:46:25.355735+00:00",
+    "pending_events": 5129,
+    "processing": 0
+  },
+  {
+    "time": "2026-10-14T00:46:27.432416+00:00",
+    "pending_events": 4529,
+    "processing": 0
+  },
+  {
+    "time": "2026-10-14T00:46:29.610525+00:00",
+    "pending_events": 3829,
+    "processing": 0
+  },
+  {
+    "time": "2026-10-14T00:46:31.765859+00:00",
+    "pending_events": 3129,
+    "processing": 0
+  },
+  {
+    "time": "2026-10-14T00:46:33.829883+00:00",
+    "pending_events": 2429,
+    "processing": 0
+  },
+  {
+    "time": "2026-10-14T00:46:35.892921+00:00",
+    "pending_events": 1729,
+    "processing": 0
+  },
+  {
+    "time": "2026-10-14T00:46:37.946336+00:00",
+    "pending_events": 1029,
+    "processing": 0
+  },
+  {
+    "time": "2026-10-14T00:46:40.004635+00:00",
+    "pending_events": 329,
+    "processing": 0
+  },
+  {
+    "time": "2026-10-14T00:46:42.086327+00:00",
+    "pending_events": 0,
+    "processing": 0
+  }
+]

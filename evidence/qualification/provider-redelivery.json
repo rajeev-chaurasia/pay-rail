@@ -1,0 +1,53 @@
+{
+  "configured_redeliveries" : 1000000,
+  "scope" : "Concurrent service-level redelivery of one provider completion; no Kafka network delivery, HTTP request or broad crash campaign is counted",
+  "schema" : "payrail-provider-redelivery-v1",
+  "snapshot" : {
+    "journals" : 1,
+    "entries" : 2,
+    "delta" : 0,
+    "inbox_records" : 1,
+    "provider_operations" : 1
+  },
+  "workers" : [ {
+    "worker" : 0,
+    "completed_calls" : 125000,
+    "start_nanos" : 2188977565635251,
+    "end_nanos" : 2189166330149670
+  }, {
+    "worker" : 1,
+    "completed_calls" : 125000,
+    "start_nanos" : 2188977565654001,
+    "end_nanos" : 2189166389881712
+  }, {
+    "worker" : 2,
+    "completed_calls" : 125000,
+    "start_nanos" : 2188977565710501,
+    "end_nanos" : 2189166316961711
+  }, {
+    "worker" : 3,
+    "completed_calls" : 125000,
+    "start_nanos" : 2188977565757376,
+    "end_nanos" : 2189166212723461
+  }, {
+    "worker" : 4,
+    "completed_calls" : 125000,
+    "start_nanos" : 2188977565802751,
+    "end_nanos" : 2189166283833003
+  }, {
+    "worker" : 5,
+    "completed_calls" : 125000,
+    "start_nanos" : 2188977565834751,
+    "end_nanos" : 2189166265437545
+  }, {
+    "worker" : 6,
+    "completed_calls" : 125000,
+    "start_nanos" : 2188977565871918,
+    "end_nanos" : 2189166268724878
+  }, {
+    "worker" : 7,
+    "completed_calls" : 125000,
+    "start_nanos" : 2188977565626293,
+    "end_nanos" : 2189166287178253
+  } ]
+}

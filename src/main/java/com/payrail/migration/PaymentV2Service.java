@@ -52,7 +52,7 @@ public class PaymentV2Service {
         jdbc.queryForMap(
             """
         with chunk as materialized (
-          select * from payment_intents where id>? order by id limit ?
+          select * from payment_intents where id>? order by id limit ? for key share
         ), copied as (
           insert into payment_intents_v2(source_id,tenant_id,amount_minor,currency_code,
             capture_method,lifecycle_status,capturable_minor,captured_minor,refunded_minor,

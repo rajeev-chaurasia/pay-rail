@@ -1,14 +1,13 @@
 package com.payrail.config;
 
 import java.util.Arrays;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
+import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProductionSecretGuard implements ApplicationRunner {
+public class ProductionSecretGuard implements SmartInitializingSingleton {
   private final Environment environment;
   private final PayRailProperties properties;
   private final JdbcTemplate jdbc;
@@ -21,26 +20,31 @@ public class ProductionSecretGuard implements ApplicationRunner {
   }
 
   @Override
-  public void run(ApplicationArguments args) {
+  public void afterSingletonsInstantiated() {
     if (!Arrays.asList(environment.getActiveProfiles()).contains("prod")) return;
     require(
         properties.auth().pepper() != null
             && properties.auth().pepper().length() >= 32
+            && !properties.auth().pepper().isBlank()
             && !properties.auth().pepper().contains("local-development"),
         "strong API_KEY_PEPPER");
     require(
         properties.migration().adminToken() != null
-            && properties.migration().adminToken().length() >= 32,
+            && properties.migration().adminToken().length() >= 32
+            && !properties.migration().adminToken().isBlank(),
         "strong MIGRATION_ADMIN_TOKEN");
     require(properties.rateLimit().enabled(), "enabled admission control");
     require(
         !environment.getProperty("spring.flyway.enabled", Boolean.class, true),
         "separate schema migration deployment");
-    require(
-        environment
-            .getProperty("spring.datasource.url", "")
-            .matches(".*[?&]sslmode=verify-full(?:&[^#]*)?$"),
-        "verified PostgreSQL TLS");
+    String[] parts = environment.getProperty("spring.datasource.url", "").split("\\?", 2);
+    boolean verifiedTls =
+        parts.length == 2
+            && java.util.Arrays.stream(parts[1].split("&"))
+                .filter(parameter -> parameter.startsWith("sslmode="))
+                .toList()
+                .equals(java.util.List.of("sslmode=verify-full"));
+    require(verifiedTls, "verified PostgreSQL TLS");
     require(
         environment.getProperty("spring.data.redis.ssl.enabled", Boolean.class, false)
             && !environment.getProperty("spring.data.redis.password", "").isBlank(),
@@ -55,6 +59,10 @@ public class ProductionSecretGuard implements ApplicationRunner {
         select r.rolsuper or r.rolbypassrls or r.rolcreaterole or r.rolcreatedb
           or exists(select 1 from pg_class c where c.relnamespace='public'::regnamespace
             and c.relkind in ('r','p') and pg_has_role(current_user,c.relowner,'MEMBER'))
+          or exists(select 1 from pg_roles elevated
+            where pg_has_role(current_user,elevated.oid,'MEMBER')
+              and (elevated.rolsuper or elevated.rolbypassrls or elevated.rolcreaterole
+                or elevated.rolcreatedb or left(elevated.rolname,3)='pg_'))
           or has_schema_privilege(current_user,'public','CREATE')
         from pg_roles r where r.rolname=current_user
         """,

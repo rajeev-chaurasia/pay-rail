@@ -29,7 +29,9 @@ spring:
       auto-offset-reset: earliest
       enable-auto-commit: false
       properties.isolation.level: read_committed
-  jackson:
+  http.converters.preferred-json-mapper: jackson2
+  jackson2:
+    deserialization.accept-float-as-int: false
     default-property-inclusion: non_null
 server:
   port: ${PORT:8080}
