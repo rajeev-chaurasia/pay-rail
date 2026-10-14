@@ -41,7 +41,8 @@ Independent maintainer review and remote CI remain outstanding.
 
 ## PAY-003: live payment playground
 
-Status: locally verified; maintainer review and scale qualification remain pending.
+Status: merged to main through PR #1 with passing remote CI. Scale qualification
+remains separate.
 
 Acceptance: a responsive same-origin interface for payment lifecycle actions,
 concurrent idempotency retries and conflicts, API-version comparison, and
@@ -57,3 +58,28 @@ authorization/capture, version comparison and explicit migration authentication,
 backfill/reconciliation/gate. Compact and desktop layouts were checked.
 Pinned frontend formatting/syntax, repository style and regenerated concurrency
 evidence validation passed. See `docs/playground.md` and `docs/verification.md`.
+
+## PAY-004: full flow audit and measured local performance
+
+Status: locally verified and published in PR #2. GitHub push and pull-request
+CI passed on audit commit `ba6fe8e`; maintainer review and merge remain pending.
+Qualification-scale targets remain separate.
+
+Acceptance: expanded HTTP authorization, validation, lifecycle, refund race,
+pagination, versioning and migration checks; explicit flow coverage matrix;
+colored Mermaid architecture; reproducible open-loop smoke, sustained, stress
+and mixed-workload tests with raw observations, environment provenance,
+accepted/rejected request separation, latency percentiles, bounded outbox drain
+and independently recomputed post-run financial/migration invariants.
+Results must state local resource and workload limits. Qualification targets
+remain unclaimed unless measured at the specified scale.
+
+Evidence: twenty Java PostgreSQL/Redis tests, one native currency test and nine
+adversarial performance-validator tests passed. The real HTTP smoke exercised
+34 requests; broker interruption recovered one provider operation and one
+balanced journal. Two 25 create arrivals/s baselines passed; a corrected two
+workflow arrivals/s mixed study completed 121 workflows, 1,086 requests, 174
+journals and 116 refunds with zero accounting/migration mismatch. Higher rates
+did not meet declared capacity budgets and remain retained as unqualified runs.
+README architecture, coverage matrix, reproducible scripts, raw observations,
+independent report rendering, GitHub description and topics are updated.

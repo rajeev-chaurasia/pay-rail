@@ -1,0 +1,122 @@
+{
+  "run_id": "broker-472b8bcef9ce4354be165ac1c0c8368d",
+  "outage_wait_seconds": 25,
+  "recovery_seconds": 8.121265457943082,
+  "captured_minor": 432,
+  "journal_count": 1,
+  "provider_operation_count": 1,
+  "events": [
+    {
+      "id": "1f1b0d45-30aa-4cb7-95df-63a3c50c0e76",
+      "type": "payment_intent.created",
+      "sequence": 1,
+      "attempts": 1,
+      "deliveryStatus": "published",
+      "availableAt": "2026-10-13T23:37:48.276793Z",
+      "publishedAt": "2026-10-13T23:37:48.311759Z",
+      "createdAt": "2026-10-13T23:37:48.276793Z"
+    },
+    {
+      "id": "bad9bef8-7cf3-4240-84e3-5565a0f7d0ae",
+      "type": "provider.authorization.requested",
+      "sequence": 2,
+      "attempts": 2,
+      "deliveryStatus": "published",
+      "availableAt": "2026-10-13T23:38:11.333255Z",
+      "publishedAt": "2026-10-13T23:38:20.338040Z",
+      "createdAt": "2026-10-13T23:37:49.241224Z"
+    },
+    {
+      "id": "073edf8c-c9e5-4869-a5e3-247f057239aa",
+      "type": "payment_intent.succeeded",
+      "sequence": 3,
+      "attempts": 1,
+      "deliveryStatus": "published",
+      "availableAt": "2026-10-13T23:38:20.464007Z",
+      "publishedAt": "2026-10-13T23:38:20.596312Z",
+      "createdAt": "2026-10-13T23:38:20.464007Z"
+    }
+  ],
+  "requests": [
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents",
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7bmv3u74765048c6ca4244/confirm",
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7bmv3u74765048c6ca4244/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7bmv3u74765048c6ca4244",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7bmv3u74765048c6ca4244",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7bmv3u74765048c6ca4244/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7bmv3u74765048c6ca4244",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7bmv3u74765048c6ca4244/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7bmv3u74765048c6ca4244",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7bmv3u74765048c6ca4244/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7bmv3u74765048c6ca4244",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7bmv3u74765048c6ca4244/inspect",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7bmv3u74765048c6ca4244",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7bmv3u74765048c6ca4244/inspect",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7bmv3u74765048c6ca4244/confirm",
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7bmv3u74765048c6ca4244/inspect",
+      "status": 200
+    }
+  ]
+}

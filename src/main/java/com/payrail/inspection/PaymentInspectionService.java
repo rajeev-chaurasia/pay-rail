@@ -3,6 +3,7 @@ package com.payrail.inspection;
 import com.payrail.auth.TenantContext;
 import com.payrail.service.PaymentService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -16,7 +17,7 @@ public class PaymentInspectionService {
     this.inspections = inspections;
   }
 
-  @Transactional(readOnly = true)
+  @Transactional(readOnly = true, isolation = Isolation.REPEATABLE_READ)
   public PaymentInspection inspect(String paymentId) {
     payments.get(paymentId);
     return inspections.find(TenantContext.require(), paymentId);

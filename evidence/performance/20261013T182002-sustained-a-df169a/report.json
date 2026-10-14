@@ -1,0 +1,53 @@
+{
+  "accepted_mutating_http_responses_including_replays": 5906,
+  "acknowledged_created_intents": 5906,
+  "committed_creates_without_acknowledgement": 0,
+  "completed_workflows": 5906,
+  "created_intents": 5906,
+  "created_intents_per_offered_second": 98.43333333333334,
+  "drain_seconds": 57.502934,
+  "dropped_iterations": 91,
+  "duration_seconds": 60,
+  "failed_checks": 4,
+  "financial_invariant_failures": [],
+  "http_statuses": {
+    "201": 5906,
+    "503": 4
+  },
+  "invariant_failures": [],
+  "journals": 0,
+  "latency_ms": {
+    "max": 1486.778792,
+    "p50": 8.376208,
+    "p95": 329.18728955000023,
+    "p99": 817.7088444999996
+  },
+  "nominal_rate": 100,
+  "offered_iterations": 6000,
+  "operations": {
+    "create": {
+      "max_ms": 1486.778792,
+      "p50_ms": 8.376208,
+      "p95_ms": 329.18728955000023,
+      "p99_ms": 817.7088444999996,
+      "requests": 5910
+    }
+  },
+  "outbox_events": 5906,
+  "pending_events_at_snapshot": 0,
+  "profile": "sustained-a",
+  "published_events": 5906,
+  "qualification_failures": [
+    "unexpected HTTP outcomes",
+    "failed semantic/status checks",
+    "offered iterations dropped",
+    "incomplete workflows",
+    "k6 threshold or execution failure"
+  ],
+  "qualified": false,
+  "refunds": 0,
+  "requests": 5910,
+  "resource_observations": 42,
+  "run_id": "20261013T182002-sustained-a-df169a",
+  "started_workflows": 5910
+}

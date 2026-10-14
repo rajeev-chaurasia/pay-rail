@@ -1,0 +1,9 @@
+{
+  "drain.json": "6e271f5e18de512eb256516ad16f264d3262192e1c25b5917dbaa9ef21b92af5",
+  "k6.log": "4ae46ecf0474d2d2f6c917894d29d0287b302767e0581171bd0460b057262c8b",
+  "manifest.json": "11d55e58901edeca408e6ab5c6224f7b98af72727c4ead4ba762b34721000d7c",
+  "raw.json.gz": "4dbd13fd2e2491401d61a6a2e5e624f7efced380b6c408cefe7d3492e6fce257",
+  "resources.jsonl": "88c1cbe66deaa689a2777244c7e865f42b4bfa7fe1cc86354abee9fc212e9c86",
+  "snapshot.json.gz": "1cfcdd597b1b4a0ea3710ecb574f292b555b0df982843480c0b26fdd03599ed1",
+  "summary.json": "e26abe2b0edfe582537c91a76dee34ca5181733359f48b9e7726cfca34ba21a3"
+}

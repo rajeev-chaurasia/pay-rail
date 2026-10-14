@@ -2,6 +2,7 @@ package com.payrail;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,16 +21,19 @@ import com.payrail.service.SimulatedProvider;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Executors;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -150,6 +154,200 @@ class PayRailIntegrationTest {
   }
 
   @Test
+  void httpCreateBoundaryRejectsBadAuthKeysVersionsAndFields() throws Exception {
+    http.perform(post("/v1/payment_intents")).andExpect(status().isUnauthorized());
+    http.perform(
+            post("/v1/payment_intents")
+                .header("Authorization", "Bearer invalid")
+                .header("Idempotency-Key", "x")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"amount\":100,\"currency\":\"usd\"}"))
+        .andExpect(status().isUnauthorized());
+    http.perform(
+            auth(post("/v1/payment_intents"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(validCreate()))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.error.code").value("invalid_request"));
+    assertCreateRejected("", "2026-01-01", validCreate(), 400, "invalid_idempotency_key");
+    assertCreateRejected(
+        "unknown-version", "2099-01-01", validCreate(), 400, "unsupported_api_version");
+    assertCreateRejected("zero", "2026-01-01", createBody(0, "usd", "manual", "{}"), 400, null);
+    assertCreateRejected(
+        "too-large",
+        "2026-01-01",
+        createBody(1_000_000_000_000L, "usd", "manual", "{}"),
+        400,
+        "invalid_amount");
+    assertCreateRejected(
+        "currency",
+        "2026-01-01",
+        createBody(100, "xyz", "manual", "{}"),
+        400,
+        "unsupported_currency");
+    assertCreateRejected(
+        "capture",
+        "2026-01-01",
+        createBody(100, "usd", "partial", "{}"),
+        400,
+        "invalid_capture_method");
+    assertCreateRejected(
+        "metadata", "2026-01-01", createBody(100, "usd", "manual", "[]"), 400, "invalid_metadata");
+    assertCreateRejected("malformed", "2026-01-01", "{", 400, null);
+
+    jdbc.update("update api_keys set enabled=false where tenant_id='tenant_demo'");
+    try {
+      assertCreateRejected("disabled", "2026-01-01", validCreate(), 401, "invalid_api_key");
+    } finally {
+      jdbc.update("update api_keys set enabled=true where tenant_id='tenant_demo'");
+    }
+  }
+
+  @Test
+  void httpLifecyclePaginationAndVersionTransforms() throws Exception {
+    String first = httpCreate("lifecycle-1", createBody(500, "usd", "manual", "{\"order\":1}"));
+    String second = httpCreate("lifecycle-2", createBody(600, "usd", "manual", "{}"));
+
+    http.perform(
+            auth(get("/v1/payment_intents/{id}", first)).header("PayRail-Version", "2025-01-01"))
+        .andExpect(status().isOk())
+        .andExpect(header().string("PayRail-Version", "2025-01-01"))
+        .andExpect(jsonPath("$.state").value("requires_confirmation"))
+        .andExpect(jsonPath("$.status").doesNotExist());
+    String firstPage =
+        http.perform(auth(get("/v1/payment_intents")).param("limit", "1"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.length()").value(1))
+            .andExpect(jsonPath("$.next_cursor").isNotEmpty())
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
+    String firstPageId = mapper.readTree(firstPage).path("data").get(0).path("id").asText();
+    String cursor = mapper.readTree(firstPage).path("next_cursor").asText();
+    String secondPage =
+        http.perform(
+                auth(get("/v1/payment_intents"))
+                    .header("PayRail-Version", "2025-01-01")
+                    .param("limit", "1")
+                    .param("after", cursor))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data[0].id").value(org.hamcrest.Matchers.not(firstPageId)))
+            .andExpect(jsonPath("$.data[0].state").value("requires_confirmation"))
+            .andExpect(jsonPath("$.data[0].status").doesNotExist())
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
+    String terminalCursor = mapper.readTree(secondPage).path("next_cursor").asText();
+    http.perform(
+            auth(get("/v1/payment_intents")).param("limit", "1").param("after", terminalCursor))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.data.length()").value(0));
+    http.perform(auth(get("/v1/payment_intents")).param("limit", "101"))
+        .andExpect(status().isBadRequest());
+
+    http.perform(action(first, "confirm", "confirm-1", null)).andExpect(status().isAccepted());
+    http.perform(action(first, "capture", "partial-capture", "{\"amount\":200}"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.error.code").value("invalid_capture_amount"));
+    http.perform(action(first, "capture", "full-capture", "{}"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.status").value("succeeded"));
+    http.perform(action(first, "capture", "double-capture", "{}")).andExpect(status().isConflict());
+    http.perform(action(second, "cancel", "confirm-1", null))
+        .andExpect(status().isConflict())
+        .andExpect(jsonPath("$.error.code").value("idempotency_conflict"));
+    http.perform(action(second, "cancel", "cancel-1", null))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.status").value("canceled"));
+    http.perform(action(second, "confirm", "confirm-canceled", null))
+        .andExpect(status().isConflict());
+    assertThat(jdbc.queryForObject("select count(*) from ledger_transactions", Long.class))
+        .isEqualTo(1);
+  }
+
+  @Test
+  void refundReplayAndConcurrentOversubscriptionPreserveCapturedTotal() throws Exception {
+    PaymentIntent payment = create(1000, "usd", "manual");
+    payments.confirm(payment.id());
+    payments.capture(payment.id(), 1000);
+    String path = "/v1/payment_intents/" + payment.id() + "/refunds";
+    String first =
+        http.perform(
+                auth(post(path))
+                    .header("Idempotency-Key", "refund-replay")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"amount\":200}"))
+            .andExpect(status().isOk())
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
+    http.perform(
+            auth(post(path))
+                .header("Idempotency-Key", "refund-replay")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"amount\":200}"))
+        .andExpect(status().isOk())
+        .andExpect(content().string(first));
+
+    CyclicBarrier barrier = new CyclicBarrier(2);
+    var pool = Executors.newFixedThreadPool(2);
+    List<Callable<Boolean>> calls = new ArrayList<>();
+    for (int worker = 0; worker < 2; worker++) {
+      calls.add(
+          () -> {
+            TenantContext.set("tenant_demo");
+            try {
+              barrier.await();
+              payments.refund(payment.id(), 500);
+              return true;
+            } catch (ApiException e) {
+              assertThat(e.code()).isEqualTo("invalid_refund_amount");
+              assertThat(e.status().value()).isEqualTo(400);
+              return false;
+            } finally {
+              TenantContext.clear();
+            }
+          });
+    }
+    var results = pool.invokeAll(calls);
+    pool.shutdown();
+    assertThat(results).extracting(f -> f.get()).containsExactlyInAnyOrder(true, false);
+    TenantContext.set("tenant_demo");
+    assertThat(payments.get(payment.id()).amountRefunded()).isEqualTo(700);
+    assertThat(jdbc.queryForObject("select sum(amount) from refunds", Long.class)).isEqualTo(700);
+    assertThat(jdbc.queryForObject("select sum(debit)-sum(credit) from ledger_entries", Long.class))
+        .isZero();
+    payments.refund(payment.id(), 300);
+    assertThat(payments.get(payment.id()).status().wire()).isEqualTo("refunded");
+    assertThatThrownBy(() -> payments.refund(payment.id(), 1))
+        .isInstanceOf(ApiException.class)
+        .extracting(e -> ((ApiException) e).code())
+        .isEqualTo("invalid_state_transition");
+  }
+
+  @Test
+  void migrationAdminAuthBoundsAndDivergenceGateAreEnforced() throws Exception {
+    http.perform(get("/v1/admin/migrations/payment-v2")).andExpect(status().isBadRequest());
+    http.perform(get("/v1/admin/migrations/payment-v2").header("X-Admin-Token", "wrong"))
+        .andExpect(status().isUnauthorized());
+    http.perform(
+            post("/v1/admin/migrations/payment-v2/backfill")
+                .header("X-Admin-Token", "local-admin-token")
+                .param("batchSize", "0"))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.error.code").value("invalid_batch_size"));
+    PaymentIntent payment = create(100, "usd", "manual");
+    jdbc.update("update payment_intents_v2 set amount_minor=101 where source_id=?", payment.id());
+    http.perform(
+            post("/v1/admin/migrations/payment-v2/gate-cutover")
+                .header("X-Admin-Token", "local-admin-token"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.mismatched").value(1))
+        .andExpect(jsonPath("$.cutover_ready").value(false));
+    assertThat(payments.get(payment.id()).amount()).isEqualTo(100);
+  }
+
+  @Test
   void manualCapturePostsExactlyOneBalancedImmutableJournal() {
     PaymentIntent p = create(500, "usd", "manual");
     payments.confirm(p.id());
@@ -175,6 +373,21 @@ class PayRailIntegrationTest {
                         jdbc.update(
                             "insert into ledger_transactions(id,tenant_id,payment_intent_id,effect_key,currency) values ('bad','tenant_demo',?,'bad','usd')",
                             p.id())))
+        .isInstanceOf(DataIntegrityViolationException.class);
+    assertThatThrownBy(
+            () ->
+                tx.executeWithoutResult(
+                    ignored -> {
+                      jdbc.update(
+                          "insert into ledger_transactions(id,tenant_id,payment_intent_id,effect_key,currency) values ('unbalanced','tenant_demo',?,'unbalanced','usd')",
+                          p.id());
+                      jdbc.update(
+                          "insert into ledger_entries(ledger_transaction_id,account,debit,credit) values ('unbalanced','provider_clearing',100,0)");
+                      jdbc.update(
+                          "insert into ledger_entries(ledger_transaction_id,account,debit,credit) values ('unbalanced','merchant_payable',0,99)");
+                      jdbc.update(
+                          "update ledger_transactions set posted=true where id='unbalanced'");
+                    }))
         .isInstanceOf(DataIntegrityViolationException.class);
   }
 
@@ -204,6 +417,27 @@ class PayRailIntegrationTest {
                 jdbc.update(
                     "insert into ledger_entries(ledger_transaction_id,account,debit,credit) values (?,'late',1,0)",
                     journal))
+        .isInstanceOf(DataIntegrityViolationException.class);
+  }
+
+  @Test
+  void databaseRejectsCrossTenantPaymentEffects() {
+    PaymentIntent payment = create(100, "usd", "manual");
+    jdbc.update(
+        "insert into tenants(id,name) values ('tenant_other','Other') on conflict do nothing");
+    assertThatThrownBy(
+            () ->
+                jdbc.update(
+                    "insert into refunds(id,tenant_id,payment_intent_id,amount,status) values ('cross','tenant_other',?,1,'succeeded')",
+                    payment.id()))
+        .isInstanceOf(DataIntegrityViolationException.class);
+    assertThatThrownBy(
+            () ->
+                tx.executeWithoutResult(
+                    ignored ->
+                        jdbc.update(
+                            "insert into ledger_transactions(id,tenant_id,payment_intent_id,effect_key,currency) values ('cross','tenant_other',?,'cross','usd')",
+                            payment.id())))
         .isInstanceOf(DataIntegrityViolationException.class);
   }
 
@@ -397,6 +631,62 @@ class PayRailIntegrationTest {
     return idempotency.execute(new IdempotencyService.TypedCommand<>(raw, PaymentIntent.class));
   }
 
+  private MockHttpServletRequestBuilder auth(MockHttpServletRequestBuilder request) {
+    return request.header("Authorization", "Bearer pr_test_demo");
+  }
+
+  private MockHttpServletRequestBuilder action(
+      String paymentId, String action, String key, String body) {
+    MockHttpServletRequestBuilder request =
+        auth(post("/v1/payment_intents/{id}/{action}", paymentId, action))
+            .header("Idempotency-Key", key);
+    return body == null ? request : request.contentType(MediaType.APPLICATION_JSON).content(body);
+  }
+
+  private String httpCreate(String key, String body) throws Exception {
+    String response =
+        http.perform(
+                auth(post("/v1/payment_intents"))
+                    .header("Idempotency-Key", key)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(body))
+            .andExpect(status().isCreated())
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
+    return mapper.readTree(response).path("id").asText();
+  }
+
+  private void assertCreateRejected(
+      String key, String version, String body, int expectedStatus, String expectedCode)
+      throws Exception {
+    var result =
+        http.perform(
+                auth(post("/v1/payment_intents"))
+                    .header("Idempotency-Key", key)
+                    .header("PayRail-Version", version)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(body))
+            .andExpect(status().is(expectedStatus));
+    if (expectedCode != null) result.andExpect(jsonPath("$.error.code").value(expectedCode));
+  }
+
+  private String validCreate() {
+    return createBody(100, "usd", "manual", "{}");
+  }
+
+  private String createBody(long amount, String currency, String captureMethod, String metadata) {
+    return "{\"amount\":"
+        + amount
+        + ",\"currency\":\""
+        + currency
+        + "\",\"captureMethod\":\""
+        + captureMethod
+        + "\",\"metadata\":"
+        + metadata
+        + "}";
+  }
+
   private void assertInspectionLedgerBalanced(String paymentId) {
     List<Long> balances =
         jdbc.queryForList(
@@ -425,5 +715,14 @@ class PayRailIntegrationTest {
                 .string(
                     org.hamcrest.Matchers.not(
                         org.hamcrest.Matchers.containsString(providerReference))));
+    http.perform(
+            post("/v1/payment_intents/{id}/confirm", paymentId)
+                .header("Authorization", "Bearer pr_test_other")
+                .header("Idempotency-Key", "other-confirm"))
+        .andExpect(status().isNotFound())
+        .andExpect(
+            content()
+                .string(
+                    org.hamcrest.Matchers.not(org.hamcrest.Matchers.containsString(paymentId))));
   }
 }

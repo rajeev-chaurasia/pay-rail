@@ -48,7 +48,7 @@ public class PaymentInspectionRepository {
 
   private List<LedgerEntry> entries(String journalId) {
     return jdbc.query(
-        "select id,account,debit,credit,created_at from ledger_entries where ledger_transaction_id=? order by id",
+        "select e.id,e.account,e.debit,e.credit,e.created_at from ledger_entries e join ledger_transactions t on t.id=e.ledger_transaction_id where e.ledger_transaction_id=? and t.tenant_id=? order by e.id",
         (rs, row) ->
             new LedgerEntry(
                 rs.getLong("id"),
@@ -56,19 +56,23 @@ public class PaymentInspectionRepository {
                 rs.getLong("debit"),
                 rs.getLong("credit"),
                 rs.getTimestamp("created_at").toInstant()),
-        journalId);
+        journalId,
+        com.payrail.auth.TenantContext.require());
   }
 
   private List<DeliveryEvent> events(String tenant, String paymentId) {
     return jdbc.query(
-        "select id,event_type,aggregate_sequence,attempts,available_at,published_at,created_at from outbox_events where tenant_id=? and aggregate_type='payment_intent' and aggregate_id=? order by aggregate_sequence",
+        "select id,event_type,aggregate_sequence,attempts,available_at,lease_until,published_at,created_at from outbox_events where tenant_id=? and aggregate_type='payment_intent' and aggregate_id=? order by aggregate_sequence",
         (rs, row) ->
             new DeliveryEvent(
                 rs.getString("id"),
                 rs.getString("event_type"),
                 rs.getLong("aggregate_sequence"),
                 rs.getInt("attempts"),
-                deliveryStatus(rs.getTimestamp("published_at"), rs.getTimestamp("available_at")),
+                deliveryStatus(
+                    rs.getTimestamp("published_at"),
+                    rs.getTimestamp("lease_until"),
+                    rs.getTimestamp("available_at")),
                 rs.getTimestamp("available_at").toInstant(),
                 rs.getTimestamp("published_at") == null
                     ? null
@@ -89,8 +93,14 @@ public class PaymentInspectionRepository {
         tenant + ":" + paymentId);
   }
 
-  private String deliveryStatus(java.sql.Timestamp publishedAt, java.sql.Timestamp availableAt) {
+  private String deliveryStatus(
+      java.sql.Timestamp publishedAt,
+      java.sql.Timestamp leaseUntil,
+      java.sql.Timestamp availableAt) {
     if (publishedAt != null) return "published";
+    if (leaseUntil != null && leaseUntil.toInstant().isAfter(java.time.Instant.now())) {
+      return "publishing";
+    }
     return availableAt.toInstant().isAfter(java.time.Instant.now()) ? "retry_scheduled" : "pending";
   }
 }

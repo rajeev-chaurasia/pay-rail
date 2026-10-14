@@ -1,0 +1,49 @@
+{
+  "accepted_mutating_http_responses_including_replays": 5990,
+  "acknowledged_created_intents": 5990,
+  "committed_creates_without_acknowledgement": 0,
+  "completed_workflows": 5990,
+  "created_intents": 5990,
+  "created_intents_per_offered_second": 99.83333333333333,
+  "drain_seconds": 2.12198,
+  "dropped_iterations": 10,
+  "duration_seconds": 60,
+  "failed_checks": 0,
+  "financial_invariant_failures": [],
+  "http_statuses": {
+    "201": 5990
+  },
+  "invariant_failures": [],
+  "journals": 0,
+  "latency_ms": {
+    "max": 663.663417,
+    "p50": 2.6318960000000002,
+    "p95": 49.14428530000001,
+    "p99": 229.47581726
+  },
+  "nominal_rate": 100,
+  "offered_iterations": 6000,
+  "operations": {
+    "create": {
+      "max_ms": 663.663417,
+      "p50_ms": 2.6318960000000002,
+      "p95_ms": 49.14428530000001,
+      "p99_ms": 229.47581726,
+      "requests": 5990
+    }
+  },
+  "outbox_events": 5990,
+  "pending_events_at_snapshot": 0,
+  "profile": "sustained-b",
+  "published_events": 5990,
+  "qualification_failures": [
+    "offered iterations dropped",
+    "k6 threshold or execution failure"
+  ],
+  "qualified": false,
+  "refunds": 0,
+  "requests": 5990,
+  "resource_observations": 42,
+  "run_id": "20261013T182202-sustained-b-c45d42",
+  "started_workflows": 5990
+}

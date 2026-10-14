@@ -1,0 +1,162 @@
+{
+  "accepted_mutating_http_responses_including_replays": 2652,
+  "acknowledged_created_intents": 548,
+  "committed_creates_without_acknowledgement": 0,
+  "completed_workflows": 521,
+  "created_intents": 548,
+  "created_intents_per_offered_second": 9.133333333333333,
+  "drain_seconds": 0.0,
+  "dropped_iterations": 45,
+  "duration_seconds": 60,
+  "failed_checks": 42,
+  "financial_invariant_failures": [],
+  "http_statuses": {
+    "200": 2381,
+    "201": 1089,
+    "202": 391,
+    "409": 796,
+    "503": 34
+  },
+  "invariant_failures": [],
+  "journals": 777,
+  "latency_ms": {
+    "max": 5901.111711,
+    "p50": 4.108542,
+    "p95": 195.29591699999997,
+    "p99": 3193.039814200001
+  },
+  "nominal_rate": 10,
+  "offered_iterations": 600,
+  "operations": {
+    "cancel_authorized": {
+      "max_ms": 5456.150961,
+      "p50_ms": 4.140750000000001,
+      "p95_ms": 92.05316669999971,
+      "p99_ms": 4717.478623189995,
+      "requests": 132
+    },
+    "cancel_created": {
+      "max_ms": 5599.570128,
+      "p50_ms": 5.514646,
+      "p95_ms": 828.961084,
+      "p99_ms": 5166.475525450003,
+      "requests": 136
+    },
+    "capture": {
+      "max_ms": 404.672209,
+      "p50_ms": 6.7638125,
+      "p95_ms": 69.32507339999998,
+      "p99_ms": 150.4321008899998,
+      "requests": 130
+    },
+    "capture_canceled": {
+      "max_ms": 834.408751,
+      "p50_ms": 3.122417,
+      "p95_ms": 41.947687,
+      "p99_ms": 272.5078251999968,
+      "requests": 131
+    },
+    "confirm": {
+      "max_ms": 5750.368086,
+      "p50_ms": 5.086625,
+      "p95_ms": 156.16537499999984,
+      "p99_ms": 4854.191185040006,
+      "requests": 397
+    },
+    "confirm_canceled": {
+      "max_ms": 4836.325836,
+      "p50_ms": 3.7116664999999998,
+      "p95_ms": 165.7421415499992,
+      "p99_ms": 3568.1039478099547,
+      "requests": 134
+    },
+    "create": {
+      "max_ms": 5901.111711,
+      "p50_ms": 6.663416,
+      "p95_ms": 1181.5148456999987,
+      "p99_ms": 5236.945278500003,
+      "requests": 555
+    },
+    "create_replay": {
+      "max_ms": 5638.919586,
+      "p50_ms": 3.5349165,
+      "p95_ms": 531.1556607499999,
+      "p99_ms": 5068.077840999982,
+      "requests": 548
+    },
+    "current_read": {
+      "max_ms": 910.992167,
+      "p50_ms": 2.409959,
+      "p95_ms": 23.6982837,
+      "p99_ms": 465.4514576399913,
+      "requests": 259
+    },
+    "final_read": {
+      "max_ms": 5595.953169,
+      "p50_ms": 2.534167,
+      "p95_ms": 17.288525299999996,
+      "p99_ms": 260.50203263999856,
+      "requests": 259
+    },
+    "fingerprint_conflict": {
+      "max_ms": 5629.494253,
+      "p50_ms": 3.346291,
+      "p95_ms": 673.679042,
+      "p99_ms": 5284.109769200003,
+      "requests": 541
+    },
+    "full_refund": {
+      "max_ms": 3456.437585,
+      "p50_ms": 6.625042,
+      "p95_ms": 50.77766719999998,
+      "p99_ms": 636.7810063599925,
+      "requests": 259
+    },
+    "legacy_read": {
+      "max_ms": 136.137583,
+      "p50_ms": 2.586583,
+      "p95_ms": 29.49547859999999,
+      "p99_ms": 99.75037077999947,
+      "requests": 259
+    },
+    "partial_refund": {
+      "max_ms": 1867.889653,
+      "p50_ms": 6.677083,
+      "p95_ms": 84.5999042,
+      "p99_ms": 343.7948774999979,
+      "requests": 259
+    },
+    "provider_poll": {
+      "max_ms": 4769.096043,
+      "p50_ms": 2.929791,
+      "p95_ms": 34.98179159999992,
+      "p99_ms": 196.4004028800007,
+      "requests": 433
+    },
+    "refund_replay": {
+      "max_ms": 1607.481861,
+      "p50_ms": 2.788083,
+      "p95_ms": 29.77285029999999,
+      "p99_ms": 259.1829099999994,
+      "requests": 259
+    }
+  },
+  "outbox_events": 1981,
+  "pending_events_at_snapshot": 0,
+  "profile": "mixed",
+  "published_events": 1981,
+  "qualification_failures": [
+    "unexpected HTTP outcomes",
+    "failed semantic/status checks",
+    "offered iterations dropped",
+    "incomplete workflows",
+    "latency budget exceeded",
+    "k6 threshold or execution failure"
+  ],
+  "qualified": false,
+  "refunds": 518,
+  "requests": 4691,
+  "resource_observations": 42,
+  "run_id": "20261013T182307-mixed-ecffaa",
+  "started_workflows": 555
+}

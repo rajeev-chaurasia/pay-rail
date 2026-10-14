@@ -1,0 +1,245 @@
+{
+  "run_id": "flow-abe45f56436645cbad134ec6085ceaa9",
+  "url": "http://localhost:18080",
+  "observations": [
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents",
+      "expected": 401,
+      "actual": 401,
+      "duration_ms": 233.57929242774844
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents",
+      "expected": 401,
+      "actual": 401,
+      "duration_ms": 18.70704209432006
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents",
+      "expected": 400,
+      "actual": 400,
+      "duration_ms": 666.2867502309382
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents",
+      "expected": 400,
+      "actual": 400,
+      "duration_ms": 34.034166019409895
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents",
+      "expected": 201,
+      "actual": 201,
+      "duration_ms": 89.6948748268187
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents",
+      "expected": 201,
+      "actual": 201,
+      "duration_ms": 11.345916893333197
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents",
+      "expected": 409,
+      "actual": 409,
+      "duration_ms": 18.641499802470207
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/confirm",
+      "expected": 202,
+      "actual": 202,
+      "duration_ms": 19.076125230640173
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/capture",
+      "expected": 400,
+      "actual": 400,
+      "duration_ms": 18.226916901767254
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/capture",
+      "expected": 200,
+      "actual": 200,
+      "duration_ms": 44.276457745581865
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/capture",
+      "expected": 409,
+      "actual": 409,
+      "duration_ms": 19.42329201847315
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/cancel",
+      "expected": 409,
+      "actual": 409,
+      "duration_ms": 9.690375067293644
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df",
+      "expected": 200,
+      "actual": 200,
+      "duration_ms": 6.864500232040882
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df",
+      "expected": 200,
+      "actual": 200,
+      "duration_ms": 11.609042063355446
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/refunds",
+      "expected": 200,
+      "actual": 200,
+      "duration_ms": 45.611375011503696
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/refunds",
+      "expected": 200,
+      "actual": 200,
+      "duration_ms": 14.012250117957592
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/refunds",
+      "expected": 400,
+      "actual": 400,
+      "duration_ms": 25.562957860529423
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/refunds",
+      "expected": 200,
+      "actual": 200,
+      "duration_ms": 32.60174999013543
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df",
+      "expected": 200,
+      "actual": 200,
+      "duration_ms": 10.047957766801119
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/refunds",
+      "expected": 409,
+      "actual": 409,
+      "duration_ms": 11.290874797850847
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7bh4mm835489a749d640df/inspect",
+      "expected": 200,
+      "actual": 200,
+      "duration_ms": 48.02724998444319
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents",
+      "expected": 201,
+      "actual": 201,
+      "duration_ms": 13.964749872684479
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7bh4xafdab683d89d942bb/cancel",
+      "expected": 200,
+      "actual": 200,
+      "duration_ms": 6.32820837199688
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7bh4xafdab683d89d942bb/confirm",
+      "expected": 409,
+      "actual": 409,
+      "duration_ms": 4.9657076597213745
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents",
+      "expected": 201,
+      "actual": 201,
+      "duration_ms": 6.159625016152859
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7bh4xue6c1097ac4034095/confirm",
+      "expected": 202,
+      "actual": 202,
+      "duration_ms": 10.463333688676357
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7bh4xue6c1097ac4034095/cancel",
+      "expected": 200,
+      "actual": 200,
+      "duration_ms": 6.140582729130983
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents",
+      "expected": 201,
+      "actual": 201,
+      "duration_ms": 7.084874901920557
+    },
+    {
+      "method": "POST",
+      "path": "/v1/payment_intents/pi_mv7bh4yi5d08414318a54205/confirm",
+      "expected": 202,
+      "actual": 202,
+      "duration_ms": 6.5277498215436935
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7bh4yi5d08414318a54205",
+      "expected": 200,
+      "actual": 200,
+      "duration_ms": 9.370833169668913
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7bh4yi5d08414318a54205",
+      "expected": 200,
+      "actual": 200,
+      "duration_ms": 13.670292217284441
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents/pi_mv7bh4yi5d08414318a54205/inspect",
+      "expected": 200,
+      "actual": 200,
+      "duration_ms": 7.24775018170476
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents?limit=2",
+      "expected": 200,
+      "actual": 200,
+      "duration_ms": 16.225999686867
+    },
+    {
+      "method": "GET",
+      "path": "/v1/payment_intents?limit=2&after=pi_mv6xr1ykeeed5d5d33d947a1",
+      "expected": 200,
+      "actual": 200,
+      "duration_ms": 5.405500065535307
+    }
+  ],
+  "checks": "HTTP contracts, saved bytes, terminal state, balances, provider completion and pagination passed"
+}

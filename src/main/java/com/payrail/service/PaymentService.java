@@ -44,6 +44,7 @@ public class PaymentService {
     validateAmount(command.amount());
     String currency = normalizeCurrency(command.currency());
     validateCaptureMethod(command.captureMethod());
+    validateMetadata(command.metadata());
     Instant now = clock.instant();
     PaymentIntent payment = newPayment(command, currency, now);
     String tenant = TenantContext.require();
@@ -251,6 +252,13 @@ public class PaymentService {
           HttpStatus.BAD_REQUEST,
           "invalid_capture_method",
           "capture_method must be automatic or manual");
+    }
+  }
+
+  private void validateMetadata(JsonNode metadata) {
+    if (metadata != null && !metadata.isObject()) {
+      throw new ApiException(
+          HttpStatus.BAD_REQUEST, "invalid_metadata", "metadata must be a JSON object");
     }
   }
 

@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "check": "prettier --check src/main/resources/static && node --check src/main/resources/static/playground/app.js",
-    "format": "prettier --write src/main/resources/static"
+    "check": "prettier --check src/main/resources/static scripts/load.js scripts/tests && node --check src/main/resources/static/playground/app.js && node --test scripts/tests/*.test.mjs",
+    "format": "prettier --write src/main/resources/static scripts/load.js scripts/tests"
   },
   "devDependencies": {
     "prettier": "3.6.2"

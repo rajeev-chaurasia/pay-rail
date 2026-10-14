@@ -92,7 +92,7 @@ Throttle backfill on WAL growth, replica lag, lock waits, outbox age, and foregr
 
 ## Verification harness and delivery sequence
 
-Deliver these proposed entry points with executable scripts and documented prerequisites. They are planned interfaces, not runnable commands in the current empty repository.
+Deliver these proposed entry points with executable scripts and documented prerequisites. The implemented local commands and measured coverage are documented in `docs/testing.md` and `docs/performance.md`; larger qualification interfaces below remain proposals.
 
 | Stage | Deliverable and completion gate |
 | --- | --- |

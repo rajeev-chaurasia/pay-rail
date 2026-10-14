@@ -1,0 +1,59 @@
+{
+  "accepted_mutating_http_responses_including_replays": 16524,
+  "acknowledged_created_intents": 16524,
+  "committed_creates_without_acknowledgement": 385,
+  "completed_workflows": 16524,
+  "created_intents": 16909,
+  "created_intents_per_offered_second": 272.7258064516129,
+  "drain_seconds": 300.630167,
+  "dropped_iterations": 2284,
+  "duration_seconds": 62,
+  "failed_checks": 19,
+  "financial_invariant_failures": [],
+  "http_statuses": {
+    "201": 16524,
+    "500": 19
+  },
+  "invariant_failures": [
+    "event not drained"
+  ],
+  "journals": 0,
+  "latency_ms": {
+    "max": 3336.977794,
+    "p50": 5.152958,
+    "p95": 422.3253455999999,
+    "p99": 1796.456811639999
+  },
+  "nominal_rate": 200,
+  "offered_iterations": 28900,
+  "operations": {
+    "create": {
+      "max_ms": 3336.977794,
+      "p50_ms": 5.152958,
+      "p95_ms": 422.3253455999999,
+      "p99_ms": 1796.456811639999,
+      "requests": 16543
+    }
+  },
+  "outbox_events": 16909,
+  "pending_events_at_snapshot": 7547,
+  "profile": "stress",
+  "published_events": 9362,
+  "qualification_failures": [
+    "committed creates lack an acknowledged success response",
+    "drain deadline exceeded",
+    "unexpected HTTP outcomes",
+    "failed semantic/status checks",
+    "offered iterations dropped",
+    "incomplete workflows",
+    "offered schedule not delivered",
+    "k6 threshold or execution failure",
+    "post-run invariant failure"
+  ],
+  "qualified": false,
+  "refunds": 0,
+  "requests": 16543,
+  "resource_observations": 36,
+  "run_id": "20261013T182409-stress-095c4b",
+  "started_workflows": 16928
+}
