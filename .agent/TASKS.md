@@ -1,10 +1,15 @@
 # Task tracker
 
-Active plan: `docs/implementation-plan.md`.
+Delivery status: reference implementation and bounded qualification campaign
+complete. Final documentation is routed through PR #7. See
+`docs/project-closeout.md` for acceptance, cleanup and future boundaries.
+
+Historical plan: `docs/implementation-plan.md`. No further paid campaign is active.
 
 ## PAY-001: runnable payment service
 
-Status: locally verified; release qualification and maintainer review remain pending.
+Status: delivered in merged main; historical validation below. Production
+qualification remains separate.
 
 Acceptance: authenticated intent operations, fingerprint idempotency and pinned
 responses, balanced immutable ledger, Kafka provider/outbox flow, Redis limits,
@@ -15,7 +20,8 @@ before the contributor-alignment task. Scale qualification remains pending.
 
 ## PAY-002: align contributor and evidence conventions
 
-Status: locally verified; release qualification and maintainer review remain pending.
+Status: delivered in merged main; historical validation below. Production
+qualification remains separate.
 
 Acceptance:
 
@@ -36,8 +42,8 @@ synthetic effect and eight unguarded effects. Independent validation rejected
 seven doctored artifacts. Style self-tests, shell syntax and Compose validation
 passed. See `docs/evidence.md` for the exact scope and trust boundary.
 
-Review: implementation and contributor adaptation were reviewed during the task.
-Independent maintainer review and remote CI remain outstanding.
+Review: delivered through merged main with passing CI. Historical validation
+below retains its original scope; independent production approval remains separate.
 
 ## PAY-003: live payment playground
 
@@ -151,7 +157,8 @@ including two new tampering tests. See `docs/postgres-recovery.md` for limits.
 
 ## PAY-008: temporary GCP scale qualification
 
-Status: campaign completed and cloud resources cleaned; delivery review and CI pending.
+Status: merged through PR #6; campaign completed and cloud resources cleaned.
+Push and pull-request CI passed. Production qualification remains separate.
 User approved a US$25 initial spend cap and absolute six-hour deletion limit.
 
 Acceptance: separate run-owned VPC, hosts and generator; no changes to existing
@@ -186,3 +193,16 @@ shell syntax and Compose variants. Independent validation recomputed both millio
 action raw files, including the retained failed attempt. Existing Mediagent
 readiness conditions remained True after cleanup. Maintainer review/merge and
 production qualification remain separate.
+
+## PAY-009: visible qualification summary
+
+Status: documentation acceptance passed and included in final PR #7. Style,
+generated benchmark consistency, links and measured summary checks passed.
+GitHub preview verified the results table, evidence links and collapsed local
+benchmark history. Closeout merge is conditional on passing head CI.
+
+Acceptance: prominent evidence-linked results table with workload/hardware scope,
+failed 25K/s and zero-drop gates visible alongside successes; current 55-case
+verification count; accurate bounded retry/quarantine and batched outbox behavior;
+local benchmark history retained in a collapsible section; evidence/reproduction
+links resolve. No measurements or production claims are changed.

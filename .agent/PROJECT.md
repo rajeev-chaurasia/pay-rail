@@ -17,3 +17,7 @@ one million successful HTTP fault actions, with narrower scopes and failed
 capacity/foreground gates. See `docs/gcp-qualification-results.md`. These results
 and local evidence do not establish production suitability.
 See `docs/implementation-plan.md`, `docs/verification.md` and `docs/evidence.md`.
+
+Reference delivery and the bounded campaign are complete. See
+`docs/project-closeout.md` for the handoff and explicitly separate future
+qualification work. Further paid campaigns require new authorization.

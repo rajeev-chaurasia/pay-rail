@@ -12,17 +12,35 @@ contributor contract. [Evidence](docs/evidence.md) explains the concurrency
 experiment and independent result validation; [known limits](docs/known-misses.md)
 separate local behavior from remaining qualification work.
 
-## Measured GCP campaign
+Delivery is complete for the simulated reference platform. See the
+[project closeout](docs/project-closeout.md) for verified scope, cleanup and
+future qualification boundaries.
 
-An isolated temporary campaign reconciled **100,000,000 synthetic historical
-payment objects** with zero differences and passed **1,000,000 observed HTTP
-fault actions** across duplicate captures, fingerprint conflicts and discarded
-committed responses. Five infrastructure recovery schedules also passed.
+## Measured results
 
-A short create-only run accepted **2,000/s for 60 seconds**. The 25K/s probes
-failed, and four dropped arrivals in the 30-minute migration stream prevent a
-zero-downtime claim. These results do not establish production readiness.
-See [workloads, failures, raw evidence and cleanup](docs/gcp-qualification-results.md).
+The isolated GCP campaign ran on a **32-vCPU / 120-GiB database/application host**
+with four application replicas and a separate **8-vCPU / 32-GiB load generator**.
+Payments and historical data were synthetic; the provider was simulated.
+
+| Check | Recorded result | Scope / status |
+| --- | --- | --- |
+| Historical migration | **100,000,000 objects**, zero missing, extra or mismatched rows | Full copy/reconciliation passed for homogeneous histories |
+| HTTP fault campaign | **1,000,000 successful observed actions**, no duplicate ledger effects | Duplicate captures, fingerprint conflicts and discarded committed responses |
+| Create-only load | **2,000/s for 60 seconds**, 120,000 accepted; p95 **7.27 ms**, p99 **30.06 ms** | Short client budget passed; sustained settlement capacity is unproven |
+| Infrastructure recovery | **5 schedules / 20 observed interruptions** | One balanced settlement and exact response replay per payment |
+| 25,000/s target | Bounded probes dropped offered work | **Failed**; 30-minute target qualification was not run |
+| Migration foreground traffic | 179,996 accepted out of 180,000 arrivals over 30 minutes; four dropped arrivals | **Failed** the strict zero-drop gate; zero downtime is unproven |
+
+The million-action result does not mean one million crashes or provider timeouts.
+Post-overload delivery recovery required index/statistics intervention. Production
+readiness, automatic recovery SLOs and a full-scale mid-chunk crash/resume remain
+open gates. **All temporary cloud resources were deleted after evidence export.**
+
+[Campaign report and limitations](docs/gcp-qualification-results.md) ·
+[Raw observations and checksums](evidence/gcp/q-20261014092401-2304be/) ·
+[Million-action raw downloads](https://github.com/rajeev-chaurasia/pay-rail/releases/tag/benchmark-20261014) ·
+[Flow coverage](docs/testing.md) ·
+[Production gates](docs/production-readiness.md)
 
 ## Run locally
 
@@ -95,11 +113,11 @@ The API supports create, get, keyset list, confirm, capture, cancel, and refund 
 
 Supported immutable wire versions are `2025-01-01` (`state`) and `2026-01-01` (`status`). GET and list responses use the requested transform. Payment transitions are explicit: automatic confirmation enters `processing`; the provider worker completes it to `succeeded`. Manual confirmation enters `authorized`, followed by full capture. Cancel, partial/full refund, and terminal-state rules return 409 on illegal edges.
 
-The simulated provider persists a stable `tenant:intent` operation before responding. An injected response loss therefore reconciles on retry without a second provider operation or ledger effect. Kafka listener failures use an unbounded fixed backoff rather than silently skipping a processing intent. In production this needs operational alerting and a durable retry topic appropriate to the broker retention policy.
+The simulated provider persists a stable `tenant:intent` operation before responding. An injected response loss therefore reconciles on retry without a second provider operation or ledger effect. Kafka listener failures use bounded retries and acknowledged dead-letter publication. If quarantine publication fails, recovery remains unresolved. A quarantined intent needs operator reconciliation before replay; production still requires alerting, access controls and a reviewed retention policy.
 
 Ledger effects have a unique tenant business key. Deferred PostgreSQL constraint triggers require at least two balanced entries and `posted=true` at commit. Posted transactions and entries are immutable; refunds create reversing journals. Composite tenant foreign keys prevent cross-tenant refund, ledger, and V2 references. Tenant read isolation itself is enforced by authenticated predicates in this version; PostgreSQL RLS is not enabled.
 
-The outbox claims one aggregate head at a time with `FOR UPDATE SKIP LOCKED`, a 30-second fenced lease, a Kafka send timeout below that lease, and the intent ID as message key. A stale worker cannot acknowledge or fail a newer lease. Kafka preserves order for the normal single-key publish path, while an acknowledgement ambiguity can still produce a late duplicate predecessor; consumers must deduplicate IDs and enforce aggregate versions. Kafka delivery is at least once; `processed_events` supplies consumer-side unique event IDs in the same transaction as provider completion.
+The outbox claims bounded batches of independent aggregate heads with `FOR UPDATE SKIP LOCKED`, a 30-second fenced lease, a Kafka send timeout below that lease, and the intent ID as message key. A stale worker cannot acknowledge or fail a newer lease. Kafka preserves order for the normal single-key publish path, while an acknowledgement ambiguity can still produce a late duplicate predecessor; consumers must deduplicate IDs and enforce aggregate versions. Kafka delivery is at least once; `processed_events` supplies consumer-side unique event IDs in the same transaction as provider completion.
 
 ## Online V2 migration
 
@@ -107,11 +125,20 @@ Flyway V2 adds an additive representation. Compatibility writes update both tabl
 
 ## Verification and qualification
 
-The final audit includes **20 PostgreSQL/Redis integration tests**, a real-HTTP
-lifecycle smoke, a broker-outage recovery experiment, a currency display test,
-and nine adversarial performance-validator tests. See the explicit
-[flow coverage matrix](docs/testing.md) and
+The Docker verifier passes **55 automated cases: 34 Java, one currency and
+20 Python validator cases**. It checks real PostgreSQL/Redis behavior, pinned
+formatting, package creation, retained evidence, Compose variants and both Go
+generators. GitHub CI also builds/scans the runtime and performs isolated crash,
+logical restore and physical backup/WAL point-in-time recovery drills.
+
+The real-HTTP lifecycle smoke exercises 34 requests. See the
+[flow coverage matrix](docs/testing.md),
+[cloud qualification report](docs/gcp-qualification-results.md),
+[recovery evidence](docs/postgres-recovery.md) and
 [local performance method](docs/performance.md).
+
+<details>
+<summary>Local Docker benchmark history, including failed attempts</summary>
 
 <!-- performance-results:start -->
 Measured on the shared local Docker host. Latency is per completed HTTP request; failed and dropped work is reported separately.
@@ -146,6 +173,8 @@ None of these studies establishes the 25K/s target. See
 [the method, failed runs and limits](docs/performance.md).
 <!-- performance-results:end -->
 
+</details>
+
 `mvn verify` runs real PostgreSQL 16 Testcontainers tests for duplicate races, fingerprint conflicts, canonical JSON, state conflicts, tenant isolation, ledger balance/immutability, provider response loss and redelivery, pinned wire replay, migration resume/reconcile, and stale outbox fencing.
 
 ```bash
@@ -156,7 +185,7 @@ mvn verify
 ./scripts/reconcile.sh
 ```
 
-The fault script counts attempted client deadlines and stable-key duplicate retries; a short deadline does not by itself prove that the server committed. The performance harness uses the official pinned k6 Docker image, a dedicated synthetic tenant/app/Redis instance and the existing local PostgreSQL/Kafka stack. It retains raw samples, summaries, resource observations, bounded drain records and consistent accounting snapshots under `evidence/performance/`. Failed capacity runs remain published and classified as unqualified. The provided local harness does not prove 25,000 requests/s, a 100-million-object migration, or one million fault injections. Those are qualification targets. A claim requires a separately sized environment, declared workload and hardware, sustained open-loop results, raw latency/resource data, a fully drained outbox, and zero invariant or reconciliation failures. See [the implementation plan](docs/implementation-plan.md) for the full gates and fault matrix.
+The fault script counts attempted client deadlines and stable-key duplicate retries; a short deadline does not by itself prove that the server committed. The performance harness uses the official pinned k6 Docker image, a dedicated synthetic tenant/app/Redis instance and the existing local PostgreSQL/Kafka stack. It retains raw samples, summaries, resource observations, bounded drain records and consistent accounting snapshots under `evidence/performance/`. Failed capacity runs remain published and classified as unqualified. These local studies retain their original resource/workload limits. The separate [GCP campaign](docs/gcp-qualification-results.md) measured 100M homogeneous historical objects and one million actions across three HTTP fault classes. Sustained 25K/s, zero-downtime migration and broad production fault qualification remain open. Claims require declared workloads and hardware, retained raw observations, full reconciliation and the stated acceptance gates. See [the implementation plan](docs/implementation-plan.md) for the complete fault matrix.
 
 Known limits of this reference service: the fixed-window Redis limiter is intentionally simple; the outbox publishes bounded batches of independent aggregate heads; API keys are managed through SQL rather than a management API; and no external payment provider is integrated.
 
