@@ -1,2 +1,4 @@
 # Exported benchmark observations are retained evidence rather than source code.
 evidence/** linguist-generated=true
+# Verification and cloud-campaign tooling, not the service; keep the language bar showing the Java service.
+scripts/** linguist-detectable=false
